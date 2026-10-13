@@ -1,4 +1,4 @@
-# Cardápio Falado Acessível — Cabana do Sol
+# Cardápio Falado Acessível
 
 A spoken, screen-reader-first digital menu for the Cabana do Sol restaurant
 (São Luís and Imperatriz, Maranhão — serving since 1994). The goal is that a
