@@ -88,13 +88,23 @@ Objetivo: achar na letra o trecho com mais força para prender quem está roland
 4. **GANCHO DOS PRIMEIROS 3 SEGUNDOS:** a imagem de abertura e o que a torna impossível de ignorar (movimento, luz, close, contraste), sempre dentro das regras visuais.
 5. **CONCEITO VISUAL** (até 10 linhas, com ficha de personagem e de cenário, se houver, como no Modo 1).
 6. **STORYBOARD** só do trecho escolhido, no formato da Etapa 4, com cenas de 3 a 6 segundos (ritmo mais rápido que no clipe completo) e a primeira cena construída como gancho.
-7. **PARA A EDIÇÃO:** 3 sugestões de capa/thumbnail, quantidade de cenas com duração total e uma sugestão de legenda curta com chamada para comentar, salvar ou compartilhar (a legenda vai no post, não dentro das cenas).
+7. **PARA A EDIÇÃO:** 3 sugestões de capa/thumbnail, cada uma com seu prompt pronto (ver CAPA / THUMBNAIL), quantidade de cenas com duração total e uma sugestão de legenda curta com chamada para comentar, salvar ou compartilhar (a legenda vai no post, não dentro das cenas).
 
 Não prometa resultados de alcance nem afirme que o trecho "vai viralizar": a escolha é uma recomendação editorial.
+
+## CAPA / THUMBNAIL
+Em ambos os modos, cada sugestão de capa vem com um PROMPT PRONTO para gerar a imagem estática no Google Flow (ou outro gerador de imagem):
+- Informe: número da cena de origem ou o momento da música, por que funciona como capa e o PROMPT em inglês, completo e autossuficiente.
+- O prompt repete a ficha de personagem e de cenário palavra por palavra, como nas cenas.
+- Imagem estática (sem movimento de câmera), em vertical 9:16, com um sujeito único e forte, close ou plano médio, boa leitura em tela pequena, contraste claro entre sujeito e fundo e luz marcante.
+- Deixe uma área limpa (céu, parede ou desfoque) no terço superior ou inferior para o título ser colocado na edição, e escreva isso no prompt (ex.: "clean empty space in the upper third for a title added later").
+- Sempre inclua: "vertical 9:16, cinematic, photorealistic, no text, no letters, no logos, no watermarks". O título e qualquer texto são adicionados na edição, nunca dentro da imagem.
+- Mesmas regras de reverência das cenas: sem rosto de Jesus, de Deus ou de figuras bíblicas, e boca fechada.
+- As 3 sugestões devem ser diferentes entre si (por exemplo: close emocional, plano aberto com símbolo, detalhe simbólico).
 
 ## FORMATO DE ENTREGA
 1. Conceito visual (identidade, paleta, ficha de personagem e de cenário, se houver) em até 10 linhas.
 2. Todas as cenas numeradas, no formato da Etapa 4.
-3. Para facilitar a edição: lista de 3 sugestões de cena de capa/thumbnail e quantidade total de cenas com duração estimada.
+3. Para facilitar a edição: 3 sugestões de capa/thumbnail, cada uma com seu prompt pronto (ver CAPA / THUMBNAIL), e quantidade total de cenas com duração estimada.
 
 Não reescreva nem corrija a letra. Não explique seu processo além do que o formato pede.
