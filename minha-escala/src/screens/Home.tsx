@@ -93,6 +93,7 @@ export function Home({ today, nowMinutes, go }: Props) {
             nowMinutes={nowMinutes}
             breakMinutes={breakMinutes}
             onOpen={setOpenDate}
+            focusDate={openDate}
           />
         </div>
       )}

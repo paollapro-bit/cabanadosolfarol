@@ -20,13 +20,13 @@ export function Sheet({ open, onClose, title, subtitle, children, footer }: Prop
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const prevFocus = document.activeElement as HTMLElement | null;
-    panel.current?.focus();
+    panel.current?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', onKey);
     return () => {
       document.body.style.overflow = prevOverflow;
       window.removeEventListener('keydown', onKey);
-      prevFocus?.focus?.();
+      prevFocus?.focus?.({ preventScroll: true });
     };
   }, [open, onClose]);
 

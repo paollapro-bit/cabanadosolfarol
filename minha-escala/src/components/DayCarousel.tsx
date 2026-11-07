@@ -13,10 +13,12 @@ interface Props {
   nowMinutes: number;
   breakMinutes: number;
   onOpen: (date: ISODate) => void;
+  /** Quando muda (p. ex. ao navegar na folha de edição), o cartão desliza para esse dia. */
+  focusDate?: ISODate | null;
 }
 
 /** Cartão principal deslizante: começa em hoje e passa de dia em dia com o dedo. */
-export function DayCarousel({ dates, today, days, shifts, nowMinutes, breakMinutes, onOpen }: Props) {
+export function DayCarousel({ dates, today, days, shifts, nowMinutes, breakMinutes, onOpen, focusDate }: Props) {
   const scroller = useRef<HTMLDivElement>(null);
   const todayIndex = Math.max(0, dates.indexOf(today));
   const [index, setIndex] = useState(todayIndex);
@@ -61,6 +63,46 @@ export function DayCarousel({ dates, today, days, shifts, nowMinutes, breakMinut
     };
   }, [dates.length]);
 
+  // Acompanha o dia aberto na folha de edição ("Dia seguinte", avanço automático…).
+  useEffect(() => {
+    if (!focusDate) return;
+    const i = dates.indexOf(focusDate);
+    if (i >= 0) scrollToIndex(i);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusDate]);
+
+  // Arrastar com o rato (computador). No telemóvel o deslizar é nativo.
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const suppressClick = useRef(false);
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType !== 'mouse' || e.button !== 0 || !scroller.current) return;
+    drag.current = { x: e.clientX, left: scroller.current.scrollLeft, moved: false };
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    const el = scroller.current;
+    if (!d || !el) return;
+    const dx = e.clientX - d.x;
+    if (!d.moved && Math.abs(dx) > 6) {
+      d.moved = true;
+      el.style.scrollSnapType = 'none';
+      el.setPointerCapture(e.pointerId);
+    }
+    if (d.moved) el.scrollLeft = d.left - dx;
+  };
+  const endDrag = (e: React.PointerEvent) => {
+    const d = drag.current;
+    const el = scroller.current;
+    drag.current = null;
+    if (!d?.moved || !el) return;
+    suppressClick.current = true;
+    const dx = e.clientX - d.x;
+    const base = Math.round(d.left / step());
+    const target = Math.abs(dx) > 40 ? base + (dx < 0 ? 1 : -1) : base;
+    el.style.scrollSnapType = '';
+    go(target);
+  };
+
   const current = dates[index] ?? today;
   const go = (i: number) => scrollToIndex(Math.min(Math.max(i, 0), dates.length - 1));
 
@@ -70,6 +112,17 @@ export function DayCarousel({ dates, today, days, shifts, nowMinutes, breakMinut
         ref={scroller}
         className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 pb-2 pt-1"
         style={{ WebkitOverflowScrolling: 'touch' }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onClickCapture={(e) => {
+          if (suppressClick.current) {
+            suppressClick.current = false;
+            e.stopPropagation();
+            e.preventDefault();
+          }
+        }}
       >
         {dates.map((date, i) => {
           const entry = days.get(date);
@@ -90,7 +143,8 @@ export function DayCarousel({ dates, today, days, shifts, nowMinutes, breakMinut
                 shift={shift}
                 nowMinutes={nowMinutes}
                 breakMinutes={breakMinutes}
-                onOpen={() => onOpen(date)}
+                // Tocar num cartão ao lado traz esse dia para o centro; só o do centro abre a edição.
+                onOpen={() => (i === index ? onOpen(date) : go(i))}
                 focusable={i === index}
               />
             </div>
