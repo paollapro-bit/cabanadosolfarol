@@ -65,7 +65,7 @@ export async function restoreBackup(database: EscalaDB, backup: Backup): Promise
         date: d.date,
         code: d.code,
         note: d.note || undefined,
-        source: d.source === 'importado' ? 'importado' : 'utilizadora',
+        source: d.source === 'importado' || d.source === 'conferido' ? d.source : 'utilizadora',
         updatedAt: d.updatedAt ?? now,
       })),
     );

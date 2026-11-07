@@ -12,4 +12,16 @@ createRoot(document.getElementById('root')!).render(
 
 // Service worker: guarda a aplicação em cache para abrir sem internet.
 // As novas versões instalam-se sozinhas; os dados (IndexedDB) nunca são tocados.
-registerSW({ immediate: true });
+// Procura uma versão nova (por exemplo, com a escala do mês seguinte) ao abrir,
+// sempre que a aplicação volta ao ecrã, e de hora a hora.
+registerSW({
+  immediate: true,
+  onRegisteredSW(_url, registration) {
+    if (!registration) return;
+    const check = () => {
+      if (navigator.onLine) registration.update().catch(() => {});
+    };
+    document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && check());
+    setInterval(check, 60 * 60 * 1000);
+  },
+});

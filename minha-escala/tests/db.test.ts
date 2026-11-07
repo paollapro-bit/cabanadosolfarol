@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { EscalaDB } from '../src/db/db';
-import { initDatabase, NOVEMBER_2026 } from '../src/db/seed';
+import { initDatabase } from '../src/db/seed';
 import { confirmDays, setDayNote, setDaysCode } from '../src/db/repo';
 import { createBackup, parseBackup, restoreBackup, BackupError } from '../src/lib/backup';
 import { summarizeMonth, findNext } from '../src/lib/summary';
@@ -54,7 +54,7 @@ describe('base de dados local', () => {
     await fresh.days.put({ date: '2026-11-07', code: 'A1', source: 'utilizadora', updatedAt: 1 });
     await initDatabase(fresh);
     expect((await fresh.days.get('2026-11-07'))?.code).toBe('A1');
-    expect(await fresh.days.count()).toBe(Object.keys(NOVEMBER_2026).length);
+    expect(await fresh.days.count()).toBe(25);
   });
 
   it('edita vários dias de uma vez e mantém as observações', async () => {
@@ -76,7 +76,7 @@ describe('base de dados local', () => {
 
   it('marca dias como conferidos', async () => {
     await confirmDays(['2026-11-06', '2026-11-07'], db);
-    expect((await db.days.get('2026-11-06'))?.source).toBe('utilizadora');
+    expect((await db.days.get('2026-11-06'))?.source).toBe('conferido');
     expect((await db.days.get('2026-11-08'))?.source).toBe('importado');
   });
 });

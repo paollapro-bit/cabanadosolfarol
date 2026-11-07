@@ -10,8 +10,12 @@ export interface DayEntry {
   date: ISODate;
   code: string | null;
   note?: string;
-  /** 'importado' = transcrito da fotografia e ainda por conferir. */
-  source: 'importado' | 'utilizadora';
+  /**
+   * 'importado'   = veio de uma escala publicada e ainda não foi conferido;
+   * 'conferido'   = veio de uma escala publicada e a utilizadora confirmou;
+   * 'utilizadora' = alterado à mão (nunca é substituído por escalas publicadas).
+   */
+  source: 'importado' | 'conferido' | 'utilizadora';
   updatedAt: number;
 }
 

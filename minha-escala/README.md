@@ -7,7 +7,12 @@ Abre diretamente no turno de hoje e funciona **sem internet** depois de instalad
 
 - **Ecrã inicial**: “Olá, Lorena”, data de hoje (fuso Europe/Lisbon) e um cartão enorme com
   o turno do dia (horas de entrada e saída em destaque, tipo, função e código), folga
-  (“Aproveita o teu descanso!”) ou “Sem turno registado”. Tocar no cartão abre o dia para editar.
+  (“Aproveita o teu descanso!”) ou “Sem turno registado”. O cartão **desliza para os lados**
+  para ver os outros dias com escala (até 7 dias para trás), com setas e botão “Hoje”.
+  Tocar no cartão abre o dia para editar.
+- **Atualização mensal**: cada mês é um ficheiro em `src/data/escalas/`; ao publicar uma
+  versão nova da app, o iPhone aplica o mês sozinho sem tocar nos dias alterados à mão.
+  Ver [ESCALAS.md](ESCALAS.md).
 - **Ver outros dias**: calendário mensal (ou lista) com cores por tipo — abertura (âmbar),
   fecho (índigo), intermédio (rosa), folga (verde) e sem escala (tracejado).
   Navegação mês a mês e seletor de mês/ano.
@@ -15,8 +20,8 @@ Abre diretamente no turno de hoje e funciona **sem internet** depois de instalad
   “Avançar para o dia seguinte” para preencher um mês inteiro em poucos toques.
 - **Editar vários dias** de uma vez (inclui “Selecionar dias vazios”).
 - Cada alteração é **guardada automaticamente** em IndexedDB (Dexie).
-- **Escala de novembro de 2026** importada na primeira abertura, marcada com um ponto azul
-  “por conferir” até ser confirmada. Nunca volta a ser importada por cima das alterações.
+- **Escala de novembro de 2026** (`src/data/escalas/2026-11.json`) importada na primeira
+  abertura, marcada com um ponto azul “por conferir” até ser confirmada.
 - Semana atual, próxima folga, próximo turno e resumo do mês (dias de trabalho, folgas,
   dias sem escala, horas líquidas com intervalo configurável).
 - Partilha por **WhatsApp** (semana ou mês) e folha de partilha do iPhone.
@@ -55,7 +60,8 @@ npm run icons      # regenera os PNG a partir de public/favicon.svg (requer Play
 src/
   App.tsx              arranque, base de dados, rotas (#/, #/calendario, #/definicoes)
   db/db.ts             esquema Dexie: days, shifts, settings, attachments
-  db/seed.ts           turnos predefinidos + escala de novembro de 2026 (corre uma vez)
+  db/seed.ts           turnos predefinidos + aplicação dos meses publicados (cada arranque)
+  data/escalas/        um ficheiro JSON por mês (ver ESCALAS.md)
   db/repo.ts           gravação de dias, observações, turnos e definições
   lib/dates.ts         datas AAAA-MM-DD, "hoje" em Lisboa, grelha do mês (segunda→domingo)
   lib/shifts.ts        códigos, tipos e cálculo de horas
@@ -71,7 +77,8 @@ tests/                 Vitest + fake-indexeddb
 
 ## O que foi testado
 
-- `npm test`: 23 testes — fuso de Lisboa (incl. mudança de hora), grelha do mês, horas
+- `npm test`: 31 testes — atualização mensal (mês novo, correções que respeitam edições
+  manuais, validação dos ficheiros), dias do cartão deslizante, — fuso de Lisboa (incl. mudança de hora), grelha do mês, horas
   líquidas, resumo de novembro (17 dias de trabalho, 8 folgas, 5 sem escala, 136 h com
   45 min de intervalo), importação inicial que não sobrescreve edições, edição múltipla,
   observações, cópia/restauro e exportações.

@@ -2,8 +2,10 @@ import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { CalendarDays, ChevronRight, Clock, Palmtree, PieChart, Send, Settings } from 'lucide-react';
 import { db } from '../db/db';
-import { useBreakMinutes, useDay, useDaysRange, useShifts } from '../hooks/useData';
-import { TodayCard } from '../components/TodayCard';
+import { useBreakMinutes, useDaysRange, useShifts } from '../hooks/useData';
+import { DayCarousel } from '../components/DayCarousel';
+import { ImportBanner } from '../components/ImportBanner';
+import { carouselDates, CAROUSEL_DAYS_BEFORE, CAROUSEL_MAX_DAYS_AFTER } from '../lib/carousel';
 import { WeekStrip } from '../components/WeekStrip';
 import { DaySheet } from '../components/DaySheet';
 import { Card, IconBubble, OfflineBadge, SectionTitle } from '../components/Common';
@@ -21,7 +23,6 @@ interface Props {
 
 export function Home({ today, nowMinutes, go }: Props) {
   const shifts = useShifts();
-  const todayEntry = useDay(today);
   const breakMinutes = useBreakMinutes();
   const notify = useNotify();
   const [openDate, setOpenDate] = useState<ISODate | null>(null);
@@ -33,14 +34,23 @@ export function Home({ today, nowMinutes, go }: Props) {
   const rangeTo = week[6] > monthDays[monthDays.length - 1] ? week[6] : monthDays[monthDays.length - 1];
   const days = useDaysRange(rangeFrom, rangeTo);
 
-  // Próximos 120 dias, para encontrar a próxima folga e o próximo turno.
-  const upcoming = useLiveQuery(
-    () => db.days.where('date').between(today, addDays(today, 120), false, true).toArray(),
+  // Dias à volta de hoje: alimentam o cartão deslizante, a próxima folga e o próximo turno.
+  const around = useLiveQuery(
+    () =>
+      db.days
+        .where('date')
+        .between(addDays(today, -CAROUSEL_DAYS_BEFORE), addDays(today, CAROUSEL_MAX_DAYS_AFTER), true, true)
+        .toArray(),
     [today],
   );
+  const aroundMap = useMemo(() => new Map((around ?? []).map((d) => [d.date, d])), [around]);
+  const slides = useMemo(
+    () => carouselDates(today, (around ?? []).filter((d) => d.code !== null || d.note).map((d) => d.date)),
+    [today, around],
+  );
+  const upcoming = around;
 
   if (!shifts) return null;
-  const todayShift = todayEntry?.code ? shifts.map.get(todayEntry.code) : undefined;
   const nextOff = upcoming ? findNext(today, upcoming, shifts.map, 'folga') : undefined;
   const nextShiftEntry = upcoming ? findNext(today, upcoming, shifts.map, 'turno') : undefined;
   const nextShift = nextShiftEntry?.code ? shifts.map.get(nextShiftEntry.code) : undefined;
@@ -71,13 +81,21 @@ export function Home({ today, nowMinutes, go }: Props) {
         </button>
       </header>
 
-      <TodayCard
-        entry={todayEntry}
-        shift={todayShift}
-        nowMinutes={nowMinutes}
-        breakMinutes={breakMinutes}
-        onOpen={() => setOpenDate(today)}
-      />
+      {around === undefined ? (
+        <div className="h-[420px] animate-pulse rounded-[32px] bg-[var(--surface)]" />
+      ) : (
+        <div className="anim-rise">
+          <DayCarousel
+            dates={slides}
+            today={today}
+            days={aroundMap}
+            shifts={shifts.map}
+            nowMinutes={nowMinutes}
+            breakMinutes={breakMinutes}
+            onOpen={setOpenDate}
+          />
+        </div>
+      )}
 
       <button
         onClick={() => go('/calendario')}
@@ -86,6 +104,10 @@ export function Home({ today, nowMinutes, go }: Props) {
       >
         <CalendarDays size={24} aria-hidden /> Ver outros dias
       </button>
+
+      <div className="mt-4">
+        <ImportBanner go={go} />
+      </div>
 
       <div className="anim-rise mt-8 space-y-6" style={{ animationDelay: '120ms' }}>
         <section>

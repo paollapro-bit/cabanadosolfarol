@@ -41,12 +41,12 @@ export async function setDayNote(date: ISODate, note: string, database: EscalaDB
 
 /** Marca um dia transcrito da fotografia como conferido. */
 export async function confirmDay(date: ISODate, database: EscalaDB = defaultDb) {
-  await database.days.update(date, { source: 'utilizadora', updatedAt: Date.now() });
+  await database.days.update(date, { source: 'conferido', updatedAt: Date.now() });
 }
 
 export async function confirmDays(dates: ISODate[], database: EscalaDB = defaultDb) {
   await database.transaction('rw', database.days, async () => {
-    for (const d of dates) await database.days.update(d, { source: 'utilizadora', updatedAt: Date.now() });
+    for (const d of dates) await database.days.update(d, { source: 'conferido', updatedAt: Date.now() });
   });
 }
 
