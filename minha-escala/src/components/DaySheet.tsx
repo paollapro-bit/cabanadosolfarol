@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, CircleSlash, ScanEye, StickyNote } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CircleSlash, Pencil, ScanEye, StickyNote } from 'lucide-react';
 import { Sheet } from './Sheet';
 import { CodePad } from './CodePad';
 import { useNotify } from './Announcer';
@@ -8,6 +8,7 @@ import { confirmDay, setDayNote, setDaysCode } from '../db/repo';
 import { addDays, diffDays, formatLongDate, type ISODate } from '../lib/dates';
 import { formatDuration, netMinutes, shiftTimeRange, TYPE_LABEL, type ShiftDef } from '../lib/shifts';
 import { CHIP } from '../lib/theme';
+import { codeLabel, ConfirmChange } from './ConfirmChange';
 
 const AUTO_KEY = 'me-avancar';
 const readAuto = () => {
@@ -96,11 +97,30 @@ function DayEditor({
   const shift = entry?.code ? shiftMap.get(entry.code) : undefined;
   const kind = shift ? shift.type : 'vazio';
 
-  const pick = async (code: string | null) => {
+  // Dia com turno abre só para consultar; só entra em edição com "Alterar turno".
+  // Com "Avançar para o dia seguinte" ligado (registo rápido) abre logo em edição.
+  const [editing, setEditing] = useState<boolean | null>(null);
+  const [pending, setPending] = useState<{ to: string | null } | null>(null);
+  const isEditing = editing ?? (auto || (entry !== undefined && !entry?.code));
+
+  const save = async (code: string | null) => {
+    setPending(null);
     await setDaysCode([date], code);
-    const label = code ? (shiftMap.get(code)?.type === 'folga' ? 'Folga' : code) : 'Sem escala';
-    notify(`${label} guardado`);
+    notify(code ? `${codeLabel(code, shiftMap)} guardado` : 'Dia sem escala');
     if (auto) onNavigate(addDays(date, 1));
+    else setEditing(false);
+  };
+
+  const pick = (code: string | null) => {
+    const current = entry?.code ?? null;
+    if (code === current) {
+      if (auto) onNavigate(addDays(date, 1));
+      else setEditing(false);
+      return;
+    }
+    // Dia vazio: preenche logo. Dia com turno: pede confirmação.
+    if (current === null) void save(code);
+    else setPending({ to: code });
   };
 
   const toggleAuto = () => {
@@ -134,7 +154,7 @@ function DayEditor({
           {!shift && (
             <>
               <div className="text-xl font-bold text-[var(--ink)]">Sem turno registado</div>
-              <div className="text-[14px]">Escolhe um turno abaixo.</div>
+              <div className="text-[14px]">{isEditing ? 'Escolhe um turno abaixo.' : ''}</div>
             </>
           )}
         </div>
@@ -156,7 +176,26 @@ function DayEditor({
         </div>
       )}
 
-      <section>
+      {pending ? (
+        <ConfirmChange
+          title={`Alterar o turno deste dia?`}
+          from={entry?.code ?? null}
+          to={pending.to}
+          shifts={shiftMap}
+          confirmLabel="Sim, alterar"
+          cancelLabel={`Não, manter ${entry?.code ?? ''}`.trim()}
+          onConfirm={() => void save(pending.to)}
+          onCancel={() => setPending(null)}
+        />
+      ) : !isEditing ? (
+        <button
+          onClick={() => setEditing(true)}
+          className="press flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--surface-2)] py-4 text-[16px] font-bold"
+        >
+          <Pencil size={18} aria-hidden /> Alterar turno
+        </button>
+      ) : (
+        <section>
         <div className="mb-2 flex items-center justify-between">
           <h3 className="text-[13px] font-semibold uppercase tracking-wide text-[var(--muted)]">Turno</h3>
           <label className="flex cursor-pointer items-center gap-2 text-[14px] text-[var(--muted)]">
@@ -177,7 +216,13 @@ function DayEditor({
         >
           <CircleSlash size={18} aria-hidden /> Sem escala
         </button>
-      </section>
+        {entry?.code && !auto && (
+            <button onClick={() => setEditing(false)} className="press mt-2 w-full py-2 text-[15px] font-semibold text-[var(--accent)]">
+              Cancelar
+            </button>
+          )}
+        </section>
+      )}
 
       <section>
         <label htmlFor="nota" className="mb-2 flex items-center gap-1.5 text-[13px] font-semibold uppercase tracking-wide text-[var(--muted)]">

@@ -21,6 +21,7 @@ import { Card, OfflineBadge, SectionTitle } from '../components/Common';
 import { Sheet } from '../components/Sheet';
 import { useNotify } from '../components/Announcer';
 import { PhotoSheet } from '../components/PhotoSheet';
+import { ConfirmChange } from '../components/ConfirmChange';
 import { confirmDays, setDaysCode } from '../db/repo';
 import {
   formatMonthYear,
@@ -63,6 +64,7 @@ export function Calendar({ today, initialMonth, back }: Props) {
   const [selected, setSelected] = useState<Set<ISODate>>(new Set());
   const [pickerOpen, setPickerOpen] = useState(false);
   const [photoOpen, setPhotoOpen] = useState(false);
+  const [pendingMulti, setPendingMulti] = useState<{ to: string | null; overwritten: ISODate[] } | null>(null);
   const notify = useNotify();
 
   const shifts = useShifts();
@@ -99,15 +101,26 @@ export function Calendar({ today, initialMonth, back }: Props) {
     });
   };
 
-  const applyToSelected = async (code: string | null) => {
+  const applyToSelected = async (code: string | null, confirmed = false) => {
     const list = [...selected].sort();
-    if (!list.length) return;
+    if (!list.length || !days) return;
+    // Dias que já tinham outro turno: pede confirmação antes de os substituir.
+    const overwritten = list.filter((d) => {
+      const c = days.get(d)?.code ?? null;
+      return c !== null && c !== code;
+    });
+    if (overwritten.length && !confirmed) {
+      setPendingMulti({ to: code, overwritten });
+      return;
+    }
+    setPendingMulti(null);
     await setDaysCode(list, code);
     notify(`${list.length} ${list.length === 1 ? 'dia guardado' : 'dias guardados'}`);
     setSelected(new Set());
   };
 
   const stopSelecting = () => {
+    setPendingMulti(null);
     setSelecting(false);
     setSelected(new Set());
   };
@@ -301,6 +314,22 @@ export function Calendar({ today, initialMonth, back }: Props) {
               <X size={18} />
             </button>
           </div>
+          {pendingMulti ? (
+            <ConfirmChange
+              title={`Substituir ${pendingMulti.overwritten.length} ${pendingMulti.overwritten.length === 1 ? 'dia que já tem' : 'dias que já têm'} turno?`}
+              to={pendingMulti.to}
+              shifts={shifts.map}
+              detail={`${pendingMulti.overwritten.length === 1 ? 'O dia' : 'Os dias'} ${pendingMulti.overwritten
+                .map((d) => `${parseISO(d).day} (${days.get(d)?.code})`)
+                .join(', ')} ${pendingMulti.overwritten.length === 1 ? 'passa' : 'passam'} a ${
+                pendingMulti.to ? pendingMulti.to : 'sem escala'
+              }.`}
+              confirmLabel="Sim, substituir"
+              cancelLabel="Não, cancelar"
+              onConfirm={() => void applyToSelected(pendingMulti.to, true)}
+              onCancel={() => setPendingMulti(null)}
+            />
+          ) : (
           <div className={selected.size === 0 ? 'pointer-events-none opacity-40' : ''} aria-disabled={selected.size === 0}>
             <CodePad shifts={shifts.list} onPick={applyToSelected} compact />
             <button
@@ -310,6 +339,7 @@ export function Calendar({ today, initialMonth, back }: Props) {
               <CircleSlash size={16} aria-hidden /> Sem escala
             </button>
           </div>
+          )}
         </div>
       )}
 
