@@ -102,8 +102,8 @@ describe('cálculos do calendário', () => {
 
   it('gera o texto para WhatsApp', async () => {
     const { days, shifts } = await state();
-    const text = monthText(2026, 11, days, shifts);
-    expect(text).toContain('Escala da Lorena — novembro de 2026');
+    const text = monthText(2026, 11, days, shifts, 'Lorena');
+    expect(text).toContain('Escala de Lorena — novembro de 2026');
     expect(text).toContain('Dom 01 · Sem escala');
     expect(text).toContain('Sex 06 · 07:30–16:15 · Abertura · Copa (A3)');
     expect(text).toContain('Ter 10 · 🌿 Folga');

@@ -73,3 +73,23 @@ export async function saveShift(shift: ShiftDef, database: EscalaDB = defaultDb)
 export async function resetShifts(database: EscalaDB = defaultDb) {
   await database.shifts.bulkPut(DEFAULT_SHIFTS);
 }
+
+/**
+ * Grava dias lidos de uma fotografia. Ficam marcados como 'importado' (ponto
+ * azul, por conferir); as observações existentes mantêm-se.
+ */
+export async function setDaysImported(entries: { date: ISODate; code: string | null }[], database: EscalaDB = defaultDb) {
+  const now = Date.now();
+  await database.transaction('rw', database.days, async () => {
+    const existing = await database.days.bulkGet(entries.map((e) => e.date));
+    const puts: DayEntry[] = [];
+    const deletes: string[] = [];
+    entries.forEach(({ date, code }, i) => {
+      const note = existing[i]?.note?.trim() ? existing[i]!.note : undefined;
+      if (code === null && !note) deletes.push(date);
+      else puts.push({ date, code, note, source: 'importado', updatedAt: now });
+    });
+    if (puts.length) await database.days.bulkPut(puts);
+    if (deletes.length) await database.days.bulkDelete(deletes);
+  });
+}

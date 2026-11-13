@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { CalendarDays, ChevronRight, Clock, Palmtree, PieChart, Send, Settings } from 'lucide-react';
+import { CalendarDays, Camera, ChevronRight, Clock, Palmtree, PieChart, Send, Settings } from 'lucide-react';
+import { LeituraSheet } from '../components/LeituraSheet';
+import { useNome } from '../lib/perfil';
 import { db } from '../db/db';
 import { useBreakMinutes, useDaysRange, useShifts } from '../hooks/useData';
 import { DayCarousel } from '../components/DayCarousel';
@@ -26,6 +28,8 @@ export function Home({ today, nowMinutes, go }: Props) {
   const breakMinutes = useBreakMinutes();
   const notify = useNotify();
   const [openDate, setOpenDate] = useState<ISODate | null>(null);
+  const [leituraOpen, setLeituraOpen] = useState(false);
+  const nome = useNome();
 
   const { year, month } = parseISO(today);
   const week = useMemo(() => weekDates(today), [today]);
@@ -66,7 +70,7 @@ export function Home({ today, nowMinutes, go }: Props) {
     <div className="mx-auto max-w-lg px-5 pt-safe pb-safe">
       <header className="anim-rise flex items-start justify-between gap-3 pb-5 pt-3">
         <div>
-          <h1 className="text-[34px] font-extrabold leading-tight tracking-tight">Olá, Lorena</h1>
+          <h1 className="text-[34px] font-extrabold leading-tight tracking-tight">{nome ? `Olá, ${nome}` : 'Olá!'}</h1>
           <p className="mt-0.5 text-[17px] text-[var(--muted)]">{formatLongDate(today)}</p>
           <div className="mt-2">
             <OfflineBadge />
@@ -104,6 +108,14 @@ export function Home({ today, nowMinutes, go }: Props) {
         style={{ animationDelay: '60ms' }}
       >
         <CalendarDays size={24} aria-hidden /> Ver outros dias
+      </button>
+
+      <button
+        onClick={() => setLeituraOpen(true)}
+        className="press anim-rise mt-3 flex w-full items-center justify-center gap-2.5 rounded-[24px] bg-[var(--surface)] py-4 text-[16px] font-bold shadow-sm"
+        style={{ animationDelay: '90ms' }}
+      >
+        <Camera size={21} className="text-[var(--accent)]" aria-hidden /> Ler escala da fotografia
       </button>
 
       <div className="mt-4">
@@ -180,6 +192,14 @@ export function Home({ today, nowMinutes, go }: Props) {
           </section>
         )}
       </div>
+
+      <LeituraSheet
+        open={leituraOpen}
+        year={year}
+        month={month}
+        onClose={() => setLeituraOpen(false)}
+        onSaved={(y, m) => go(`/calendario/${y}-${String(m).padStart(2, '0')}`)}
+      />
 
       <DaySheet
         date={openDate}

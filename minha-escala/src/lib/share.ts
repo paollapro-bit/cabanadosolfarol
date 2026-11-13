@@ -23,12 +23,12 @@ export function scheduleText(
   return [`📅 ${title}`, '', ...dates.map((d) => dayLine(d, days.get(d), shifts))].join('\n');
 }
 
-export function monthTitle(year: number, month: number, name = 'Lorena'): string {
-  return `Escala da ${name} — ${formatMonthYear(year, month)}`;
+export function monthTitle(year: number, month: number, name = ''): string {
+  return name ? `Escala de ${name} — ${formatMonthYear(year, month)}` : `A minha escala — ${formatMonthYear(year, month)}`;
 }
 
-export function monthText(year: number, month: number, days: Map<ISODate, DayEntry>, shifts: Map<string, ShiftDef>) {
-  return scheduleText(monthTitle(year, month), monthDates(year, month), days, shifts);
+export function monthText(year: number, month: number, days: Map<ISODate, DayEntry>, shifts: Map<string, ShiftDef>, name = '') {
+  return scheduleText(monthTitle(year, month, name), monthDates(year, month), days, shifts);
 }
 
 export function whatsappUrl(text: string): string {

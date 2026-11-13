@@ -17,6 +17,7 @@ import {
   HardDrive,
 } from 'lucide-react';
 import { db } from '../db/db';
+import { CODIGO_ACESSO_KEY, setNome, useNome } from '../lib/perfil';
 import { BREAK_KEY, LAST_BACKUP_KEY, putSetting, resetShifts, saveShift } from '../db/repo';
 import { useBreakMinutes, useShifts } from '../hooks/useData';
 import { Card, OfflineBadge, SectionTitle } from '../components/Common';
@@ -101,6 +102,8 @@ export function Settings({ back }: { back: () => void }) {
       <h1 className="px-1 pb-5 text-[32px] font-extrabold tracking-tight">Definições</h1>
 
       <div className="space-y-7">
+        <Perfil />
+
         <section>
           <SectionTitle>Aparência</SectionTitle>
           <Card className="grid grid-cols-3 gap-1 p-1.5">
@@ -335,5 +338,56 @@ function ShiftForm({ shift, onDone, breakMinutes }: { shift: ShiftDef; onDone: (
         Guardar
       </button>
     </div>
+  );
+}
+
+function Perfil() {
+  const nome = useNome();
+  const codigo = useLiveQuery(async () => (await db.settings.get(CODIGO_ACESSO_KEY))?.value ?? '', []);
+  const notify = useNotify();
+  const field = 'w-full rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] px-4 py-3 text-[17px] outline-none focus:border-[var(--accent)]';
+  if (nome === undefined || codigo === undefined) return null;
+  return (
+    <section>
+      <SectionTitle>Perfil</SectionTitle>
+      <Card className="space-y-4 p-4">
+        <label className="block">
+          <span className="mb-1.5 block text-[15px] font-semibold">O teu nome</span>
+          <input
+            key={nome}
+            defaultValue={nome}
+            onBlur={async (e) => {
+              const v = e.target.value.trim();
+              if (v.length >= 2 && v !== nome) {
+                await setNome(v);
+                notify('Nome guardado');
+              } else e.target.value = nome;
+            }}
+            autoComplete="given-name"
+            className={field}
+          />
+        </label>
+        <label className="block">
+          <span className="mb-1.5 block text-[15px] font-semibold">Código de acesso à leitura (opcional)</span>
+          <input
+            key={String(codigo)}
+            defaultValue={String(codigo)}
+            onBlur={async (e) => {
+              const v = e.target.value.trim();
+              if (v !== codigo) {
+                await db.settings.put({ key: CODIGO_ACESSO_KEY, value: v });
+                notify('Código guardado');
+              }
+            }}
+            autoCapitalize="off"
+            autoCorrect="off"
+            className={field}
+          />
+          <span className="mt-1.5 block text-[13px] leading-snug text-[var(--muted)]">
+            Só é preciso se quem gere a aplicação te tiver dado um código para a leitura de fotografias.
+          </span>
+        </label>
+      </Card>
+    </section>
   );
 }

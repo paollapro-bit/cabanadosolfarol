@@ -2,6 +2,7 @@ import type { DayEntry, EscalaDB } from './db';
 import { DEFAULT_SHIFTS, SHIFT_CODES } from '../lib/shifts';
 import { monthDates, type ISODate } from '../lib/dates';
 import { bundledMonthFiles, parsePublishedMonth, type PublishedMonth } from '../data/published';
+import { PERFIL_LORENA } from '../lib/perfil';
 
 export const SEED_FLAG_SHIFTS = 'seed:turnos';
 /** Marca da primeira versão da app (novembro importado de forma fixa). */
@@ -17,7 +18,7 @@ export interface MonthImportReport {
   added: number;
   updated: number;
   removed: number;
-  /** Dias em que a escala publicada difere de uma alteração feita pela Lorena (mantida). */
+  /** Dias em que a escala publicada difere de uma alteração feita à mão (mantida). */
   kept: ISODate[];
 }
 
@@ -71,7 +72,7 @@ export async function applyPublishedMonth(database: EscalaDB, pub: PublishedMont
 export async function initDatabase(
   database: EscalaDB,
   now = Date.now(),
-  files = bundledMonthFiles(),
+  files = PERFIL_LORENA ? bundledMonthFiles() : [],
 ): Promise<MonthImportReport[]> {
   const months = files.map((f) => parsePublishedMonth(f, SHIFT_CODES));
   return database.transaction('rw', database.days, database.shifts, database.settings, async () => {

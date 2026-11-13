@@ -28,9 +28,34 @@ Abre diretamente no turno de hoje e funciona **sem internet** depois de instalad
 - **Cópia de segurança** (JSON) e restauro; exportação para o Calendário (.ics) e CSV.
 - Edição de horários e funções de cada código; modo claro/escuro/automático.
 - Indicador discreto “Offline”.
-- **Fotografias de escalas**: é possível guardar a fotografia de cada mês para conferir.
-  *Não existe reconhecimento automático*; a arquitetura está preparada em
-  `src/lib/importers/` (interface `ScheduleImporter`, `photoImporter.available = false`).
+- **Ler escala da fotografia (IA)**: no ecrã inicial ou no calendário, tira-se uma fotografia
+  da folha, indica-se o nome e o mês, e o Claude lê a linha dessa pessoa. A app mostra cada dia
+  para rever (dias incertos a amarelo, códigos desconhecidos para escolher) e só grava depois de
+  confirmar; substituir dias que já têm turno pede confirmação. Os dias gravados ficam “por
+  conferir”. Precisa de internet; tudo o resto funciona offline.
+
+## Duas versões a partir do mesmo código
+
+| Site | Perfil | O que muda |
+|---|---|---|
+| `minha-escala-lorena` | `lorena` | Nome Lorena e escalas publicadas em `src/data/escalas/` |
+| `minha-escala-app` | `geral` | Para qualquer pessoa: pergunta o nome na primeira abertura, começa vazia |
+
+O perfil escolhe-se no build com `VITE_PERFIL=lorena|geral` (na Netlify, o site
+`minha-escala-lorena` usa `lorena` automaticamente).
+
+## Leitura de fotografias (servidor)
+
+`netlify/functions/ler-escala.mts` (rota `POST /api/ler-escala`) envia a imagem ao Claude
+(`claude-opus-5-5`, resposta em JSON validado por esquema — `src/lib/leitura.ts`).
+
+- **Credenciais**: o Netlify AI Gateway injeta `ANTHROPIC_API_KEY`/`ANTHROPIC_BASE_URL`
+  automaticamente (planos com créditos, depois de um deploy de produção). Também se pode
+  definir uma `ANTHROPIC_API_KEY` própria nas variáveis do site (âmbito *Functions*).
+- **Custos**: cada leitura gasta créditos de IA. A rota tem limite de 6 pedidos/minuto por IP.
+- **Código de acesso (opcional)**: definir `ESCALA_CODIGO_ACESSO` no site; cada pessoa
+  escreve o código em Definições → Perfil.
+- A fotografia não é guardada no servidor; fica só no telemóvel, associada ao mês.
 
 ## Comandos
 
@@ -69,7 +94,9 @@ src/
   lib/backup.ts        cópia de segurança JSON (validação + restauro)
   lib/export.ts        CSV, ICS e gravação/partilha de ficheiros
   lib/share.ts         texto e ligação para WhatsApp
-  lib/importers/       ponto de extensão para importar fotografias (ainda sem OCR)
+  lib/leitura.ts       pedido/esquema/normalização da leitura por IA (partilhado com o servidor)
+  lib/leituraCliente.ts, lib/imagem.ts   envio da fotografia (reduzida) para /api/ler-escala
+netlify/functions/ler-escala.mts       função que chama o Claude
   screens/             Início, Calendário, Definições
   components/          cartão de hoje, semana, folhas, teclado de códigos…
 tests/                 Vitest + fake-indexeddb

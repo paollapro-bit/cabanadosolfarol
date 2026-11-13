@@ -7,7 +7,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleSlash,
-  Image as ImageIcon,
+  Camera,
   List,
   ListChecks,
   ScanEye,
@@ -20,7 +20,8 @@ import { CodePad } from '../components/CodePad';
 import { Card, OfflineBadge, SectionTitle } from '../components/Common';
 import { Sheet } from '../components/Sheet';
 import { useNotify } from '../components/Announcer';
-import { PhotoSheet } from '../components/PhotoSheet';
+import { LeituraSheet } from '../components/LeituraSheet';
+import { useNome } from '../lib/perfil';
 import { ConfirmChange } from '../components/ConfirmChange';
 import { confirmDays, setDaysCode } from '../db/repo';
 import {
@@ -66,6 +67,7 @@ export function Calendar({ today, initialMonth, back }: Props) {
   const [photoOpen, setPhotoOpen] = useState(false);
   const [pendingMulti, setPendingMulti] = useState<{ to: string | null; overwritten: ISODate[] } | null>(null);
   const notify = useNotify();
+  const nome = useNome() ?? '';
 
   const shifts = useShifts();
   const breakMinutes = useBreakMinutes();
@@ -175,7 +177,7 @@ export function Calendar({ today, initialMonth, back }: Props) {
           <ListChecks size={16} aria-hidden /> {selecting ? 'Terminar seleção' : 'Editar vários dias'}
         </Pill>
         <Pill onClick={() => setPhotoOpen(true)}>
-          <ImageIcon size={16} aria-hidden /> Fotografia
+          <Camera size={16} aria-hidden /> Ler fotografia
         </Pill>
       </div>
 
@@ -285,14 +287,14 @@ export function Calendar({ today, initialMonth, back }: Props) {
 
       <section className="mt-6 grid grid-cols-2 gap-2">
         <button
-          onClick={() => shareOnWhatsApp(monthText(ym.year, ym.month, days, shifts.map))}
+          onClick={() => shareOnWhatsApp(monthText(ym.year, ym.month, days, shifts.map, nome))}
           className="press flex items-center justify-center gap-2 rounded-2xl bg-[#25D366] py-4 text-[16px] font-bold text-[#0b3d1f]"
         >
           <Send size={18} aria-hidden /> WhatsApp
         </button>
         <button
           onClick={async () => {
-            const r = await shareText(monthText(ym.year, ym.month, days, shifts.map));
+            const r = await shareText(monthText(ym.year, ym.month, days, shifts.map, nome));
             if (r === 'partilhado') notify('Escala partilhada');
           }}
           className="press flex items-center justify-center gap-2 rounded-2xl bg-[var(--surface)] py-4 text-[16px] font-bold shadow-sm"
@@ -370,7 +372,13 @@ export function Calendar({ today, initialMonth, back }: Props) {
         }}
       />
 
-      <PhotoSheet open={photoOpen} year={ym.year} month={ym.month} onClose={() => setPhotoOpen(false)} />
+      <LeituraSheet
+        open={photoOpen}
+        year={ym.year}
+        month={ym.month}
+        onClose={() => setPhotoOpen(false)}
+        onSaved={(year, month) => setYm({ year, month })}
+      />
     </div>
   );
 }

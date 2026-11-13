@@ -4,8 +4,15 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// Perfil "lorena": inclui as escalas publicadas em src/data/escalas e o nome Lorena.
+// Perfil "geral": app para qualquer pessoa (pergunta o nome, sem escalas incluídas).
+// Na Netlify, o site minha-escala-lorena usa automaticamente o perfil "lorena".
+const perfil =
+  process.env.VITE_PERFIL ?? (process.env.SITE_NAME === 'minha-escala-lorena' || process.env.VITEST ? 'lorena' : 'geral');
+
 export default defineConfig({
   base: './',
+  define: { __PERFIL__: JSON.stringify(perfil) },
   plugins: [
     react(),
     tailwindcss(),
@@ -35,6 +42,7 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}'],
         navigateFallback: 'index.html',
+        navigateFallbackDenylist: [/^\/api\//],
         cleanupOutdatedCaches: true,
       },
     }),

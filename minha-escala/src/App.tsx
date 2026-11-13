@@ -8,11 +8,14 @@ import { Home } from './screens/Home';
 import { Calendar } from './screens/Calendar';
 import { Settings } from './screens/Settings';
 import { applyTheme, getThemePref } from './lib/theme';
+import { useNome } from './lib/perfil';
+import { Boasvindas } from './screens/Boasvindas';
 
 export default function App() {
   const [ready, setReady] = useState<'a-carregar' | 'pronto' | 'erro'>('a-carregar');
   const now = useLisbonNow();
   const { route, go, back } = useRoute();
+  const nome = useNome();
 
   useEffect(() => {
     initDatabase(db)
@@ -42,7 +45,8 @@ export default function App() {
         </div>
       </div>
     );
-  if (ready === 'a-carregar') return null;
+  if (ready === 'a-carregar' || nome === undefined) return null;
+  if (!nome) return <Boasvindas />;
 
   return (
     <AnnouncerProvider>
