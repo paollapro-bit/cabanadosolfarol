@@ -21,6 +21,25 @@ curl 'https://cardapio-ace-khnevlcx.manus.space/api/trpc/menu.catalog?input=%7B%
 That response is the source for the menu fixture in Milestone 1. See `PLAN.md`
 for the numbered build order.
 
+## Central de atendimento (built)
+
+The first thing built in this repository is the guest service hub, not the menu:
+
+- `/` — the guest picks the unit and table number (or arrives with
+  `?unidade=sao-luis&mesa=12` from a table QR code) and calls a waiter, asks for
+  the bill, asks for accessibility help or sends a short request. The call's
+  status (aguardando → a caminho → atendido) is polled, shown and announced.
+- `/duvidas` — frequently asked questions, each with an "Ouvir" button.
+- `/unidades` — units and contacts. **Address, hours, phone and WhatsApp are
+  `null` in `app/data/atendimento.ts` until the restaurant confirms them**; the
+  page says so instead of showing unverified data.
+- `/equipe` — staff panel listing open calls per unit, protected by a shared
+  code. Set the `EQUIPE_PIN` environment variable on the Netlify site (Functions
+  scope) and redeploy; without it the panel answers "not configured".
+
+Calls are stored in Netlify Blobs (one store per deploy context) through
+`netlify/functions/chamados.ts` and `netlify/functions/equipe-chamados.ts`.
+
 ## Planned technologies
 
 - **TanStack Start** on Netlify (scaffolded from the Netlify `marketing` template)
@@ -33,7 +52,8 @@ for the numbered build order.
 
 ```bash
 npm install
-netlify dev --port 8889
+EQUIPE_PIN=1234 npm run dev   # http://localhost:8889, Netlify emulation included
+npm test                      # unit tests for the call rules
 ```
 
 ## Roadmap
