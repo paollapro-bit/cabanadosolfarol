@@ -447,7 +447,7 @@ a {
   inset: auto 0 0 0;
   z-index: 40;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   background: var(--cartao);
   border-top: var(--borda) solid var(--linha);
   padding-bottom: env(safe-area-inset-bottom);
@@ -460,7 +460,8 @@ a {
   padding: 0.5rem 0.25rem;
   color: var(--tinta);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  text-align: center;
   text-decoration: none;
   border-top: 0.25rem solid transparent;
 }
@@ -505,4 +506,66 @@ a {
   .chip:active {
     transform: scale(0.98);
   }
+}
+
+.abas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.abas .chip {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+.chip[aria-current='page'] {
+  background: var(--tinta);
+  border-color: var(--tinta);
+  color: var(--fundo);
+}
+
+.galeria {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin: -0.1rem;
+  padding: 0.1rem;
+}
+.galeria li {
+  flex: none;
+  width: min(85%, 20rem);
+  scroll-snap-align: start;
+}
+.galeria li:only-child {
+  width: 100%;
+}
+.galeria img,
+.fotos-equipe img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  border: var(--borda) solid var(--linha);
+  background: var(--espera-fundo);
+}
+.fotos-equipe {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 0.75rem;
+}
+.fotos-equipe li {
+  display: grid;
+  gap: 0.4rem;
+  align-content: start;
+}
+details > summary {
+  width: fit-content;
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] > summary {
+  margin-bottom: 0.75rem;
 }

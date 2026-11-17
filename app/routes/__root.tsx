@@ -52,6 +52,7 @@ function Documento({ children }: { children: ReactNode }) {
 
 const NAVEGACAO = [
   { to: '/', rotulo: 'Atendimento', icone: '🛎️' },
+  { to: '/reservas', rotulo: 'Reservas', icone: '📅' },
   { to: '/duvidas', rotulo: 'Dúvidas', icone: '❓' },
   { to: '/unidades', rotulo: 'Unidades', icone: '📍' },
 ] as const

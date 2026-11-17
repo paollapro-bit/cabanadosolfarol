@@ -3,26 +3,18 @@ import { ehUnidade, lerId, podeMudarStatus } from '../../app/lib/chamados'
 import {
   erro,
   gravarRegistro,
-  iguais,
   json,
   lerRegistro,
   listarRegistros,
   publico,
+  recusaDaEquipe,
 } from '../lib/armazenamento'
 
 // Painel da equipe: listar chamados e avançar o status. Protegido pelo código
 // EQUIPE_PIN (variável de ambiente do site) até o login do Marco 4 existir.
 export default async (req: Request) => {
-  const pin = process.env.EQUIPE_PIN
-  if (!pin) {
-    return erro(
-      'O painel ainda não foi configurado. Defina a variável EQUIPE_PIN no Netlify.',
-      503,
-    )
-  }
-  if (!iguais(req.headers.get('x-equipe-pin') ?? '', pin)) {
-    return erro('Código da equipe incorreto.', 401)
-  }
+  const recusa = recusaDaEquipe(req)
+  if (recusa) return recusa
 
   if (req.method === 'GET') {
     const unidade = new URL(req.url).searchParams.get('unidade')

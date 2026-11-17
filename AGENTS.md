@@ -24,6 +24,11 @@ currently renders the central.
 - `app/components/Acessibilidade.tsx` — preferences, the single `aria-live`
   region (`anunciar`) and on-demand speech (`ouvir`). Announce through it; do
   not add other live regions.
+- `app/lib/reservas.ts` — pure rules for salões and reservations (validation,
+  dates in the Maranhão time zone, status transitions, spoken phrases), covered
+  by `tests/reservas.test.ts`. Storage helpers are in `netlify/lib/reservas.ts`.
+- `app/components/Equipe.tsx` — frame for every `/equipe/*` screen (staff code,
+  unit, section tabs). Report API errors through its `falha`.
 - `netlify/functions/chamados.ts`, `equipe-chamados.ts` — the calls API, stored
   in Netlify Blobs via `netlify/lib/armazenamento.ts`.
 - `db/schema.ts` — Drizzle schema, from Milestone 3 onward.
@@ -54,3 +59,12 @@ currently renders the central.
   are not spoken to twice; "Ouvir" buttons always speak.
 - **Load-then-save effects use a `carregado` state, not a ref.** Dev StrictMode
   re-runs effects, and a ref lets the defaults overwrite `localStorage`.
+- **Photos are uploaded as base64 inside JSON**, not multipart or raw bodies:
+  the local Netlify emulation truncates binary request bodies.
+- **Every salão photo requires a description** (server-enforced); it is the
+  `alt` text and part of the spoken description.
+- **A confirmed reservation takes an `ocupacao/<salão>/<data>/<período>` key
+  written with `onlyIfNew`** — that atomic write is what prevents double
+  booking. Keep it if the storage changes.
+- **Staff requests can answer late.** `falha` ignores errors from a previous
+  staff code so a stale 401 cannot log out a valid session.

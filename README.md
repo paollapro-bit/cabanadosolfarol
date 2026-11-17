@@ -37,8 +37,20 @@ The first thing built in this repository is the guest service hub, not the menu:
   code. Set the `EQUIPE_PIN` environment variable on the Netlify site (Functions
   scope) and redeploy; without it the panel answers "not configured".
 
-Calls are stored in Netlify Blobs (one store per deploy context) through
-`netlify/functions/chamados.ts` and `netlify/functions/equipe-chamados.ts`.
+- `/reservas` — the guest picks unit, date and period (almoço / jantar), sees
+  each salão with its capacity, description and photos, and sends a reservation
+  request (people, name, phone). The request is **pending until staff confirm
+  it**; a confirmed reservation blocks that salão for that date and period.
+- `/equipe/reservas` — staff confirm, refuse or cancel requests, with call and
+  WhatsApp links to the guest.
+- `/equipe/saloes` — staff register each salão (name, capacity, description) and
+  upload up to 8 photos. Every photo needs a description; it is the `alt` text
+  and what blind guests hear. No salão ships in the code — the list starts empty.
+
+Calls, salões, reservations and photos are stored in Netlify Blobs (one store per deploy context) through
+the functions in `netlify/functions/`. Reservations hold a name and phone, so
+they are readable only with the per-reservation secret or the staff code, and
+are deleted 30 days after their date.
 
 ## Planned technologies
 

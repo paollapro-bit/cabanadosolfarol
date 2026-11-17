@@ -6,9 +6,13 @@ import { estaVencido, type Chamado } from '../../app/lib/chamados'
 export type Registro = Chamado & { segredo: string }
 
 // Um store por contexto de deploy: prévias nunca mexem nos chamados de produção.
-function store() {
+export function abrirStore(nome: string) {
   const contexto = process.env.CONTEXT ?? 'dev'
-  return getStore({ name: `chamados-${contexto}`, consistency: 'strong' })
+  return getStore({ name: `${nome}-${contexto}`, consistency: 'strong' })
+}
+
+function store() {
+  return abrirStore('chamados')
 }
 
 export async function lerRegistro(id: string): Promise<Registro | null> {
@@ -61,4 +65,19 @@ export function iguais(a: string, b: string) {
   const ha = createHash('sha256').update(a).digest()
   const hb = createHash('sha256').update(b).digest()
   return timingSafeEqual(ha, hb)
+}
+
+/** Devolve a resposta de recusa, ou null quando o código da equipe confere. */
+export function recusaDaEquipe(req: Request): Response | null {
+  const pin = process.env.EQUIPE_PIN
+  if (!pin) {
+    return erro(
+      'O painel ainda não foi configurado. Defina a variável EQUIPE_PIN no Netlify.',
+      503,
+    )
+  }
+  if (!iguais(req.headers.get('x-equipe-pin') ?? '', pin)) {
+    return erro('Código da equipe incorreto.', 401)
+  }
+  return null
 }

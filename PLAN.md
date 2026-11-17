@@ -11,7 +11,12 @@ with live status; FAQ; units page; staff panel behind `EQUIPE_PIN`. The app
 shell, accessibility controls and `app/lib/speech.ts` created here are the ones
 Milestone 1 builds on.
 
-Open items: fill in the real unit contacts in `app/data/atendimento.ts`;
+Also built: salão reservations (`/reservas`), with staff screens to register
+salões with photos (`/equipe/saloes`) and to confirm requests
+(`/equipe/reservas`).
+
+Open items: register the real salões and photos through the staff panel; move
+salões and reservations from Blobs to Netlify DB in Milestone 3; fill in the real unit contacts in `app/data/atendimento.ts`;
 replace the shared staff code with the Netlify Identity login of Milestone 4.
 
 ## Milestone 1 — The spoken menu surface

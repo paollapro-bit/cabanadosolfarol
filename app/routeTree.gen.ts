@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DuvidasRouteImport } from './routes/duvidas'
-import { Route as EquipeRouteImport } from './routes/equipe'
+import { Route as ReservasRouteImport } from './routes/reservas'
 import { Route as UnidadesRouteImport } from './routes/unidades'
+import { Route as EquipeIndexRouteImport } from './routes/equipe.index'
+import { Route as EquipeReservasRouteImport } from './routes/equipe.reservas'
+import { Route as EquipeSaloesRouteImport } from './routes/equipe.saloes'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -24,9 +27,9 @@ const DuvidasRoute = DuvidasRouteImport.update({
   path: '/duvidas',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EquipeRoute = EquipeRouteImport.update({
-  id: '/equipe',
-  path: '/equipe',
+const ReservasRoute = ReservasRouteImport.update({
+  id: '/reservas',
+  path: '/reservas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UnidadesRoute = UnidadesRouteImport.update({
@@ -34,39 +37,88 @@ const UnidadesRoute = UnidadesRouteImport.update({
   path: '/unidades',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EquipeIndexRoute = EquipeIndexRouteImport.update({
+  id: '/equipe/',
+  path: '/equipe/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EquipeReservasRoute = EquipeReservasRouteImport.update({
+  id: '/equipe/reservas',
+  path: '/equipe/reservas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EquipeSaloesRoute = EquipeSaloesRouteImport.update({
+  id: '/equipe/saloes',
+  path: '/equipe/saloes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/duvidas': typeof DuvidasRoute
-  '/equipe': typeof EquipeRoute
+  '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
+  '/equipe/reservas': typeof EquipeReservasRoute
+  '/equipe/saloes': typeof EquipeSaloesRoute
+  '/equipe/': typeof EquipeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/duvidas': typeof DuvidasRoute
-  '/equipe': typeof EquipeRoute
+  '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
+  '/equipe/reservas': typeof EquipeReservasRoute
+  '/equipe/saloes': typeof EquipeSaloesRoute
+  '/equipe': typeof EquipeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/duvidas': typeof DuvidasRoute
-  '/equipe': typeof EquipeRoute
+  '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
+  '/equipe/reservas': typeof EquipeReservasRoute
+  '/equipe/saloes': typeof EquipeSaloesRoute
+  '/equipe/': typeof EquipeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/duvidas' | '/equipe' | '/unidades'
+  fullPaths:
+    | '/'
+    | '/duvidas'
+    | '/reservas'
+    | '/unidades'
+    | '/equipe/reservas'
+    | '/equipe/saloes'
+    | '/equipe/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/duvidas' | '/equipe' | '/unidades'
-  id: '__root__' | '/' | '/duvidas' | '/equipe' | '/unidades'
+  to:
+    | '/'
+    | '/duvidas'
+    | '/reservas'
+    | '/unidades'
+    | '/equipe/reservas'
+    | '/equipe/saloes'
+    | '/equipe'
+  id:
+    | '__root__'
+    | '/'
+    | '/duvidas'
+    | '/reservas'
+    | '/unidades'
+    | '/equipe/reservas'
+    | '/equipe/saloes'
+    | '/equipe/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DuvidasRoute: typeof DuvidasRoute
-  EquipeRoute: typeof EquipeRoute
+  ReservasRoute: typeof ReservasRoute
   UnidadesRoute: typeof UnidadesRoute
+  EquipeReservasRoute: typeof EquipeReservasRoute
+  EquipeSaloesRoute: typeof EquipeSaloesRoute
+  EquipeIndexRoute: typeof EquipeIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,11 +137,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DuvidasRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/equipe': {
-      id: '/equipe'
-      path: '/equipe'
-      fullPath: '/equipe'
-      preLoaderRoute: typeof EquipeRouteImport
+    '/reservas': {
+      id: '/reservas'
+      path: '/reservas'
+      fullPath: '/reservas'
+      preLoaderRoute: typeof ReservasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/unidades': {
@@ -99,14 +151,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UnidadesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/equipe/': {
+      id: '/equipe/'
+      path: '/equipe'
+      fullPath: '/equipe/'
+      preLoaderRoute: typeof EquipeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/equipe/reservas': {
+      id: '/equipe/reservas'
+      path: '/equipe/reservas'
+      fullPath: '/equipe/reservas'
+      preLoaderRoute: typeof EquipeReservasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/equipe/saloes': {
+      id: '/equipe/saloes'
+      path: '/equipe/saloes'
+      fullPath: '/equipe/saloes'
+      preLoaderRoute: typeof EquipeSaloesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DuvidasRoute: DuvidasRoute,
-  EquipeRoute: EquipeRoute,
+  ReservasRoute: ReservasRoute,
   UnidadesRoute: UnidadesRoute,
+  EquipeReservasRoute: EquipeReservasRoute,
+  EquipeSaloesRoute: EquipeSaloesRoute,
+  EquipeIndexRoute: EquipeIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
