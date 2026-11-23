@@ -29,7 +29,7 @@ export const unidades: Unidade[] = [
     outrosTelefones: ['9832277761', '9832273794'],
     mapa: 'https://goo.gl/maps/q5o6iboLitR2',
     descricao:
-      'De frente para a praia de São Marcos. Quatro ambientes: Salão Crioulas, para até 470 pessoas; Salão Das Minas, para 140; mezanino, para 40; e o bar, climatizado e ao ar livre.',
+      'De frente para a praia de São Marcos. Quatro salões para eventos: Salão Crioulas, para até 300 pessoas; Salão VIP, de 100 a 120; Mezanino, de 30 a 40; e a Adega do Fialho, de 10 a 12. Tem também o bar, climatizado e ao ar livre.',
   },
   {
     id: 'ponta-do-farol',
@@ -41,6 +41,43 @@ export const unidades: Unidade[] = [
     mapa: 'https://goo.gl/maps/ice4v8NkV5T2',
     descricao:
       'O primeiro restaurante Cabana do Sol, perto das principais praias e hotéis da cidade. Dois ambientes, um para 270 e outro para 120 pessoas, decorados com elementos da cultura maranhense.',
+  },
+]
+
+/**
+ * Salões já cadastrados quando o app vai ao ar pela primeira vez. Fonte: os
+ * destaques "Eventos" do Instagram @cabanadosol (maio de 2024), enviados pela
+ * dona. Depois disso, a equipe muda tudo pelo painel (/equipe/saloes).
+ */
+export const saloesIniciais = [
+  {
+    id: 'litoranea-crioulas',
+    unidade: 'litoranea' as UnidadeId,
+    nome: 'Salão Crioulas',
+    capacidade: 300,
+    descricao:
+      'Para até 300 pessoas. Ambiente amplo e acolhedor para eventos de grande porte, como casamentos, conferências ou festas corporativas.',
+  },
+  {
+    id: 'litoranea-vip',
+    unidade: 'litoranea' as UnidadeId,
+    nome: 'Salão VIP',
+    capacidade: 120,
+    descricao: 'De 100 a 120 pessoas, com flexibilidade para diferentes tipos de eventos e de arrumação.',
+  },
+  {
+    id: 'litoranea-mezanino',
+    unidade: 'litoranea' as UnidadeId,
+    nome: 'Mezanino',
+    capacidade: 40,
+    descricao: 'De 30 a 40 pessoas. Ambiente exclusivo e versátil para eventos privados ou reuniões intimistas.',
+  },
+  {
+    id: 'litoranea-adega-do-fialho',
+    unidade: 'litoranea' as UnidadeId,
+    nome: 'Adega do Fialho',
+    capacidade: 12,
+    descricao: 'De 10 a 12 pessoas, numa mesa redonda entre os vinhos. Ambiente íntimo e aconchegante para degustações.',
   },
 ]
 

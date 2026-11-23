@@ -1,4 +1,5 @@
 import { PERIODOS, type Ocupacao, type PeriodoId, type Reserva, type Salao } from '~/lib/reservas'
+import { saloesIniciais } from '~/data/atendimento'
 import { ambiente, colecao } from './armazenamento'
 
 export type RegistroDeReserva = Reserva & { segredo: string }
@@ -21,7 +22,20 @@ export async function apagarSalao(salao: Salao) {
   await saloes().delete(salao.id)
 }
 
+// Na primeira vez, cadastra os salões conhecidos. A marca é gravada com
+// soSeNovo, então isso acontece uma única vez, mesmo que a equipe depois
+// exclua todos os salões.
+async function garantirSaloesIniciais() {
+  if (!(await colecao('config').set('saloes-iniciais', true, { soSeNovo: true }))) return
+  await Promise.all(
+    saloesIniciais.map((s, i) =>
+      saloes().set(s.id, { ...s, fotos: [], ativo: true, criadoEm: i + 1 } satisfies Salao, { soSeNovo: true }),
+    ),
+  )
+}
+
 export async function listarSaloes(unidade: string): Promise<Salao[]> {
+  await garantirSaloesIniciais()
   return (await saloes().list<Salao>())
     .filter((s) => s.unidade === unidade)
     .sort((a, b) => a.criadoEm - b.criadoEm)

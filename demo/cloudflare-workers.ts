@@ -2,8 +2,8 @@
 // para que as rotas de API reais do app rodem sem servidor. Os dados ficam só
 // neste aparelho (localStorage).
 
-const CHAVE_DOCS = 'cds-demo-docs-v2'
-const CHAVE_FOTOS = 'cds-demo-fotos-v2'
+const CHAVE_DOCS = 'cds-demo-docs-v3'
+const CHAVE_FOTOS = 'cds-demo-fotos-v3'
 
 function ler<T>(chave: string, padrao: T): T {
   try {
@@ -25,23 +25,6 @@ function gravar(chave: string, valor: unknown) {
 // colecao -> chave -> valor (texto JSON)
 const docs: Record<string, Record<string, string>> = ler(CHAVE_DOCS, {})
 const salvarDocs = () => gravar(CHAVE_DOCS, docs)
-
-// Na primeira visita, a demonstração já traz os salões da Litorânea descritos
-// no site oficial (sem fotos), para dar para testar uma reserva de cara.
-if (!docs.saloes) {
-  const exemplos = [
-    { id: 'demo-crioulas', nome: 'Salão Crioulas', capacidade: 470, descricao: 'O maior salão da Litorânea.' },
-    { id: 'demo-das-minas', nome: 'Salão Das Minas', capacidade: 140, descricao: '' },
-    { id: 'demo-mezanino', nome: 'Mezanino', capacidade: 40, descricao: '' },
-  ]
-  docs.saloes = Object.fromEntries(
-    exemplos.map((s, i) => [
-      s.id,
-      JSON.stringify({ ...s, unidade: 'litoranea', fotos: [], ativo: true, criadoEm: i + 1 }),
-    ]),
-  )
-  salvarDocs()
-}
 
 type Parametros = unknown[]
 

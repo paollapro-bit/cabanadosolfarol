@@ -89,3 +89,7 @@ currently renders the central.
 - **The app is only for the two São Luís units**: `litoranea` (Avenida
   Litorânea) and `ponta-do-farol` (Ponta do Farol), defined in `UNIDADES` in
   `app/lib/chamados.ts`. Imperatriz is deliberately out (owner's decision).
+- **Initial salões are seeded once** from `saloesIniciais` in
+  `app/data/atendimento.ts` (owner-supplied, Litorânea). A `config/saloes-iniciais`
+  marker written with `soSeNovo` keeps it to one time, so staff edits and
+  deletions stick. Ponta do Farol salões and all photos are still to come.
