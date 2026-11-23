@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { BotaoOuvir, useAcessibilidade } from '~/components/Acessibilidade'
 import { ListaDeCanais } from '~/components/Canais'
-import { canais } from '~/data/atendimento'
+import { canaisDoGrupo } from '~/data/atendimento'
 import {
   cancelarReserva,
   consultarReserva,
@@ -162,7 +162,7 @@ function Reservas() {
   }
 
   const visiveis = minhas.filter((i) => i.reserva)
-  const canaisDeReserva = canais.filter((c) => c.reservas)
+  const canaisDeReserva = canaisDoGrupo('reservas')
   const dataValida = ehData(data) && data >= hoje
 
   return (

@@ -44,9 +44,11 @@ The first thing built in this repository is the guest service hub, not the menu:
   screen-reader users up front that this menu is an image and offers help at
   the table or by phone instead — the spoken text menu is still Milestone 1.
 - `/duvidas` — frequently asked questions, each with an "Ouvir" button.
-- `/unidades` — units and contacts. **Address, hours, phone and WhatsApp are
-  `null` in `app/data/atendimento.ts` until the restaurant confirms them**; the
-  page says so instead of showing unverified data.
+- `/unidades` — the two units with address, hours, phones, map and a short
+  description, taken from the official site (cabanadosol.com.br).
+- `/cardapio` also lists the Canva menu links from bio.site/cabanadosol (dine-in
+  menus per unit in Portuguese and English, delivery, happy hour). Canva view
+  links always show the latest edit.
 - `/equipe` — staff panel listing open calls per unit, protected by a shared
   code. Set it with `npx wrangler secret put EQUIPE_PIN`; without it the panel
   answers "not configured".

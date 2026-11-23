@@ -11,44 +11,75 @@ export interface Unidade {
   horario: string | null
   /** Somente dígitos, com DDD. Ex.: "9833334444". */
   telefone: string | null
+  outrosTelefones: string[]
+  mapa: string | null
+  descricao: string | null
 }
 
+// Fonte: site oficial, cabanadosol.com.br (páginas Restaurantes e Contato),
+// consultado em novembro de 2026. No site, a Ponta do Farol aparece como
+// "Farol de São Marcos". Telefones celulares antigos de 8 dígitos ficaram de fora.
 export const unidades: Unidade[] = [
   {
     id: 'litoranea',
     nome: 'Litorânea',
-    endereco: null,
-    horario: null,
-    telefone: null,
+    endereco: 'Avenida Litorânea, nº 10, Calhau',
+    horario: 'Segunda a domingo, das 11h à meia-noite',
+    telefone: '98991164736',
+    outrosTelefones: ['9832277761', '9832273794'],
+    mapa: 'https://goo.gl/maps/q5o6iboLitR2',
+    descricao:
+      'De frente para a praia de São Marcos. Quatro ambientes: Salão Crioulas, para até 470 pessoas; Salão Das Minas, para 140; mezanino, para 40; e o bar, climatizado e ao ar livre.',
   },
   {
     id: 'ponta-do-farol',
     nome: 'Ponta do Farol',
-    endereco: null,
-    horario: null,
-    telefone: null,
+    endereco: 'Rua João Damasceno, 24 A, Farol de São Marcos',
+    horario: 'Segunda a domingo, das 11h à meia-noite',
+    telefone: '9833044235',
+    outrosTelefones: ['9832352586', '9832276270'],
+    mapa: 'https://goo.gl/maps/ice4v8NkV5T2',
+    descricao:
+      'O primeiro restaurante Cabana do Sol, perto das principais praias e hotéis da cidade. Dois ambientes, um para 270 e outro para 120 pessoas, decorados com elementos da cultura maranhense.',
   },
 ]
+
+export type GrupoDeCanal = 'pedidos' | 'reservas' | 'opiniao' | 'site'
 
 export interface Canal {
   id: string
   titulo: string
   descricao: string
-  /** Endereço exatamente como o restaurante forneceu. */
+  /** Endereço exatamente como o restaurante forneceu (bio.site/cabanadosol). */
   url: string
-  /** Sem unidade: vale para o restaurante como um todo. */
+  grupo: GrupoDeCanal
+  /** Sem unidade: vale para as duas unidades. */
   unidade?: UnidadeId
-  /** Aparece também na tela de reserva de salões. */
-  reservas?: boolean
+  /** Idioma do destino, quando não é português (para o leitor de tela pronunciar certo). */
+  idioma?: string
 }
 
 export const canais: Canal[] = [
   {
     id: 'reservas',
-    titulo: 'Reservas pelo WhatsApp',
-    descricao: 'Fale com a equipe de reservas do Cabana do Sol.',
+    titulo: 'Reservas e orçamentos',
+    descricao: 'Fale pelo WhatsApp com a equipe de reservas e eventos.',
     url: 'https://wa.me/5598984043566?text=Ol%C3%A1%2C%20Cabana%20do%20Sol%2C%20gostaria%20de%20informa%C3%A7%C3%B5es%20%E2%98%80%EF%B8%8F',
-    reservas: true,
+    grupo: 'reservas',
+  },
+  {
+    id: 'delivery',
+    titulo: 'Aplicativo de delivery',
+    descricao: 'Veja o cardápio de entrega e peça para receber em casa.',
+    url: 'https://deliveryapp.neemo.com.br/delivery/15693/menu',
+    grupo: 'pedidos',
+  },
+  {
+    id: 'delivery-whatsapp',
+    titulo: 'Delivery pelo WhatsApp',
+    descricao: 'Faça o seu pedido de entrega conversando com a equipe.',
+    url: 'https://wa.me/5598991165457',
+    grupo: 'pedidos',
   },
   {
     id: 'padaria',
@@ -56,12 +87,94 @@ export const canais: Canal[] = [
     descricao: 'Faça o seu pedido da padaria pelo WhatsApp.',
     // O link original vinha sem o 55; sem ele o WhatsApp lê 98 como código de país.
     url: 'https://wa.me/559884041002',
+    grupo: 'pedidos',
   },
   {
-    id: 'delivery',
-    titulo: 'Aplicativo de delivery',
-    descricao: 'Veja o cardápio de entrega e peça para receber em casa.',
-    url: 'https://deliveryapp.neemo.com.br/delivery/15693/menu',
+    id: 'retirada',
+    titulo: 'Retirada do delivery',
+    descricao: 'Os pedidos para retirar ficam na Ponta do Farol. Veja no mapa.',
+    url: 'https://goo.gl/maps/BR29eHgxnJixVMsB7',
+    grupo: 'pedidos',
+    unidade: 'ponta-do-farol',
+  },
+  {
+    id: 'feedback',
+    titulo: 'Avalie o seu atendimento',
+    descricao: 'Conte como foi a sua visita. São poucas perguntas.',
+    url: 'https://forms.gle/khQa4odZbxcXTpkh6',
+    grupo: 'opiniao',
+  },
+  {
+    id: 'estacionamento',
+    titulo: 'Avalie o estacionamento',
+    descricao: 'Diga o que achou do estacionamento.',
+    url: 'https://forms.gle/XXFxiyxKpytCgZQ47',
+    grupo: 'opiniao',
+  },
+  {
+    id: 'site',
+    titulo: 'Site do Cabana do Sol',
+    descricao: 'História, restaurantes, eventos e área de entrega.',
+    url: 'https://www.cabanadosol.com.br/',
+    grupo: 'site',
+  },
+]
+
+export const canaisDoGrupo = (grupo: GrupoDeCanal) => canais.filter((c) => c.grupo === grupo)
+
+/**
+ * Cardápios feitos no Canva, nos links publicados em bio.site/cabanadosol.
+ * Os links de visualização do Canva mostram sempre a versão mais recente do
+ * design: quando a equipe edita o cardápio no Canva, o link já abre atualizado.
+ */
+export const cardapios: Canal[] = [
+  {
+    id: 'cardapio-litoranea',
+    titulo: 'Cardápio da Litorânea',
+    descricao: 'Para consumo no restaurante.',
+    url: 'https://canva.link/scwjie6z0wcw9ou',
+    grupo: 'pedidos',
+    unidade: 'litoranea',
+  },
+  {
+    id: 'cardapio-litoranea-en',
+    titulo: 'Litorânea menu in English',
+    descricao: 'Dine-in menu.',
+    url: 'https://canva.link/jifqzfqmwhv5z31',
+    grupo: 'pedidos',
+    unidade: 'litoranea',
+    idioma: 'en',
+  },
+  {
+    id: 'cardapio-ponta-do-farol',
+    titulo: 'Cardápio da Ponta do Farol',
+    descricao: 'Para consumo no restaurante.',
+    url: 'https://canva.link/8xt6vq6ldpcx9mt',
+    grupo: 'pedidos',
+    unidade: 'ponta-do-farol',
+  },
+  {
+    id: 'cardapio-ponta-do-farol-en',
+    titulo: 'Ponta do Farol menu in English',
+    descricao: 'Dine-in menu.',
+    url: 'https://canva.link/rvmpyez24bjjeqs',
+    grupo: 'pedidos',
+    unidade: 'ponta-do-farol',
+    idioma: 'en',
+  },
+  {
+    id: 'cardapio-delivery',
+    titulo: 'Cardápio do delivery',
+    descricao: 'Pratos e preços para entrega.',
+    url: 'https://canva.link/o8ejty0t18o2jv7',
+    grupo: 'pedidos',
+  },
+  {
+    id: 'cardapio-happy-hour',
+    titulo: 'Cardápio do happy hour',
+    descricao: 'Petiscos e bebidas do happy hour.',
+    url: 'https://canva.link/egue1lwygoqzpmb',
+    grupo: 'pedidos',
   },
 ]
 
@@ -72,6 +185,7 @@ export function fraseDosCanais(lista: Canal[]) {
 
 /**
  * Central de delivery de São Luís, conforme o post do Instagram @cabanadosol.
+ * O celular 99116-5457 é também o WhatsApp do delivery (bio.site/cabanadosol).
  * O post traz os números sem DDD; 98 é o DDD de São Luís.
  */
 export const delivery = {

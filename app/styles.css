@@ -2,6 +2,20 @@
 @import '@fontsource/atkinson-hyperlegible/400.css';
 @import '@fontsource/atkinson-hyperlegible/700.css';
 
+/* Texto só para leitores de tela. Definido aqui, e não só pelo Tailwind, porque
+   a demonstração é compilada a partir de outra pasta e o Tailwind não o geraria. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 :root {
   --fundo: #fff7ea;
   --cartao: #ffffff;
@@ -616,4 +630,12 @@ a.acao {
   padding-left: 1.5rem;
   display: grid;
   gap: 0.35rem;
+}
+
+.grupo-cardapio {
+  display: grid;
+  gap: 0.5rem;
+}
+.grupo-cardapio + .grupo-cardapio {
+  margin-top: 1rem;
 }

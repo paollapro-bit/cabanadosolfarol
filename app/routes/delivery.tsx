@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { BotaoOuvir } from '~/components/Acessibilidade'
 import { ListaDeCanais } from '~/components/Canais'
-import { canais, delivery } from '~/data/atendimento'
+import { canaisDoGrupo, cardapios, delivery } from '~/data/atendimento'
 
 export const Route = createFileRoute('/delivery')({
   head: () => ({ meta: [{ title: 'Central de delivery · Cabana do Sol' }] }),
@@ -23,7 +23,7 @@ function falado(numero: string) {
     .join(', ')
 }
 
-const pedidos = canais.filter((c) => c.id === 'delivery' || c.id === 'padaria')
+const pedidos = [...cardapios.filter((c) => c.id === 'cardapio-delivery'), ...canaisDoGrupo('pedidos')]
 const fixos = delivery.telefones.filter((t) => t.length === 8)
 const celulares = delivery.telefones.filter((t) => t.length === 9)
 
@@ -31,7 +31,7 @@ const FRASE = [
   `Central de delivery do Cabana do Sol em São Luís, DDD ${delivery.ddd.split('').join(' ')}.`,
   `${delivery.telefones.length} telefones.`,
   ...delivery.telefones.map((t, i) => `Telefone ${i + 1}: ${falado(t)}.`),
-  'Você também pode pedir pelo aplicativo de delivery.',
+  'Você também pode pedir pelo aplicativo de delivery ou pelo WhatsApp do delivery, no celular 9 9 1 1 6, 5 4 5 7.',
 ].join(' ')
 
 function ListaDeTelefones({ titulo, numeros }: { titulo: string; numeros: string[] }) {
@@ -72,7 +72,7 @@ function Delivery() {
       <ListaDeTelefones titulo="Telefones fixos" numeros={fixos} />
       <ListaDeTelefones titulo="Celulares" numeros={celulares} />
       <section aria-labelledby="titulo-app">
-        <h2 id="titulo-app">Pedir pela internet</h2>
+        <h2 id="titulo-app">Pedir pela internet, cardápio e retirada</h2>
         <ListaDeCanais canais={pedidos} />
       </section>
     </div>

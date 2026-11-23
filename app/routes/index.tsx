@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { BotaoOuvir, useAcessibilidade } from '~/components/Acessibilidade'
 import { ListaDeCanais } from '~/components/Canais'
-import { canais } from '~/data/atendimento'
+import { canaisDoGrupo } from '~/data/atendimento'
 import {
   abrirChamado,
   cancelarChamado,
@@ -327,9 +327,14 @@ function Atendimento() {
         {erro?.campo === 'geral' && <p className="erro">{erro.texto}</p>}
       </section>
 
+      <section aria-labelledby="titulo-opiniao">
+        <h2 id="titulo-opiniao">Sua opinião</h2>
+        <ListaDeCanais canais={canaisDoGrupo('opiniao')} />
+      </section>
+
       <section aria-labelledby="titulo-canais">
-        <h2 id="titulo-canais">Outros canais</h2>
-        <ListaDeCanais canais={canais} />
+        <h2 id="titulo-canais">Reservas e pedidos</h2>
+        <ListaDeCanais canais={[...canaisDoGrupo('reservas'), ...canaisDoGrupo('pedidos')]} />
       </section>
     </div>
   )

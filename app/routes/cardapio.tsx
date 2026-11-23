@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { ListaDeCanais } from '~/components/Canais'
-import { canais } from '~/data/atendimento'
+import { cardapios, unidades } from '~/data/atendimento'
 import { lerCardapio } from '~/lib/api'
 import { urlDeIncorporacao, urlDeVisualizacao, type CardapioCanva } from '~/lib/cardapio'
 
@@ -30,11 +30,15 @@ function Cardapio() {
       <section aria-labelledby="titulo-pagina">
         <p className="sobrancelha">Cabana do Sol</p>
         <h1 id="titulo-pagina">Cardápio</h1>
-        {/* O cardápio do Canva é uma imagem: dizemos isso antes, e oferecemos alternativas. */}
+        <p className="intro">
+          Os cardápios abrem no Canva, sempre na versão mais recente: quando a equipe atualiza um
+          prato ou preço, o link já mostra a mudança.
+        </p>
+        {/* Os cardápios do Canva são imagens: dizemos isso antes, e oferecemos alternativas. */}
         <div className="cartao aviso-acessivel">
           <p>
-            <strong>Usa leitor de tela?</strong> Este cardápio é uma imagem feita no Canva e não pode
-            ser lido em voz alta. A equipe lê para você na mesa, ou você pode pedir pelo telefone.
+            <strong>Usa leitor de tela?</strong> Estes cardápios são imagens feitas no Canva e não podem
+            ser lidos em voz alta. A equipe lê para você na mesa, ou você pode pedir pelo telefone.
           </p>
           <div className="acoes">
             <Link to="/" className="botao botao-principal">
@@ -47,15 +51,22 @@ function Cardapio() {
         </div>
       </section>
 
-      {estado.tipo === 'carregando' && <p className="dica">Carregando o cardápio…</p>}
+      <section aria-labelledby="titulo-casa">
+        <h2 id="titulo-casa">Para comer no restaurante</h2>
+        {unidades.map((u) => (
+          <div key={u.id} className="grupo-cardapio">
+            <h3>{u.nome}</h3>
+            <ListaDeCanais canais={cardapios.filter((c) => c.unidade === u.id)} />
+          </div>
+        ))}
+      </section>
+
+      <section aria-labelledby="titulo-outros">
+        <h2 id="titulo-outros">Delivery e happy hour</h2>
+        <ListaDeCanais canais={cardapios.filter((c) => !c.unidade)} />
+      </section>
+
       {estado.tipo === 'erro' && <p className="erro">{estado.texto}</p>}
-      {estado.tipo === 'pronto' && !cardapio && (
-        <section aria-labelledby="titulo-sem">
-          <h2 id="titulo-sem">O cardápio ainda não foi publicado aqui</h2>
-          <p className="vazio">Enquanto isso, veja o cardápio de entrega no aplicativo de delivery.</p>
-          <ListaDeCanais canais={canais.filter((c) => c.id === 'delivery')} />
-        </section>
-      )}
       {cardapio && (
         <section aria-labelledby="titulo-visual">
           <h2 id="titulo-visual" className="sr-only">

@@ -57,8 +57,11 @@ currently renders the central.
   and visible fallback; never leave a blind user with silence and no explanation.
 - The reference implementation's menu data can be re-fetched from the public
   endpoint documented in `README.md`.
-- **Never invent restaurant facts.** Phones, addresses and hours stay `null` in
-  `app/data/atendimento.ts` until the owner supplies them; the UI handles `null`.
+- **Never invent restaurant facts.** Unit addresses, hours, phones and salões
+  come from the official site (cabanadosol.com.br); links and Canva menus come
+  from bio.site/cabanadosol. Anything not found there stays `null` or out until
+  the owner supplies it. Note: the bio says "42 anos" while the site footer says
+  1994; the app says "Desde 1994" until the owner confirms.
 - **Automatic speech is opt-in** ("Respostas faladas"), so screen-reader users
   are not spoken to twice; "Ouvir" buttons always speak.
 - **Load-then-save effects use a `carregado` state, not a ref.** Dev StrictMode

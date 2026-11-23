@@ -26,6 +26,23 @@ function gravar(chave: string, valor: unknown) {
 const docs: Record<string, Record<string, string>> = ler(CHAVE_DOCS, {})
 const salvarDocs = () => gravar(CHAVE_DOCS, docs)
 
+// Na primeira visita, a demonstração já traz os salões da Litorânea descritos
+// no site oficial (sem fotos), para dar para testar uma reserva de cara.
+if (!docs.saloes) {
+  const exemplos = [
+    { id: 'demo-crioulas', nome: 'Salão Crioulas', capacidade: 470, descricao: 'O maior salão da Litorânea.' },
+    { id: 'demo-das-minas', nome: 'Salão Das Minas', capacidade: 140, descricao: '' },
+    { id: 'demo-mezanino', nome: 'Mezanino', capacidade: 40, descricao: '' },
+  ]
+  docs.saloes = Object.fromEntries(
+    exemplos.map((s, i) => [
+      s.id,
+      JSON.stringify({ ...s, unidade: 'litoranea', fotos: [], ativo: true, criadoEm: i + 1 }),
+    ]),
+  )
+  salvarDocs()
+}
+
 type Parametros = unknown[]
 
 // Entende exatamente as instruções SQL de app/server/armazenamento.ts.
