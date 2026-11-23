@@ -13,17 +13,21 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CardapioRouteImport } from './routes/cardapio'
 import { Route as DeliveryRouteImport } from './routes/delivery'
 import { Route as DuvidasRouteImport } from './routes/duvidas'
+import { Route as ReclamacoesRouteImport } from './routes/reclamacoes'
 import { Route as ReservasRouteImport } from './routes/reservas'
 import { Route as UnidadesRouteImport } from './routes/unidades'
 import { Route as ApiCardapioRouteImport } from './routes/api/cardapio'
 import { Route as ApiChamadosRouteImport } from './routes/api/chamados'
+import { Route as ApiReclamacoesRouteImport } from './routes/api/reclamacoes'
 import { Route as ApiReservasRouteImport } from './routes/api/reservas'
 import { Route as ApiSaloesRouteImport } from './routes/api/saloes'
 import { Route as EquipeIndexRouteImport } from './routes/equipe.index'
 import { Route as EquipeCardapioRouteImport } from './routes/equipe.cardapio'
+import { Route as EquipeReclamacoesRouteImport } from './routes/equipe.reclamacoes'
 import { Route as EquipeReservasRouteImport } from './routes/equipe.reservas'
 import { Route as EquipeSaloesRouteImport } from './routes/equipe.saloes'
 import { Route as ApiEquipeChamadosRouteImport } from './routes/api/equipe.chamados'
+import { Route as ApiEquipeReclamacoesRouteImport } from './routes/api/equipe.reclamacoes'
 import { Route as ApiEquipeReservasRouteImport } from './routes/api/equipe.reservas'
 import { Route as ApiEquipeSaloesRouteImport } from './routes/api/equipe.saloes'
 import { Route as ApiFotosIdRouteImport } from './routes/api/fotos.$id'
@@ -48,6 +52,11 @@ const DuvidasRoute = DuvidasRouteImport.update({
   path: '/duvidas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReclamacoesRoute = ReclamacoesRouteImport.update({
+  id: '/reclamacoes',
+  path: '/reclamacoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReservasRoute = ReservasRouteImport.update({
   id: '/reservas',
   path: '/reservas',
@@ -66,6 +75,11 @@ const ApiCardapioRoute = ApiCardapioRouteImport.update({
 const ApiChamadosRoute = ApiChamadosRouteImport.update({
   id: '/api/chamados',
   path: '/api/chamados',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiReclamacoesRoute = ApiReclamacoesRouteImport.update({
+  id: '/api/reclamacoes',
+  path: '/api/reclamacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiReservasRoute = ApiReservasRouteImport.update({
@@ -88,6 +102,11 @@ const EquipeCardapioRoute = EquipeCardapioRouteImport.update({
   path: '/equipe/cardapio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EquipeReclamacoesRoute = EquipeReclamacoesRouteImport.update({
+  id: '/equipe/reclamacoes',
+  path: '/equipe/reclamacoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EquipeReservasRoute = EquipeReservasRouteImport.update({
   id: '/equipe/reservas',
   path: '/equipe/reservas',
@@ -101,6 +120,11 @@ const EquipeSaloesRoute = EquipeSaloesRouteImport.update({
 const ApiEquipeChamadosRoute = ApiEquipeChamadosRouteImport.update({
   id: '/api/equipe/chamados',
   path: '/api/equipe/chamados',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiEquipeReclamacoesRoute = ApiEquipeReclamacoesRouteImport.update({
+  id: '/api/equipe/reclamacoes',
+  path: '/api/equipe/reclamacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiEquipeReservasRoute = ApiEquipeReservasRouteImport.update({
@@ -124,17 +148,21 @@ export interface FileRoutesByFullPath {
   '/cardapio': typeof CardapioRoute
   '/delivery': typeof DeliveryRoute
   '/duvidas': typeof DuvidasRoute
+  '/reclamacoes': typeof ReclamacoesRoute
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
   '/api/cardapio': typeof ApiCardapioRoute
   '/api/chamados': typeof ApiChamadosRoute
+  '/api/reclamacoes': typeof ApiReclamacoesRoute
   '/api/reservas': typeof ApiReservasRoute
   '/api/saloes': typeof ApiSaloesRoute
   '/equipe/cardapio': typeof EquipeCardapioRoute
+  '/equipe/reclamacoes': typeof EquipeReclamacoesRoute
   '/equipe/reservas': typeof EquipeReservasRoute
   '/equipe/saloes': typeof EquipeSaloesRoute
   '/equipe/': typeof EquipeIndexRoute
   '/api/equipe/chamados': typeof ApiEquipeChamadosRoute
+  '/api/equipe/reclamacoes': typeof ApiEquipeReclamacoesRoute
   '/api/equipe/reservas': typeof ApiEquipeReservasRoute
   '/api/equipe/saloes': typeof ApiEquipeSaloesRoute
   '/api/fotos/$id': typeof ApiFotosIdRoute
@@ -144,17 +172,21 @@ export interface FileRoutesByTo {
   '/cardapio': typeof CardapioRoute
   '/delivery': typeof DeliveryRoute
   '/duvidas': typeof DuvidasRoute
+  '/reclamacoes': typeof ReclamacoesRoute
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
   '/api/cardapio': typeof ApiCardapioRoute
   '/api/chamados': typeof ApiChamadosRoute
+  '/api/reclamacoes': typeof ApiReclamacoesRoute
   '/api/reservas': typeof ApiReservasRoute
   '/api/saloes': typeof ApiSaloesRoute
   '/equipe/cardapio': typeof EquipeCardapioRoute
+  '/equipe/reclamacoes': typeof EquipeReclamacoesRoute
   '/equipe/reservas': typeof EquipeReservasRoute
   '/equipe/saloes': typeof EquipeSaloesRoute
   '/equipe': typeof EquipeIndexRoute
   '/api/equipe/chamados': typeof ApiEquipeChamadosRoute
+  '/api/equipe/reclamacoes': typeof ApiEquipeReclamacoesRoute
   '/api/equipe/reservas': typeof ApiEquipeReservasRoute
   '/api/equipe/saloes': typeof ApiEquipeSaloesRoute
   '/api/fotos/$id': typeof ApiFotosIdRoute
@@ -165,17 +197,21 @@ export interface FileRoutesById {
   '/cardapio': typeof CardapioRoute
   '/delivery': typeof DeliveryRoute
   '/duvidas': typeof DuvidasRoute
+  '/reclamacoes': typeof ReclamacoesRoute
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
   '/api/cardapio': typeof ApiCardapioRoute
   '/api/chamados': typeof ApiChamadosRoute
+  '/api/reclamacoes': typeof ApiReclamacoesRoute
   '/api/reservas': typeof ApiReservasRoute
   '/api/saloes': typeof ApiSaloesRoute
   '/equipe/cardapio': typeof EquipeCardapioRoute
+  '/equipe/reclamacoes': typeof EquipeReclamacoesRoute
   '/equipe/reservas': typeof EquipeReservasRoute
   '/equipe/saloes': typeof EquipeSaloesRoute
   '/equipe/': typeof EquipeIndexRoute
   '/api/equipe/chamados': typeof ApiEquipeChamadosRoute
+  '/api/equipe/reclamacoes': typeof ApiEquipeReclamacoesRoute
   '/api/equipe/reservas': typeof ApiEquipeReservasRoute
   '/api/equipe/saloes': typeof ApiEquipeSaloesRoute
   '/api/fotos/$id': typeof ApiFotosIdRoute
@@ -187,17 +223,21 @@ export interface FileRouteTypes {
     | '/cardapio'
     | '/delivery'
     | '/duvidas'
+    | '/reclamacoes'
     | '/reservas'
     | '/unidades'
     | '/api/cardapio'
     | '/api/chamados'
+    | '/api/reclamacoes'
     | '/api/reservas'
     | '/api/saloes'
     | '/equipe/cardapio'
+    | '/equipe/reclamacoes'
     | '/equipe/reservas'
     | '/equipe/saloes'
     | '/equipe/'
     | '/api/equipe/chamados'
+    | '/api/equipe/reclamacoes'
     | '/api/equipe/reservas'
     | '/api/equipe/saloes'
     | '/api/fotos/$id'
@@ -207,17 +247,21 @@ export interface FileRouteTypes {
     | '/cardapio'
     | '/delivery'
     | '/duvidas'
+    | '/reclamacoes'
     | '/reservas'
     | '/unidades'
     | '/api/cardapio'
     | '/api/chamados'
+    | '/api/reclamacoes'
     | '/api/reservas'
     | '/api/saloes'
     | '/equipe/cardapio'
+    | '/equipe/reclamacoes'
     | '/equipe/reservas'
     | '/equipe/saloes'
     | '/equipe'
     | '/api/equipe/chamados'
+    | '/api/equipe/reclamacoes'
     | '/api/equipe/reservas'
     | '/api/equipe/saloes'
     | '/api/fotos/$id'
@@ -227,17 +271,21 @@ export interface FileRouteTypes {
     | '/cardapio'
     | '/delivery'
     | '/duvidas'
+    | '/reclamacoes'
     | '/reservas'
     | '/unidades'
     | '/api/cardapio'
     | '/api/chamados'
+    | '/api/reclamacoes'
     | '/api/reservas'
     | '/api/saloes'
     | '/equipe/cardapio'
+    | '/equipe/reclamacoes'
     | '/equipe/reservas'
     | '/equipe/saloes'
     | '/equipe/'
     | '/api/equipe/chamados'
+    | '/api/equipe/reclamacoes'
     | '/api/equipe/reservas'
     | '/api/equipe/saloes'
     | '/api/fotos/$id'
@@ -248,17 +296,21 @@ export interface RootRouteChildren {
   CardapioRoute: typeof CardapioRoute
   DeliveryRoute: typeof DeliveryRoute
   DuvidasRoute: typeof DuvidasRoute
+  ReclamacoesRoute: typeof ReclamacoesRoute
   ReservasRoute: typeof ReservasRoute
   UnidadesRoute: typeof UnidadesRoute
   ApiCardapioRoute: typeof ApiCardapioRoute
   ApiChamadosRoute: typeof ApiChamadosRoute
+  ApiReclamacoesRoute: typeof ApiReclamacoesRoute
   ApiReservasRoute: typeof ApiReservasRoute
   ApiSaloesRoute: typeof ApiSaloesRoute
   EquipeCardapioRoute: typeof EquipeCardapioRoute
+  EquipeReclamacoesRoute: typeof EquipeReclamacoesRoute
   EquipeReservasRoute: typeof EquipeReservasRoute
   EquipeSaloesRoute: typeof EquipeSaloesRoute
   EquipeIndexRoute: typeof EquipeIndexRoute
   ApiEquipeChamadosRoute: typeof ApiEquipeChamadosRoute
+  ApiEquipeReclamacoesRoute: typeof ApiEquipeReclamacoesRoute
   ApiEquipeReservasRoute: typeof ApiEquipeReservasRoute
   ApiEquipeSaloesRoute: typeof ApiEquipeSaloesRoute
   ApiFotosIdRoute: typeof ApiFotosIdRoute
@@ -294,6 +346,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DuvidasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reclamacoes': {
+      id: '/reclamacoes'
+      path: '/reclamacoes'
+      fullPath: '/reclamacoes'
+      preLoaderRoute: typeof ReclamacoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reservas': {
       id: '/reservas'
       path: '/reservas'
@@ -320,6 +379,13 @@ declare module '@tanstack/react-router' {
       path: '/api/chamados'
       fullPath: '/api/chamados'
       preLoaderRoute: typeof ApiChamadosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/reclamacoes': {
+      id: '/api/reclamacoes'
+      path: '/api/reclamacoes'
+      fullPath: '/api/reclamacoes'
+      preLoaderRoute: typeof ApiReclamacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/reservas': {
@@ -350,6 +416,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EquipeCardapioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/equipe/reclamacoes': {
+      id: '/equipe/reclamacoes'
+      path: '/equipe/reclamacoes'
+      fullPath: '/equipe/reclamacoes'
+      preLoaderRoute: typeof EquipeReclamacoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/equipe/reservas': {
       id: '/equipe/reservas'
       path: '/equipe/reservas'
@@ -369,6 +442,13 @@ declare module '@tanstack/react-router' {
       path: '/api/equipe/chamados'
       fullPath: '/api/equipe/chamados'
       preLoaderRoute: typeof ApiEquipeChamadosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/equipe/reclamacoes': {
+      id: '/api/equipe/reclamacoes'
+      path: '/api/equipe/reclamacoes'
+      fullPath: '/api/equipe/reclamacoes'
+      preLoaderRoute: typeof ApiEquipeReclamacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/equipe/reservas': {
@@ -400,17 +480,21 @@ const rootRouteChildren: RootRouteChildren = {
   CardapioRoute: CardapioRoute,
   DeliveryRoute: DeliveryRoute,
   DuvidasRoute: DuvidasRoute,
+  ReclamacoesRoute: ReclamacoesRoute,
   ReservasRoute: ReservasRoute,
   UnidadesRoute: UnidadesRoute,
   ApiCardapioRoute: ApiCardapioRoute,
   ApiChamadosRoute: ApiChamadosRoute,
+  ApiReclamacoesRoute: ApiReclamacoesRoute,
   ApiReservasRoute: ApiReservasRoute,
   ApiSaloesRoute: ApiSaloesRoute,
   EquipeCardapioRoute: EquipeCardapioRoute,
+  EquipeReclamacoesRoute: EquipeReclamacoesRoute,
   EquipeReservasRoute: EquipeReservasRoute,
   EquipeSaloesRoute: EquipeSaloesRoute,
   EquipeIndexRoute: EquipeIndexRoute,
   ApiEquipeChamadosRoute: ApiEquipeChamadosRoute,
+  ApiEquipeReclamacoesRoute: ApiEquipeReclamacoesRoute,
   ApiEquipeReservasRoute: ApiEquipeReservasRoute,
   ApiEquipeSaloesRoute: ApiEquipeSaloesRoute,
   ApiFotosIdRoute: ApiFotosIdRoute,

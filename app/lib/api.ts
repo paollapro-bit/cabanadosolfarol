@@ -1,5 +1,6 @@
 import type { Chamado, NovoChamado, UnidadeId } from './chamados'
 import type { CardapioCanva } from './cardapio'
+import type { Reclamacao, StatusReclamacao } from './reclamacoes'
 import type { DadosDoSalao, NovaReserva, Ocupacao, Reserva, Salao, StatusReserva } from './reservas'
 
 export class ErroDeApi extends Error {
@@ -176,5 +177,37 @@ export function removerCardapio(pin: string) {
   return pedir<{ cardapio: null }>('/api/cardapio', {
     method: 'DELETE',
     headers: { 'x-equipe-pin': pin },
+  })
+}
+
+export function enviarReclamacao(dados: Record<string, unknown>) {
+  return pedir<{ reclamacao: Reclamacao; segredo: string }>('/api/reclamacoes', {
+    method: 'POST',
+    headers: JSON_HEADERS,
+    body: JSON.stringify(dados),
+  })
+}
+
+export function consultarReclamacao(id: string, segredo: string) {
+  return pedir<{ reclamacao: Reclamacao }>(`/api/reclamacoes?id=${id}`, {
+    headers: { 'x-reclamacao-segredo': segredo },
+  })
+}
+
+export function listarReclamacoesDaEquipe(unidade: UnidadeId, pin: string) {
+  return pedir<{ reclamacoes: Reclamacao[] }>(`/api/equipe/reclamacoes?unidade=${unidade}`, {
+    headers: { 'x-equipe-pin': pin },
+  })
+}
+
+export function atualizarReclamacao(
+  id: string,
+  mudancas: { status?: StatusReclamacao; nota?: string },
+  pin: string,
+) {
+  return pedir<{ reclamacao: Reclamacao }>('/api/equipe/reclamacoes', {
+    method: 'PATCH',
+    headers: { ...JSON_HEADERS, 'x-equipe-pin': pin },
+    body: JSON.stringify({ id, ...mudancas }),
   })
 }

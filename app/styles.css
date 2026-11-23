@@ -639,3 +639,20 @@ a.acao {
 .grupo-cardapio + .grupo-cardapio {
   margin-top: 1rem;
 }
+
+.marcar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.marcar input {
+  width: 1.4rem;
+  height: 1.4rem;
+  accent-color: var(--marca);
+}
+a.acao {
+  text-decoration: none;
+}

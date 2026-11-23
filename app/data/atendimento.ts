@@ -296,6 +296,12 @@ export const duvidas: Duvida[] = [
       'Sim, na unidade Ponta do Farol. A brinquedoteca tem piscina de bolinhas com cesta de basquete, bichos de pelúcia, brinquedos e desenho passando na TV.',
   },
   {
+    id: 'reclamacao',
+    pergunta: 'Como faço uma reclamação?',
+    resposta:
+      'Na tela Mesa, em Sua opinião, toque em Fazer uma reclamação, ou use o link Reclamações no rodapé. Escolha a unidade e o assunto e conte o que aconteceu. O nome é opcional. Você recebe um protocolo e acompanha a resposta pela mesma tela.',
+  },
+  {
     id: 'mesa',
     pergunta: 'Não sei o número da minha mesa. O que faço?',
     resposta:

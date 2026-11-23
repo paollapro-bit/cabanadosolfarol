@@ -43,6 +43,10 @@ The first thing built in this repository is the guest service hub, not the menu:
   latest version, so edits in Canva show up with no redeploy. The page warns
   screen-reader users up front that this menu is an image and offers help at
   the table or by phone instead — the spoken text menu is still Milestone 1.
+- `/reclamacoes` — guests file a complaint (unit, subject, message; name
+  optional; phone or e-mail only if they want a reply), get a protocol number
+  and follow its status. Staff handle them at `/equipe/reclamacoes`, with an
+  internal note guests never see. Resolved complaints are deleted after 90 days.
 - `/duvidas` — frequently asked questions, each with an "Ouvir" button.
 - `/unidades` — the two units with address, hours, phones, map and a short
   description, taken from the official site (cabanadosol.com.br).

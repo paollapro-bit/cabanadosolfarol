@@ -10,6 +10,8 @@ import { Route as ApiReservas } from '~/routes/api/reservas'
 import { Route as ApiEquipeReservas } from '~/routes/api/equipe.reservas'
 import { Route as ApiEquipeSaloes } from '~/routes/api/equipe.saloes'
 import { Route as ApiCardapio } from '~/routes/api/cardapio'
+import { Route as ApiReclamacoes } from '~/routes/api/reclamacoes'
+import { Route as ApiEquipeReclamacoes } from '~/routes/api/equipe.reclamacoes'
 import '~/styles.css'
 import './demo.css'
 
@@ -24,6 +26,8 @@ const rotas: Record<string, ComServidor> = {
   '/api/equipe/reservas': ApiEquipeReservas as unknown as ComServidor,
   '/api/equipe/saloes': ApiEquipeSaloes as unknown as ComServidor,
   '/api/cardapio': ApiCardapio as unknown as ComServidor,
+  '/api/reclamacoes': ApiReclamacoes as unknown as ComServidor,
+  '/api/equipe/reclamacoes': ApiEquipeReclamacoes as unknown as ComServidor,
 }
 
 // As chamadas /api/* vão para as mesmas rotas do app, rodando aqui mesmo.

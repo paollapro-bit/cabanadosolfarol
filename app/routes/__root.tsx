@@ -119,6 +119,7 @@ function Conteudo() {
       <footer className="rodape">
         <p>Cabana do Sol · Desde 1994 · Litorânea e Ponta do Farol, São Luís</p>
         <Link to="/duvidas">Dúvidas frequentes</Link>
+        <Link to="/reclamacoes">Reclamações</Link>
         <Link to="/equipe">Área da equipe</Link>
       </footer>
     </main>

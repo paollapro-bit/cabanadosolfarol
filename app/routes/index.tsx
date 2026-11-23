@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import { BotaoOuvir, useAcessibilidade } from '~/components/Acessibilidade'
 import { ListaDeCanais } from '~/components/Canais'
 import { canaisDoGrupo } from '~/data/atendimento'
@@ -329,6 +329,12 @@ function Atendimento() {
 
       <section aria-labelledby="titulo-opiniao">
         <h2 id="titulo-opiniao">Sua opinião</h2>
+        <Link to="/reclamacoes" className="acao">
+          <span className="acao-titulo">Fazer uma reclamação</span>
+          <span className="acao-descricao">
+            Algo não saiu como deveria? Conte para a gerência e acompanhe a resposta por aqui.
+          </span>
+        </Link>
         <ListaDeCanais canais={canaisDoGrupo('opiniao')} />
       </section>
 

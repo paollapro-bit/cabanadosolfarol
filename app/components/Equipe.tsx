@@ -38,6 +38,7 @@ const SECOES = [
   { to: '/equipe', rotulo: 'Chamados' },
   { to: '/equipe/reservas', rotulo: 'Reservas' },
   { to: '/equipe/saloes', rotulo: 'Salões' },
+  { to: '/equipe/reclamacoes', rotulo: 'Reclamações' },
   { to: '/equipe/cardapio', rotulo: 'Cardápio' },
 ] as const
 

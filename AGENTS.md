@@ -94,3 +94,6 @@ currently renders the central.
   marker written with `soSeNovo`, so staff edits and deletions stick and new
   entries still get added later. Ponta do Farol capacities (`null` for now —
   the app then sets no people limit) and all photos are still to come.
+- **Complaints (`app/lib/reclamacoes.ts`) keep contact data only when the guest
+  asks for a reply**, never return the staff note to the guest
+  (`reclamacaoParaCliente`), and are deleted 90 days after being resolved.
