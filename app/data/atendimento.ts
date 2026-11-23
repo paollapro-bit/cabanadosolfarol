@@ -180,6 +180,13 @@ export const canais: Canal[] = [
     grupo: 'opiniao',
   },
   {
+    id: 'instagram',
+    titulo: 'Instagram @cabanadosol',
+    descricao: 'Novidades, pratos, eventos e os bastidores do Cabana.',
+    url: 'https://www.instagram.com/cabanadosol/',
+    grupo: 'site',
+  },
+  {
     id: 'site',
     titulo: 'Site do Cabana do Sol',
     descricao: 'História, restaurantes, eventos e área de entrega.',

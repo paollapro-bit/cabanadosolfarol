@@ -100,7 +100,7 @@ function Unidades() {
         ))}
       </ul>
       <section aria-labelledby="titulo-canais">
-        <h2 id="titulo-canais">Reservas, eventos e site</h2>
+        <h2 id="titulo-canais">Reservas, eventos, Instagram e site</h2>
         <ListaDeCanais canais={contato} />
         <div className="acoes">
           <BotaoOuvir texto={fraseDosCanais(contato)} rotulo="Ouvir os canais" />

@@ -120,6 +120,9 @@ function Conteudo() {
         <p>Cabana do Sol · Desde 1994 · Litorânea e Ponta do Farol, São Luís</p>
         <Link to="/duvidas">Dúvidas frequentes</Link>
         <Link to="/reclamacoes">Reclamações</Link>
+        <a href="https://www.instagram.com/cabanadosol/" target="_blank" rel="noreferrer">
+          Instagram @cabanadosol<span className="sr-only"> (abre fora da central)</span>
+        </a>
         <Link to="/equipe">Área da equipe</Link>
       </footer>
     </main>
