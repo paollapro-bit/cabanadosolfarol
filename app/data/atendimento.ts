@@ -40,7 +40,7 @@ export const unidades: Unidade[] = [
     outrosTelefones: ['9832352586', '9832276270'],
     mapa: 'https://goo.gl/maps/ice4v8NkV5T2',
     descricao:
-      'O primeiro restaurante Cabana do Sol, perto das principais praias e hotéis da cidade. Dois ambientes, um para 270 e outro para 120 pessoas, decorados com elementos da cultura maranhense.',
+      'O primeiro restaurante Cabana do Sol, perto das principais praias e hotéis da cidade. Ambiente rústico e acolhedor, com madeira, palha, plantas e arte maranhense, e três salões: dos Guarás, das Artes e dos Lençóis. Tem o Happy Café, com chás, cafés, sanduíches e drinks; padaria própria, com pães e bolos feitos na casa; e brinquedoteca para as crianças.',
   },
 ]
 
@@ -49,7 +49,13 @@ export const unidades: Unidade[] = [
  * destaques "Eventos" do Instagram @cabanadosol (maio de 2024), enviados pela
  * dona. Depois disso, a equipe muda tudo pelo painel (/equipe/saloes).
  */
-export const saloesIniciais = [
+export const saloesIniciais: {
+  id: string
+  unidade: UnidadeId
+  nome: string
+  capacidade: number | null
+  descricao: string
+}[] = [
   {
     id: 'litoranea-crioulas',
     unidade: 'litoranea' as UnidadeId,
@@ -78,6 +84,31 @@ export const saloesIniciais = [
     nome: 'Adega do Fialho',
     capacidade: 12,
     descricao: 'De 10 a 12 pessoas, numa mesa redonda entre os vinhos. Ambiente íntimo e aconchegante para degustações.',
+  },
+  // Ponta do Farol: descrições enviadas pela dona; capacidades ainda não informadas.
+  {
+    id: 'ponta-do-farol-guaras',
+    unidade: 'ponta-do-farol',
+    nome: 'Salão dos Guarás',
+    capacidade: null,
+    descricao:
+      'Salão amplo, com mesas de toalha branca, uma parede de plantas e um quadro oval com um guará vermelho, a ave símbolo do Maranhão.',
+  },
+  {
+    id: 'ponta-do-farol-artes',
+    unidade: 'ponta-do-farol',
+    nome: 'Salão das Artes',
+    capacidade: null,
+    descricao:
+      'Teto com luminárias de palha, prateleiras com garrafas e bolos, e mesas de tampo de vidro com pinturas de cenas maranhenses por baixo, assinadas por F. Motta.',
+  },
+  {
+    id: 'ponta-do-farol-lencois',
+    unidade: 'ponta-do-farol',
+    nome: 'Salão dos Lençóis',
+    capacidade: null,
+    descricao:
+      'Parede amarela coberta de pratos decorativos pintados com paisagens dos Lençóis Maranhenses, veleiros e casarões.',
   },
 ]
 
@@ -257,6 +288,12 @@ export const duvidas: Duvida[] = [
     pergunta: 'Como peço a conta?',
     resposta:
       'Na tela Atendimento, toque em Pedir a conta. O pedido aparece no painel da equipe com o número da sua mesa.',
+  },
+  {
+    id: 'criancas',
+    pergunta: 'Tem lugar para as crianças brincarem?',
+    resposta:
+      'Sim, na unidade Ponta do Farol. A brinquedoteca tem piscina de bolinhas com cesta de basquete, bichos de pelúcia, brinquedos e desenho passando na TV.',
   },
   {
     id: 'mesa',

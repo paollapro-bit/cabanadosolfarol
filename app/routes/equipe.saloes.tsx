@@ -119,7 +119,11 @@ function Saloes() {
                     {salao.ativo ? 'Visível para clientes' : 'Oculto'}
                   </span>
                 </div>
-                <p>Até {pessoasPorExtenso(salao.capacidade)}</p>
+                {salao.capacidade === null ? (
+                  <p className="erro">Capacidade não informada. Use Editar dados para preencher.</p>
+                ) : (
+                  <p>Até {pessoasPorExtenso(salao.capacidade)}</p>
+                )}
 
                 <details>
                   <summary className="botao botao-linha">Editar dados de {salao.nome}</summary>
@@ -226,7 +230,7 @@ function FormularioDoSalao({
   limparAoSalvar?: boolean
 }) {
   const [nome, setNome] = useState(inicial?.nome ?? '')
-  const [capacidade, setCapacidade] = useState(inicial ? String(inicial.capacidade) : '')
+  const [capacidade, setCapacidade] = useState(inicial?.capacidade ? String(inicial.capacidade) : '')
   const [descricao, setDescricao] = useState(inicial?.descricao ?? '')
 
   async function enviar(e: FormEvent) {

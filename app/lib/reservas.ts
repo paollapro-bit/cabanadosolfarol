@@ -18,7 +18,8 @@ export interface Salao {
   id: string
   unidade: UnidadeId
   nome: string
-  capacidade: number
+  /** null: ainda não informada pelo restaurante; o app não limita o número de pessoas. */
+  capacidade: number | null
   descricao: string
   fotos: Foto[]
   ativo: boolean
@@ -110,6 +111,11 @@ export function pessoasPorExtenso(n: number) {
   return n === 1 ? '1 pessoa' : `${n} pessoas`
 }
 
+/** "Recebe até 40 pessoas", ou o aviso de que a capacidade ainda não foi informada. */
+export function capacidadePorExtenso(capacidade: number | null) {
+  return capacidade === null ? 'Capacidade a confirmar com a equipe' : `Recebe até ${pessoasPorExtenso(capacidade)}`
+}
+
 export type Resultado<T> = { ok: true; dados: T } | { ok: false; erro: string; campo?: string }
 
 export type DadosDoSalao = Pick<Salao, 'unidade' | 'nome' | 'capacidade' | 'descricao' | 'ativo'>
@@ -122,8 +128,10 @@ export function validarSalao(corpo: unknown): Resultado<DadosDoSalao> {
   if (!nome || nome.length < 2 || nome.length > 60) {
     return { ok: false, erro: 'Informe o nome do salão, com 2 a 60 caracteres.', campo: 'nome' }
   }
-  const capacidade = inteiro(c.capacidade)
-  if (capacidade === null || capacidade < 1 || capacidade > CAPACIDADE_MAXIMA) {
+  // null explícito: capacidade ainda não informada (salões cadastrados de início).
+  // O formulário da equipe sempre envia um número.
+  const capacidade = c.capacidade === null ? null : inteiro(c.capacidade)
+  if (c.capacidade !== null && (capacidade === null || capacidade < 1 || capacidade > CAPACIDADE_MAXIMA)) {
     return { ok: false, erro: 'Informe quantas pessoas cabem no salão.', campo: 'capacidade' }
   }
   const descricao = texto(c.descricao) ?? ''
@@ -167,10 +175,10 @@ export function validarReserva(
   }
   if (!ehPeriodo(c.periodo)) return { ok: false, erro: 'Escolha almoço ou jantar.', campo: 'periodo' }
   const pessoas = inteiro(c.pessoas)
-  if (pessoas === null || pessoas < 1) {
+  if (pessoas === null || pessoas < 1 || pessoas > CAPACIDADE_MAXIMA) {
     return { ok: false, erro: 'Informe quantas pessoas vão.', campo: 'pessoas' }
   }
-  if (pessoas > salao.capacidade) {
+  if (salao.capacidade !== null && pessoas > salao.capacidade) {
     return {
       ok: false,
       erro: `O ${comSalao(salao.nome)} recebe até ${pessoasPorExtenso(salao.capacidade)}.`,
@@ -228,7 +236,7 @@ export type Ocupacao = Partial<Record<PeriodoId, boolean>>
 
 /** Tudo que o cliente ouve sobre um salão, fotos incluídas. */
 export function fraseDoSalao(salao: Salao, ocupado?: boolean): string {
-  const partes = [`${comSalao(salao.nome).replace(/^s/, 'S')}. Recebe até ${pessoasPorExtenso(salao.capacidade)}.`]
+  const partes = [`${comSalao(salao.nome).replace(/^s/, 'S')}. ${capacidadePorExtenso(salao.capacidade)}.`]
   if (salao.descricao) partes.push(salao.descricao.replace(/([^.!?])$/, '$1.'))
   if (salao.fotos.length) {
     partes.push(

@@ -66,6 +66,11 @@ describe('validarSalao', () => {
     expect(validarSalao({ unidade: 'x', nome: 'A', capacidade: 1 })).toMatchObject({ campo: 'unidade' })
     expect(validarSalao({ unidade: 'litoranea', nome: 'A', capacidade: 1 })).toMatchObject({ campo: 'nome' })
     expect(validarSalao({ unidade: 'litoranea', nome: 'Azul', capacidade: 0 })).toMatchObject({ campo: 'capacidade' })
+    expect(validarSalao({ unidade: 'litoranea', nome: 'Azul', capacidade: '' })).toMatchObject({ campo: 'capacidade' })
+    expect(validarSalao({ unidade: 'litoranea', nome: 'Azul', capacidade: null })).toMatchObject({
+      ok: true,
+      dados: { capacidade: null },
+    })
   })
   it('exige descrição da foto', () => {
     expect(validarDescricaoDaFoto('  ').ok).toBe(false)
@@ -103,6 +108,12 @@ describe('validarReserva', () => {
     })
     expect(erro({ nome: ' ' })).toMatchObject({ campo: 'nome' })
     expect(erro({ telefone: '9999-1234' })).toMatchObject({ campo: 'telefone' })
+  })
+  it('não limita o número de pessoas quando a capacidade ainda não foi informada', () => {
+    expect(validarReserva({ ...pedido, pessoas: '200' }, { ...salao, capacidade: null }, hoje).ok).toBe(true)
+    expect(fraseDoSalao({ ...salao, capacidade: null, fotos: [], descricao: '' })).toBe(
+      'Salão Varanda. Capacidade a confirmar com a equipe.',
+    )
   })
   it('aceita reserva para hoje e lotação exata', () => {
     expect(validarReserva({ ...pedido, data: hoje, pessoas: 40 }, salao, hoje).ok).toBe(true)

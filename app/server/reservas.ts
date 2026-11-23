@@ -22,15 +22,15 @@ export async function apagarSalao(salao: Salao) {
   await saloes().delete(salao.id)
 }
 
-// Na primeira vez, cadastra os salões conhecidos. A marca é gravada com
-// soSeNovo, então isso acontece uma única vez, mesmo que a equipe depois
-// exclua todos os salões.
+// Cadastra cada salão conhecido uma única vez: a marca de cada um é gravada
+// com soSeNovo, então um salão que a equipe excluiu não volta, e um salão
+// novo da lista entra mesmo depois do app já estar no ar.
 async function garantirSaloesIniciais() {
-  if (!(await colecao('config').set('saloes-iniciais', true, { soSeNovo: true }))) return
   await Promise.all(
-    saloesIniciais.map((s, i) =>
-      saloes().set(s.id, { ...s, fotos: [], ativo: true, criadoEm: i + 1 } satisfies Salao, { soSeNovo: true }),
-    ),
+    saloesIniciais.map(async (s, i) => {
+      if (!(await colecao('config').set(`salao-inicial/${s.id}`, true, { soSeNovo: true }))) return
+      await saloes().set(s.id, { ...s, fotos: [], ativo: true, criadoEm: i + 1 } satisfies Salao, { soSeNovo: true })
+    }),
   )
 }
 

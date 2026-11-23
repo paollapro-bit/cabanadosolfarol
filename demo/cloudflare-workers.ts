@@ -2,8 +2,8 @@
 // para que as rotas de API reais do app rodem sem servidor. Os dados ficam só
 // neste aparelho (localStorage).
 
-const CHAVE_DOCS = 'cds-demo-docs-v3'
-const CHAVE_FOTOS = 'cds-demo-fotos-v3'
+const CHAVE_DOCS = 'cds-demo-docs-v4'
+const CHAVE_FOTOS = 'cds-demo-fotos-v4'
 
 function ler<T>(chave: string, padrao: T): T {
   try {

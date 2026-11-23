@@ -90,6 +90,7 @@ currently renders the central.
   Litorânea) and `ponta-do-farol` (Ponta do Farol), defined in `UNIDADES` in
   `app/lib/chamados.ts`. Imperatriz is deliberately out (owner's decision).
 - **Initial salões are seeded once** from `saloesIniciais` in
-  `app/data/atendimento.ts` (owner-supplied, Litorânea). A `config/saloes-iniciais`
-  marker written with `soSeNovo` keeps it to one time, so staff edits and
-  deletions stick. Ponta do Farol salões and all photos are still to come.
+  `app/data/atendimento.ts` (owner-supplied). Each has a `config/salao-inicial/<id>`
+  marker written with `soSeNovo`, so staff edits and deletions stick and new
+  entries still get added later. Ponta do Farol capacities (`null` for now —
+  the app then sets no people limit) and all photos are still to come.

@@ -16,6 +16,7 @@ import { ehUnidade, nomeUnidade, UNIDADES, type UnidadeId } from '~/lib/chamados
 import { guardar, lerGuardado } from '~/lib/guardado'
 import {
   ANTECEDENCIA_MAXIMA_DIAS,
+  capacidadePorExtenso,
   dataPorExtenso,
   ehData,
   fraseDaReserva,
@@ -324,7 +325,7 @@ function Reservas() {
                     )}
                   </div>
                   <p>
-                    <strong>Até {pessoasPorExtenso(salao.capacidade)}</strong>
+                    <strong>{capacidadePorExtenso(salao.capacidade)}</strong>
                   </p>
                   {salao.descricao && <p>{salao.descricao}</p>}
                   <div className="acoes">
@@ -445,7 +446,9 @@ function FormularioDeReserva({
           aria-describedby={`reserva-dica-pessoas ${descreve('pessoas') ?? ''}`}
         />
         <p id="reserva-dica-pessoas" className="dica">
-          Este salão recebe até {pessoasPorExtenso(salao.capacidade)}.
+          {salao.capacidade === null
+            ? 'A capacidade deste salão ainda vai ser confirmada pela equipe.'
+            : `Este salão recebe até ${pessoasPorExtenso(salao.capacidade)}.`}
         </p>
       </div>
       <div className="campo">
