@@ -21,6 +21,11 @@ describe('lerLinkDoCanva', () => {
       'https://www.canva.com/design/DAHPddtYj2g/AbC123xyz_-/view?utm_content=DAHPddtYj2g&utm_campaign=designshare&utm_medium=embeds&utm_source=link'
     expect(lerLinkDoCanva(link)).toMatchObject({ ok: true, dados: { designId: 'DAHPddtYj2g', proporcao: 141.4286 } })
   })
+  it('recusa o link comum de visualização, que o Canva não exibe incorporado', () => {
+    const link =
+      'https://www.canva.com/design/DAHPddtYj2g/AbC123xyz_-/view?utm_content=DAHPddtYj2g&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks'
+    expect(lerLinkDoCanva(link)).toMatchObject({ ok: false, erro: expect.stringContaining('visualização') })
+  })
   it('recusa link de edição, link curto e texto qualquer', () => {
     expect(lerLinkDoCanva('https://www.canva.com/design/DAHPddtYj2g/AbC123xyz_-/edit')).toMatchObject({
       ok: false,

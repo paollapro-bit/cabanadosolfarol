@@ -36,7 +36,9 @@ The first thing built in this repository is the guest service hub, not the menu:
   Instagram post (DDD 98 assumed; the post shows none), plus the bakery and
   delivery-app links.
 - `/cardapio` — the visual menu, embedded live from Canva. Staff paste the
-  Canva embed code once at `/equipe/cardapio`; Canva keeps the embed on the
+  Canva embed code once at `/equipe/cardapio`. Only the design's owner or an
+  editor can generate that code (a plain view link does not embed), so a menu in
+  a designer's account needs the designer to send it; Canva keeps the embed on the
   latest version, so edits in Canva show up with no redeploy. The page warns
   screen-reader users up front that this menu is an image and offers help at
   the table or by phone instead — the spoken text menu is still Milestone 1.

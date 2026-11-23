@@ -100,6 +100,11 @@ function CardapioDaEquipe() {
 
       <section aria-labelledby="titulo-colar">
         <h2 id="titulo-colar">{atual ? 'Trocar o design' : 'Publicar o cardápio'}</h2>
+        <p>
+          O código precisa ser gerado por <strong>quem é dono do design</strong> no Canva, ou por alguém
+          com acesso de edição. Se o cardápio foi feito por um designer ou agência, envie estes passos
+          para essa pessoa e peça que ela mande o código para você:
+        </p>
         <ol className="passos-texto">
           <li>No Canva, abra o design do cardápio.</li>
           <li>
@@ -107,8 +112,12 @@ function CardapioDaEquipe() {
             <strong>Incorporar</strong>.
           </li>
           <li>Confirme que o design pode ficar público e toque em Incorporar.</li>
-          <li>Copie o código HTML (ou o link) e cole abaixo.</li>
+          <li>Copie o código HTML (ou o link de incorporação) e cole abaixo.</li>
         </ol>
+        <p className="dica">
+          O link comum de compartilhar (&quot;qualquer pessoa com o link pode ver&quot;) não funciona aqui:
+          o Canva só mostra o design dentro de outro site pelo código de incorporação.
+        </p>
         <form className="cartao" onSubmit={salvar}>
           <div className="campo">
             <label htmlFor="link-canva">Código ou link de incorporação do Canva</label>

@@ -18,7 +18,8 @@ export type LeituraDoLink =
 
 /**
  * Aceita o código HTML de incorporação ou o link de incorporação do Canva.
- * Links curtos (canva.com/d/…) e de edição não servem: não ficam públicos.
+ * Links curtos (canva.com/d/…), de edição e de visualização não servem.
+ * Só quem é dono do design ou tem acesso de edição consegue gerar o código.
  */
 export function lerLinkDoCanva(entrada: unknown): LeituraDoLink {
   if (typeof entrada !== 'string' || !entrada.trim()) {
@@ -39,6 +40,15 @@ export function lerLinkDoCanva(entrada: unknown): LeituraDoLink {
     return {
       ok: false,
       erro: 'Este é o link de edição, que não pode ficar público. Use Compartilhar, Mais, Incorporar.',
+    }
+  }
+  // Só o código de incorporação funciona dentro de outro site. O link comum de
+  // visualização tem o mesmo formato, mas o Canva não o exibe incorporado.
+  const deIncorporacao = /[?&]embed\b/.test(texto) || /utm_medium=embeds\b/.test(texto)
+  if (!deIncorporacao) {
+    return {
+      ok: false,
+      erro: 'Este é um link de visualização, que o Canva não deixa mostrar dentro do app. É preciso o código de incorporação: Compartilhar, Mais, Incorporar.',
     }
   }
   const padding = texto.match(/padding-top:\s*([\d.]+)%/)
