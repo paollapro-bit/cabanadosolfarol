@@ -55,7 +55,8 @@ export const canais: Canal[] = [
     id: 'padaria',
     titulo: 'Pedidos da padaria',
     descricao: 'Faça o seu pedido da padaria pelo WhatsApp.',
-    url: 'https://api.whatsapp.com/send/?phone=9884041002&text&type=phone_number&app_absent=0',
+    // O link original vinha sem o 55; sem ele o WhatsApp lê 98 como código de país.
+    url: 'https://wa.me/559884041002',
   },
   {
     id: 'delivery',
