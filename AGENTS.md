@@ -80,3 +80,6 @@ currently renders the central.
   before adding or renaming a tab.
 - **Tests use `vitest.config.ts`, not `vite.config.ts`:** the Cloudflare plugin
   cannot start under vitest, and the tests only cover pure `app/lib` code.
+- **The demo (`vite.demo.config.ts`, `demo/`) runs the real API handlers in the
+  browser.** Its fake D1 understands only the SQL in `app/server/armazenamento.ts`;
+  change both together. `urlDaFoto` checks `globalThis.__demoFotoUrl` for this.

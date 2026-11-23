@@ -1,0 +1,11 @@
+body {
+  background: var(--fundo);
+}
+.faixa-demo {
+  font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  background: var(--tinta);
+  color: var(--fundo);
+  font-size: 0.9rem;
+  padding: 0.5rem max(16px, env(safe-area-inset-left, 0px));
+  text-align: center;
+}

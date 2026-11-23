@@ -8,3 +8,5 @@ dist
 .wrangler
 .dev.vars
 worker-configuration.d.ts
+dist-demo
+demo/routeTree.demo.gen.ts

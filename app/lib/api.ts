@@ -78,7 +78,9 @@ export function listarSaloes(unidade: UnidadeId, data?: string) {
   )
 }
 
-export const urlDaFoto = (id: string) => `/api/fotos/${id}`
+// Na demonstração (sem servidor) as fotos vêm do próprio navegador.
+export const urlDaFoto = (id: string) =>
+  (globalThis as { __demoFotoUrl?: (id: string) => string | undefined }).__demoFotoUrl?.(id) ?? `/api/fotos/${id}`
 
 export function pedirReserva(dados: NovaReserva) {
   return pedir<{ reserva: Reserva; segredo: string }>('/api/reservas', {

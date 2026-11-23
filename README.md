@@ -83,6 +83,14 @@ npm run dev    # http://localhost:8889, runs inside workerd with local D1 and KV
 npm test       # unit tests for the pure rules in app/lib
 ```
 
+## Demo without a server
+
+`npm run build:demo` builds the whole app into one JS file (`dist-demo/`) that runs
+with no server: `demo/cloudflare-workers.ts` stands in for `cloudflare:workers`,
+imitating D1 and KV in `localStorage`, and `demo/main.tsx` routes `/api/*` fetches
+to the real route handlers. Data stays on the viewer's device. It is published as
+a private Claude page for the owner to try the app before the Cloudflare deploy.
+
 ## Deploying to Cloudflare
 
 Once, create the resources and put their ids in `wrangler.jsonc` (the committed
