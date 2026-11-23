@@ -117,7 +117,7 @@ function Conteudo() {
     <main id="conteudo" ref={principal} tabIndex={-1} className="conteudo">
       <Outlet />
       <footer className="rodape">
-        <p>Cabana do Sol · Desde 1994 · São Luís e Imperatriz</p>
+        <p>Cabana do Sol · Desde 1994 · Litorânea e Ponta do Farol, São Luís</p>
         <Link to="/duvidas">Dúvidas frequentes</Link>
         <Link to="/equipe">Área da equipe</Link>
       </footer>

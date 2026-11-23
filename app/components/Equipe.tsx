@@ -46,7 +46,7 @@ export function PainelDaEquipe({ titulo, children }: { titulo: string; children:
   const { anunciar } = useAcessibilidade()
   const [pin, setPin] = useState('')
   const [digitado, setDigitado] = useState('')
-  const [unidade, setUnidade] = useState<UnidadeId>('sao-luis')
+  const [unidade, setUnidade] = useState<UnidadeId>('litoranea')
   const [erro, setErro] = useState('')
   const ultimoErro = useRef('')
   const pinAtual = useRef(pin)
@@ -54,7 +54,7 @@ export function PainelDaEquipe({ titulo, children }: { titulo: string; children:
 
   useEffect(() => {
     setPin(lerGuardado(CHAVE_PIN, '', window.sessionStorage))
-    const guardada = lerGuardado<string>(CHAVE_UNIDADE, 'sao-luis')
+    const guardada = lerGuardado<string>(CHAVE_UNIDADE, 'litoranea')
     if (ehUnidade(guardada)) setUnidade(guardada)
   }, [])
 

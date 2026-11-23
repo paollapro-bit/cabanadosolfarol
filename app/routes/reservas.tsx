@@ -162,7 +162,7 @@ function Reservas() {
   }
 
   const visiveis = minhas.filter((i) => i.reserva)
-  const canaisDeReserva = canais.filter((c) => c.reservas && c.unidade === unidade)
+  const canaisDeReserva = canais.filter((c) => c.reservas)
   const dataValida = ehData(data) && data >= hoje
 
   return (

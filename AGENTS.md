@@ -83,3 +83,6 @@ currently renders the central.
 - **The demo (`vite.demo.config.ts`, `demo/`) runs the real API handlers in the
   browser.** Its fake D1 understands only the SQL in `app/server/armazenamento.ts`;
   change both together. `urlDaFoto` checks `globalThis.__demoFotoUrl` for this.
+- **The app is only for the two São Luís units**: `litoranea` (Avenida
+  Litorânea) and `ponta-do-farol` (Ponta do Farol), defined in `UNIDADES` in
+  `app/lib/chamados.ts`. Imperatriz is deliberately out (owner's decision).

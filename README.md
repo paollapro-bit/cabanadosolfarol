@@ -1,7 +1,8 @@
 # Cardápio Falado Acessível
 
 A spoken, screen-reader-first digital menu for the Cabana do Sol restaurant
-(São Luís and Imperatriz, Maranhão — serving since 1994). The goal is that a
+(São Luís, Maranhão — serving since 1994; this app serves the two São Luís units,
+Avenida Litorânea and Ponta do Farol). The goal is that a
 blind or low-vision guest can browse the full menu, hear every dish read aloud
 in Brazilian Portuguese with its price spoken in words, and choose on their own,
 without asking a waiter to read the menu to them.
@@ -26,7 +27,7 @@ for the numbered build order.
 The first thing built in this repository is the guest service hub, not the menu:
 
 - `/` — the guest picks the unit and table number (or arrives with
-  `?unidade=sao-luis&mesa=12` from a table QR code) and calls a waiter, asks for
+  `?unidade=litoranea&mesa=12` or `?unidade=ponta-do-farol&mesa=12` from a table QR code) and calls a waiter, asks for
   the bill, asks for accessibility help or sends a short request. The call's
   status (aguardando → a caminho → atendido) is polled, shown and announced.
 - External channels (reservations WhatsApp for São Luís, bakery orders, delivery

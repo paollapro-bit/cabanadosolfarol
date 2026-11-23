@@ -31,7 +31,7 @@ finished before any database exists.
 
 - Mobile-first shell: brand header, bottom navigation (Início / Categorias /
   Buscar / Ouvir tudo), skip link, `aria-live` announcement region.
-- **Home** — eyebrow "Desde 1994 · São Luís e Imperatriz", the invitation
+- **Home** — eyebrow "Desde 1994 · São Luís", the invitation
   "Um cardápio falado, simples e acessível para você escolher com autonomia.",
   and large primary actions: hear the house presentation, hear the category
   list, hear the complete menu, open the menu, search.

@@ -15,15 +15,15 @@ export interface Unidade {
 
 export const unidades: Unidade[] = [
   {
-    id: 'sao-luis',
-    nome: 'São Luís',
+    id: 'litoranea',
+    nome: 'Litorânea',
     endereco: null,
     horario: null,
     telefone: null,
   },
   {
-    id: 'imperatriz',
-    nome: 'Imperatriz',
+    id: 'ponta-do-farol',
+    nome: 'Ponta do Farol',
     endereco: null,
     horario: null,
     telefone: null,
@@ -44,11 +44,10 @@ export interface Canal {
 
 export const canais: Canal[] = [
   {
-    id: 'reservas-sao-luis',
+    id: 'reservas',
     titulo: 'Reservas pelo WhatsApp',
-    descricao: 'Fale com a equipe de reservas do Cabana do Sol em São Luís.',
+    descricao: 'Fale com a equipe de reservas do Cabana do Sol.',
     url: 'https://wa.me/5598984043566?text=Ol%C3%A1%2C%20Cabana%20do%20Sol%2C%20gostaria%20de%20informa%C3%A7%C3%B5es%20%E2%98%80%EF%B8%8F',
-    unidade: 'sao-luis',
     reservas: true,
   },
   {
@@ -76,7 +75,6 @@ export function fraseDosCanais(lista: Canal[]) {
  * O post traz os números sem DDD; 98 é o DDD de São Luís.
  */
 export const delivery = {
-  unidade: 'sao-luis' as UnidadeId,
   ddd: '98',
   telefones: [
     '32352586',

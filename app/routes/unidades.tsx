@@ -41,7 +41,7 @@ function Unidades() {
       <section aria-labelledby="titulo-pagina">
         <p className="sobrancelha">Desde 1994</p>
         <h1 id="titulo-pagina">Unidades e contatos</h1>
-        <p className="intro">O Cabana do Sol recebe você em {unidades.length} cidades do Maranhão.</p>
+        <p className="intro">O Cabana do Sol recebe você em {unidades.length} endereços em São Luís.</p>
       </section>
       <ul className="lista">
         {unidades.map((u) => {
@@ -95,7 +95,7 @@ function Unidades() {
         })}
       </ul>
       <section aria-labelledby="titulo-canais">
-        <h2 id="titulo-canais">Peça de casa</h2>
+        <h2 id="titulo-canais">Reservas e pedidos</h2>
         <ListaDeCanais canais={gerais} />
         <div className="acoes">
           <BotaoOuvir texto={fraseDosCanais(gerais)} rotulo="Ouvir os canais" />

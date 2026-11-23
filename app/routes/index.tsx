@@ -28,7 +28,7 @@ import {
 import { guardar, lerGuardado } from '~/lib/guardado'
 
 export const Route = createFileRoute('/')({
-  // O código QR da mesa abre a central já com ?unidade=sao-luis&mesa=12.
+  // O código QR da mesa abre a central já com ?unidade=litoranea&mesa=12.
   validateSearch: (busca: Record<string, unknown>): { unidade?: UnidadeId; mesa?: number } => ({
     unidade: ehUnidade(busca.unidade) ? busca.unidade : undefined,
     mesa: lerMesa(busca.mesa) ?? undefined,
@@ -131,7 +131,7 @@ function Atendimento() {
   function falhar(campo: 'unidade' | 'mesa' | 'mensagem' | 'geral', texto: string) {
     setErro({ campo, texto })
     anunciar(texto)
-    const alvo = { unidade: 'unidade-sao-luis', mesa: 'mesa', mensagem: 'mensagem', geral: '' }[campo]
+    const alvo = { unidade: 'unidade-litoranea', mesa: 'mesa', mensagem: 'mensagem', geral: '' }[campo]
     if (alvo) document.getElementById(alvo)?.focus()
   }
 
@@ -190,7 +190,7 @@ function Atendimento() {
   return (
     <div className="tela">
       <section aria-labelledby="titulo-pagina">
-        <p className="sobrancelha">Desde 1994 · São Luís e Imperatriz</p>
+        <p className="sobrancelha">Desde 1994 · São Luís</p>
         <h1 id="titulo-pagina">Central de atendimento</h1>
         <p className="intro">
           Chame a equipe, peça a conta e tire dúvidas com autonomia, sem precisar acenar para ninguém.

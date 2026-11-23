@@ -16,7 +16,7 @@ import {
 
 const salao: Salao = {
   id: 's1',
-  unidade: 'sao-luis',
+  unidade: 'litoranea',
   nome: 'Varanda',
   capacidade: 40,
   descricao: 'Climatizado',
@@ -57,15 +57,15 @@ describe('datas', () => {
 
 describe('validarSalao', () => {
   it('aceita e normaliza', () => {
-    expect(validarSalao({ unidade: 'imperatriz', nome: ' Salão  Azul ', capacidade: '80' })).toEqual({
+    expect(validarSalao({ unidade: 'ponta-do-farol', nome: ' Salão  Azul ', capacidade: '80' })).toEqual({
       ok: true,
-      dados: { unidade: 'imperatriz', nome: 'Salão Azul', capacidade: 80, descricao: '', ativo: true },
+      dados: { unidade: 'ponta-do-farol', nome: 'Salão Azul', capacidade: 80, descricao: '', ativo: true },
     })
   })
   it('recusa dados incompletos', () => {
     expect(validarSalao({ unidade: 'x', nome: 'A', capacidade: 1 })).toMatchObject({ campo: 'unidade' })
-    expect(validarSalao({ unidade: 'sao-luis', nome: 'A', capacidade: 1 })).toMatchObject({ campo: 'nome' })
-    expect(validarSalao({ unidade: 'sao-luis', nome: 'Azul', capacidade: 0 })).toMatchObject({ campo: 'capacidade' })
+    expect(validarSalao({ unidade: 'litoranea', nome: 'A', capacidade: 1 })).toMatchObject({ campo: 'nome' })
+    expect(validarSalao({ unidade: 'litoranea', nome: 'Azul', capacidade: 0 })).toMatchObject({ campo: 'capacidade' })
   })
   it('exige descrição da foto', () => {
     expect(validarDescricaoDaFoto('  ').ok).toBe(false)
@@ -138,7 +138,7 @@ describe('frases faladas', () => {
       id: 'r1',
       salaoId: 's1',
       salaoNome: 'Varanda',
-      unidade: 'sao-luis',
+      unidade: 'litoranea',
       data: '2026-11-21',
       periodo: 'jantar',
       pessoas: 30,
@@ -149,7 +149,7 @@ describe('frases faladas', () => {
       atualizadoEm: 1,
     }
     expect(fraseDaReserva(reserva)).toBe(
-      'Reserva do salão Varanda, unidade São Luís, sábado, 21 de novembro de 2026, no jantar, para 30 pessoas. Pedido enviado. A reserva só vale depois que a equipe confirmar.',
+      'Reserva do salão Varanda, unidade Litorânea, sábado, 21 de novembro de 2026, no jantar, para 30 pessoas. Pedido enviado. A reserva só vale depois que a equipe confirmar.',
     )
     expect(fraseDaReserva({ ...reserva, status: 'confirmada' })).toContain('confirmada pela equipe')
   })

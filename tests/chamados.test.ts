@@ -15,8 +15,8 @@ import {
 } from '../app/lib/chamados'
 
 const base: Chamado = {
-  id: 'sao-luis.12.garcom',
-  unidade: 'sao-luis',
+  id: 'litoranea.12.garcom',
+  unidade: 'litoranea',
   mesa: 12,
   tipo: 'garcom',
   status: 'aguardando',
@@ -40,10 +40,10 @@ describe('lerMesa', () => {
 describe('validarNovoChamado', () => {
   it('aceita um chamado completo e limpa a mensagem', () => {
     expect(
-      validarNovoChamado({ unidade: 'imperatriz', mesa: '4', tipo: 'outro', mensagem: '  mais   guardanapos ' }),
+      validarNovoChamado({ unidade: 'ponta-do-farol', mesa: '4', tipo: 'outro', mensagem: '  mais   guardanapos ' }),
     ).toEqual({
       ok: true,
-      dados: { unidade: 'imperatriz', mesa: 4, tipo: 'outro', mensagem: 'mais guardanapos' },
+      dados: { unidade: 'ponta-do-farol', mesa: 4, tipo: 'outro', mensagem: 'mais guardanapos' },
     })
   })
   it('explica em português o que falta', () => {
@@ -51,23 +51,23 @@ describe('validarNovoChamado', () => {
     expect(validarNovoChamado({ unidade: 'recife', mesa: 1, tipo: 'garcom' })).toMatchObject({
       erro: expect.stringContaining('unidade'),
     })
-    expect(validarNovoChamado({ unidade: 'sao-luis', mesa: '', tipo: 'garcom' })).toMatchObject({
+    expect(validarNovoChamado({ unidade: 'litoranea', mesa: '', tipo: 'garcom' })).toMatchObject({
       erro: expect.stringContaining('mesa'),
     })
-    expect(validarNovoChamado({ unidade: 'sao-luis', mesa: 1, tipo: 'pizza' }).ok).toBe(false)
-    expect(validarNovoChamado({ unidade: 'sao-luis', mesa: 1, tipo: 'outro', mensagem: '   ' }).ok).toBe(false)
-    expect(validarNovoChamado({ unidade: 'sao-luis', mesa: 1, tipo: 'garcom', mensagem: 'x'.repeat(201) }).ok).toBe(false)
+    expect(validarNovoChamado({ unidade: 'litoranea', mesa: 1, tipo: 'pizza' }).ok).toBe(false)
+    expect(validarNovoChamado({ unidade: 'litoranea', mesa: 1, tipo: 'outro', mensagem: '   ' }).ok).toBe(false)
+    expect(validarNovoChamado({ unidade: 'litoranea', mesa: 1, tipo: 'garcom', mensagem: 'x'.repeat(201) }).ok).toBe(false)
   })
 })
 
 describe('identificador', () => {
   it('vai e volta', () => {
-    const id = idDoChamado('sao-luis', 12, 'conta')
-    expect(id).toBe('sao-luis.12.conta')
-    expect(lerId(id)).toEqual({ unidade: 'sao-luis', mesa: 12, tipo: 'conta' })
+    const id = idDoChamado('litoranea', 12, 'conta')
+    expect(id).toBe('litoranea.12.conta')
+    expect(lerId(id)).toEqual({ unidade: 'litoranea', mesa: 12, tipo: 'conta' })
   })
   it('recusa identificadores malformados', () => {
-    for (const id of ['', 'sao-luis.12', 'x.12.conta', 'sao-luis.0.conta', 'sao-luis.12.conta.extra', 42]) {
+    for (const id of ['', 'litoranea.12', 'x.12.conta', 'litoranea.0.conta', 'litoranea.12.conta.extra', 42]) {
       expect(lerId(id)).toBeNull()
     }
   })
@@ -95,16 +95,16 @@ describe('ciclo de vida', () => {
 describe('frases faladas', () => {
   it('descreve a situação para o cliente', () => {
     expect(fraseParaCliente(base)).toBe(
-      'Chamar garçom, mesa 12, unidade São Luís. A equipe foi avisada. Aguarde na sua mesa.',
+      'Chamar garçom, mesa 12, unidade Litorânea. A equipe foi avisada. Aguarde na sua mesa.',
     )
     expect(fraseParaCliente({ ...base, status: 'a_caminho' })).toContain('está a caminho')
     expect(fraseParaCliente({ ...base, status: 'concluido' })).toContain('concluído')
     expect(fraseParaCliente({ ...base, status: 'cancelado' })).toContain('cancelado')
   })
   it('descreve o chamado para a equipe, com a mensagem quando houver', () => {
-    expect(fraseParaEquipe(base)).toBe('Mesa 12, São Luís: Chamar garçom.')
+    expect(fraseParaEquipe(base)).toBe('Mesa 12, Litorânea: Chamar garçom.')
     expect(fraseParaEquipe({ ...base, tipo: 'outro', mensagem: 'cadeira de criança' })).toBe(
-      'Mesa 12, São Luís: Outro pedido. Mensagem: cadeira de criança',
+      'Mesa 12, Litorânea: Outro pedido. Mensagem: cadeira de criança',
     )
   })
   it('conta o tempo em palavras', () => {

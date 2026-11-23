@@ -2,7 +2,6 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { BotaoOuvir } from '~/components/Acessibilidade'
 import { ListaDeCanais } from '~/components/Canais'
 import { canais, delivery } from '~/data/atendimento'
-import { nomeUnidade } from '~/lib/chamados'
 
 export const Route = createFileRoute('/delivery')({
   head: () => ({ meta: [{ title: 'Central de delivery · Cabana do Sol' }] }),
@@ -29,7 +28,7 @@ const fixos = delivery.telefones.filter((t) => t.length === 8)
 const celulares = delivery.telefones.filter((t) => t.length === 9)
 
 const FRASE = [
-  `Central de delivery do Cabana do Sol, unidade ${nomeUnidade(delivery.unidade)}, DDD ${delivery.ddd.split('').join(' ')}.`,
+  `Central de delivery do Cabana do Sol em São Luís, DDD ${delivery.ddd.split('').join(' ')}.`,
   `${delivery.telefones.length} telefones.`,
   ...delivery.telefones.map((t, i) => `Telefone ${i + 1}: ${falado(t)}.`),
   'Você também pode pedir pelo aplicativo de delivery.',
@@ -57,7 +56,7 @@ function Delivery() {
   return (
     <div className="tela">
       <section aria-labelledby="titulo-pagina">
-        <p className="sobrancelha">{nomeUnidade(delivery.unidade)} · Peça de casa</p>
+        <p className="sobrancelha">São Luís · Peça de casa</p>
         <h1 id="titulo-pagina">Central de delivery</h1>
         <p className="intro">
           Ligue para qualquer um dos {delivery.telefones.length} números e faça o seu pedido. Toque no

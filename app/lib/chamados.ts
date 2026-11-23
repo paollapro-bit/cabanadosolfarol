@@ -2,8 +2,8 @@
 // rotas de API do servidor. Tudo aqui é puro (sem rede, sem DOM) para ser testado direto.
 
 export const UNIDADES = [
-  { id: 'sao-luis', nome: 'São Luís' },
-  { id: 'imperatriz', nome: 'Imperatriz' },
+  { id: 'litoranea', nome: 'Litorânea' },
+  { id: 'ponta-do-farol', nome: 'Ponta do Farol' },
 ] as const
 
 export type UnidadeId = (typeof UNIDADES)[number]['id']
@@ -113,7 +113,7 @@ export function validarNovoChamado(corpo: unknown): Validacao {
   }
   const { unidade, mesa, tipo, mensagem } = corpo as Record<string, unknown>
   if (!ehUnidade(unidade)) {
-    return { ok: false, erro: 'Escolha a unidade: São Luís ou Imperatriz.' }
+    return { ok: false, erro: 'Escolha a unidade: Litorânea ou Ponta do Farol.' }
   }
   const numeroMesa = lerMesa(mesa)
   if (numeroMesa === null) {
