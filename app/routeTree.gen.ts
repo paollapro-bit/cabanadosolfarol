@@ -10,16 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CardapioRouteImport } from './routes/cardapio'
+import { Route as DeliveryRouteImport } from './routes/delivery'
 import { Route as DuvidasRouteImport } from './routes/duvidas'
 import { Route as ReservasRouteImport } from './routes/reservas'
 import { Route as UnidadesRouteImport } from './routes/unidades'
 import { Route as EquipeIndexRouteImport } from './routes/equipe.index'
+import { Route as EquipeCardapioRouteImport } from './routes/equipe.cardapio'
 import { Route as EquipeReservasRouteImport } from './routes/equipe.reservas'
 import { Route as EquipeSaloesRouteImport } from './routes/equipe.saloes'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CardapioRoute = CardapioRouteImport.update({
+  id: '/cardapio',
+  path: '/cardapio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeliveryRoute = DeliveryRouteImport.update({
+  id: '/delivery',
+  path: '/delivery',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DuvidasRoute = DuvidasRouteImport.update({
@@ -42,6 +55,11 @@ const EquipeIndexRoute = EquipeIndexRouteImport.update({
   path: '/equipe/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EquipeCardapioRoute = EquipeCardapioRouteImport.update({
+  id: '/equipe/cardapio',
+  path: '/equipe/cardapio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EquipeReservasRoute = EquipeReservasRouteImport.update({
   id: '/equipe/reservas',
   path: '/equipe/reservas',
@@ -55,18 +73,24 @@ const EquipeSaloesRoute = EquipeSaloesRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cardapio': typeof CardapioRoute
+  '/delivery': typeof DeliveryRoute
   '/duvidas': typeof DuvidasRoute
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
+  '/equipe/cardapio': typeof EquipeCardapioRoute
   '/equipe/reservas': typeof EquipeReservasRoute
   '/equipe/saloes': typeof EquipeSaloesRoute
   '/equipe/': typeof EquipeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cardapio': typeof CardapioRoute
+  '/delivery': typeof DeliveryRoute
   '/duvidas': typeof DuvidasRoute
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
+  '/equipe/cardapio': typeof EquipeCardapioRoute
   '/equipe/reservas': typeof EquipeReservasRoute
   '/equipe/saloes': typeof EquipeSaloesRoute
   '/equipe': typeof EquipeIndexRoute
@@ -74,9 +98,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cardapio': typeof CardapioRoute
+  '/delivery': typeof DeliveryRoute
   '/duvidas': typeof DuvidasRoute
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
+  '/equipe/cardapio': typeof EquipeCardapioRoute
   '/equipe/reservas': typeof EquipeReservasRoute
   '/equipe/saloes': typeof EquipeSaloesRoute
   '/equipe/': typeof EquipeIndexRoute
@@ -85,27 +112,36 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cardapio'
+    | '/delivery'
     | '/duvidas'
     | '/reservas'
     | '/unidades'
+    | '/equipe/cardapio'
     | '/equipe/reservas'
     | '/equipe/saloes'
     | '/equipe/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cardapio'
+    | '/delivery'
     | '/duvidas'
     | '/reservas'
     | '/unidades'
+    | '/equipe/cardapio'
     | '/equipe/reservas'
     | '/equipe/saloes'
     | '/equipe'
   id:
     | '__root__'
     | '/'
+    | '/cardapio'
+    | '/delivery'
     | '/duvidas'
     | '/reservas'
     | '/unidades'
+    | '/equipe/cardapio'
     | '/equipe/reservas'
     | '/equipe/saloes'
     | '/equipe/'
@@ -113,9 +149,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CardapioRoute: typeof CardapioRoute
+  DeliveryRoute: typeof DeliveryRoute
   DuvidasRoute: typeof DuvidasRoute
   ReservasRoute: typeof ReservasRoute
   UnidadesRoute: typeof UnidadesRoute
+  EquipeCardapioRoute: typeof EquipeCardapioRoute
   EquipeReservasRoute: typeof EquipeReservasRoute
   EquipeSaloesRoute: typeof EquipeSaloesRoute
   EquipeIndexRoute: typeof EquipeIndexRoute
@@ -128,6 +167,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cardapio': {
+      id: '/cardapio'
+      path: '/cardapio'
+      fullPath: '/cardapio'
+      preLoaderRoute: typeof CardapioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/delivery': {
+      id: '/delivery'
+      path: '/delivery'
+      fullPath: '/delivery'
+      preLoaderRoute: typeof DeliveryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/duvidas': {
@@ -158,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EquipeIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/equipe/cardapio': {
+      id: '/equipe/cardapio'
+      path: '/equipe/cardapio'
+      fullPath: '/equipe/cardapio'
+      preLoaderRoute: typeof EquipeCardapioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/equipe/reservas': {
       id: '/equipe/reservas'
       path: '/equipe/reservas'
@@ -177,9 +237,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CardapioRoute: CardapioRoute,
+  DeliveryRoute: DeliveryRoute,
   DuvidasRoute: DuvidasRoute,
   ReservasRoute: ReservasRoute,
   UnidadesRoute: UnidadesRoute,
+  EquipeCardapioRoute: EquipeCardapioRoute,
   EquipeReservasRoute: EquipeReservasRoute,
   EquipeSaloesRoute: EquipeSaloesRoute,
   EquipeIndexRoute: EquipeIndexRoute,

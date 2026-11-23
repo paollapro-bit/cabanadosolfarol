@@ -51,9 +51,10 @@ function Documento({ children }: { children: ReactNode }) {
 }
 
 const NAVEGACAO = [
-  { to: '/', rotulo: 'Atendimento', icone: '🛎️' },
+  { to: '/', rotulo: 'Mesa', icone: '🛎️' },
+  { to: '/cardapio', rotulo: 'Cardápio', icone: '📖' },
+  { to: '/delivery', rotulo: 'Delivery', icone: '🛵' },
   { to: '/reservas', rotulo: 'Reservas', icone: '📅' },
-  { to: '/duvidas', rotulo: 'Dúvidas', icone: '❓' },
   { to: '/unidades', rotulo: 'Unidades', icone: '📍' },
 ] as const
 
@@ -117,6 +118,7 @@ function Conteudo() {
       <Outlet />
       <footer className="rodape">
         <p>Cabana do Sol · Desde 1994 · São Luís e Imperatriz</p>
+        <Link to="/duvidas">Dúvidas frequentes</Link>
         <Link to="/equipe">Área da equipe</Link>
       </footer>
     </main>

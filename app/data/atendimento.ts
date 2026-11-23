@@ -11,8 +11,6 @@ export interface Unidade {
   horario: string | null
   /** Somente dígitos, com DDD. Ex.: "9833334444". */
   telefone: string | null
-  /** Somente dígitos, com DDI e DDD. Ex.: "5598999998888". */
-  whatsapp: string | null
 }
 
 export const unidades: Unidade[] = [
@@ -22,7 +20,6 @@ export const unidades: Unidade[] = [
     endereco: null,
     horario: null,
     telefone: null,
-    whatsapp: null,
   },
   {
     id: 'imperatriz',
@@ -30,9 +27,67 @@ export const unidades: Unidade[] = [
     endereco: null,
     horario: null,
     telefone: null,
-    whatsapp: null,
   },
 ]
+
+export interface Canal {
+  id: string
+  titulo: string
+  descricao: string
+  /** Endereço exatamente como o restaurante forneceu. */
+  url: string
+  /** Sem unidade: vale para o restaurante como um todo. */
+  unidade?: UnidadeId
+  /** Aparece também na tela de reserva de salões. */
+  reservas?: boolean
+}
+
+export const canais: Canal[] = [
+  {
+    id: 'reservas-sao-luis',
+    titulo: 'Reservas pelo WhatsApp',
+    descricao: 'Fale com a equipe de reservas do Cabana do Sol em São Luís.',
+    url: 'https://wa.me/5598984043566?text=Ol%C3%A1%2C%20Cabana%20do%20Sol%2C%20gostaria%20de%20informa%C3%A7%C3%B5es%20%E2%98%80%EF%B8%8F',
+    unidade: 'sao-luis',
+    reservas: true,
+  },
+  {
+    id: 'padaria',
+    titulo: 'Pedidos da padaria',
+    descricao: 'Faça o seu pedido da padaria pelo WhatsApp.',
+    url: 'https://api.whatsapp.com/send/?phone=9884041002&text&type=phone_number&app_absent=0',
+  },
+  {
+    id: 'delivery',
+    titulo: 'Aplicativo de delivery',
+    descricao: 'Veja o cardápio de entrega e peça para receber em casa.',
+    url: 'https://deliveryapp.neemo.com.br/delivery/15693/menu',
+  },
+]
+
+/** Frase para a voz: lista os canais sem ler os endereços. */
+export function fraseDosCanais(lista: Canal[]) {
+  return lista.map((c) => `${c.titulo}: ${c.descricao}`).join(' ')
+}
+
+/**
+ * Central de delivery de São Luís, conforme o post do Instagram @cabanadosol.
+ * O post traz os números sem DDD; 98 é o DDD de São Luís.
+ */
+export const delivery = {
+  unidade: 'sao-luis' as UnidadeId,
+  ddd: '98',
+  telefones: [
+    '32352586',
+    '32276270',
+    '32277597',
+    '33044235',
+    '38777761',
+    '33037761',
+    '991165457',
+    '991164736',
+  ],
+}
 
 export interface Duvida {
   id: string

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { BotaoOuvir, useAcessibilidade } from '~/components/Acessibilidade'
+import { ListaDeCanais } from '~/components/Canais'
+import { canais } from '~/data/atendimento'
 import {
   cancelarReserva,
   consultarReserva,
@@ -160,6 +162,7 @@ function Reservas() {
   }
 
   const visiveis = minhas.filter((i) => i.reserva)
+  const canaisDeReserva = canais.filter((c) => c.reservas && c.unidade === unidade)
   const dataValida = ehData(data) && data >= hoje
 
   return (
@@ -289,6 +292,12 @@ function Reservas() {
             Os salões de {nomeUnidade(unidade)} ainda não foram cadastrados. Para reservar, fale com a
             equipe do restaurante.
           </p>
+        )}
+        {canaisDeReserva.length > 0 && (
+          <>
+            <p className="dica">Prefere falar com uma pessoa? A equipe de reservas atende por aqui:</p>
+            <ListaDeCanais canais={canaisDeReserva} />
+          </>
         )}
         <ul className="lista">
           {saloes?.map((salao) => {

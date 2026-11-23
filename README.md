@@ -29,6 +29,17 @@ The first thing built in this repository is the guest service hub, not the menu:
   `?unidade=sao-luis&mesa=12` from a table QR code) and calls a waiter, asks for
   the bill, asks for accessibility help or sends a short request. The call's
   status (aguardando → a caminho → atendido) is polled, shown and announced.
+- External channels (reservations WhatsApp for São Luís, bakery orders, delivery
+  app) are listed in `canais` in `app/data/atendimento.ts` and shown on the home,
+  units and reservations screens.
+- `/delivery` — São Luís delivery line: the 8 numbers from the @cabanadosol
+  Instagram post (DDD 98 assumed; the post shows none), plus the bakery and
+  delivery-app links.
+- `/cardapio` — the visual menu, embedded live from Canva. Staff paste the
+  Canva embed code once at `/equipe/cardapio`; Canva keeps the embed on the
+  latest version, so edits in Canva show up with no redeploy. The page warns
+  screen-reader users up front that this menu is an image and offers help at
+  the table or by phone instead — the spoken text menu is still Milestone 1.
 - `/duvidas` — frequently asked questions, each with an "Ouvir" button.
 - `/unidades` — units and contacts. **Address, hours, phone and WhatsApp are
   `null` in `app/data/atendimento.ts` until the restaurant confirms them**; the

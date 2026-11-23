@@ -68,3 +68,9 @@ currently renders the central.
   booking. Keep it if the storage changes.
 - **Staff requests can answer late.** `falha` ignores errors from a previous
   staff code so a stale 401 cannot log out a valid session.
+- **The Canva menu is an embed, not data.** `app/lib/cardapio.ts` only parses
+  the embed code staff paste; nothing reads the design's text at runtime. Keep
+  the screen-reader warning on `/cardapio` until the spoken menu exists.
+- **Bottom nav has five tabs** and its labels are capped with
+  `min(0.75rem, 3.3vw)` so they fit at 320 px with large text. Check that width
+  before adding or renaming a tab.

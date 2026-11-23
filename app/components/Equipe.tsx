@@ -38,6 +38,7 @@ const SECOES = [
   { to: '/equipe', rotulo: 'Chamados' },
   { to: '/equipe/reservas', rotulo: 'Reservas' },
   { to: '/equipe/saloes', rotulo: 'Salões' },
+  { to: '/equipe/cardapio', rotulo: 'Cardápio' },
 ] as const
 
 /** Moldura das telas da equipe: pede o código, escolhe a unidade e navega entre as seções. */

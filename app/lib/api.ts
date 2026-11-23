@@ -1,4 +1,5 @@
 import type { Chamado, NovoChamado, UnidadeId } from './chamados'
+import type { CardapioCanva } from './cardapio'
 import type { DadosDoSalao, NovaReserva, Ocupacao, Reserva, Salao, StatusReserva } from './reservas'
 
 export class ErroDeApi extends Error {
@@ -152,6 +153,25 @@ export async function enviarFoto(salaoId: string, arquivo: Blob, descricao: stri
 
 export function removerFoto(salaoId: string, fotoId: string, pin: string) {
   return pedir<{ salao: Salao }>(`/api/equipe/saloes?id=${salaoId}&foto=${fotoId}`, {
+    method: 'DELETE',
+    headers: { 'x-equipe-pin': pin },
+  })
+}
+
+export function lerCardapio() {
+  return pedir<{ cardapio: CardapioCanva | null }>('/api/cardapio')
+}
+
+export function salvarCardapio(link: string, pin: string) {
+  return pedir<{ cardapio: CardapioCanva }>('/api/cardapio', {
+    method: 'PUT',
+    headers: { ...JSON_HEADERS, 'x-equipe-pin': pin },
+    body: JSON.stringify({ link }),
+  })
+}
+
+export function removerCardapio(pin: string) {
+  return pedir<{ cardapio: null }>('/api/cardapio', {
     method: 'DELETE',
     headers: { 'x-equipe-pin': pin },
   })

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { BotaoOuvir, useAcessibilidade } from '~/components/Acessibilidade'
+import { ListaDeCanais } from '~/components/Canais'
+import { canais } from '~/data/atendimento'
 import {
   abrirChamado,
   cancelarChamado,
@@ -323,6 +325,11 @@ function Atendimento() {
           </button>
         </form>
         {erro?.campo === 'geral' && <p className="erro">{erro.texto}</p>}
+      </section>
+
+      <section aria-labelledby="titulo-canais">
+        <h2 id="titulo-canais">Outros canais</h2>
+        <ListaDeCanais canais={canais} />
       </section>
     </div>
   )

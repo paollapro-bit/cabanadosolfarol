@@ -1,6 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { BotaoOuvir } from '~/components/Acessibilidade'
-import { unidades, type Unidade } from '~/data/atendimento'
+import { ListaDeCanais } from '~/components/Canais'
+import { canais, fraseDosCanais, unidades, type Unidade } from '~/data/atendimento'
 
 export const Route = createFileRoute('/unidades')({
   head: () => ({ meta: [{ title: 'Unidades e contatos · Cabana do Sol' }] }),
@@ -22,7 +23,8 @@ function fraseDaUnidade(u: Unidade) {
   if (u.endereco) partes.push(`Endereço: ${u.endereco}.`)
   if (u.horario) partes.push(`Horário: ${u.horario}.`)
   if (u.telefone) partes.push(`Telefone: ${telefoneFalado(u.telefone)}.`)
-  if (u.whatsapp) partes.push('Também atende por WhatsApp.')
+  const daUnidade = canais.filter((c) => c.unidade === u.id)
+  if (daUnidade.length) partes.push(fraseDosCanais(daUnidade))
   if (partes.length === 1) {
     partes.push(
       'Endereço, horário e telefone ainda não foram cadastrados. Se você está no restaurante, use a tela Atendimento para chamar a equipe.',
@@ -30,6 +32,8 @@ function fraseDaUnidade(u: Unidade) {
   }
   return partes.join(' ')
 }
+
+const gerais = canais.filter((c) => !c.unidade)
 
 function Unidades() {
   return (
@@ -41,7 +45,8 @@ function Unidades() {
       </section>
       <ul className="lista">
         {unidades.map((u) => {
-          const semDados = !u.endereco && !u.horario && !u.telefone && !u.whatsapp
+          const semDados = !u.endereco && !u.horario && !u.telefone
+          const daUnidade = canais.filter((c) => c.unidade === u.id)
           return (
             <li key={u.id}>
               <article className="cartao">
@@ -72,21 +77,11 @@ function Unidades() {
                     )}
                   </dl>
                 )}
+                {daUnidade.length > 0 && <ListaDeCanais canais={daUnidade} />}
                 <div className="acoes">
                   {u.telefone && (
                     <a className="botao botao-principal" href={`tel:+55${u.telefone}`}>
                       Ligar para {u.nome}
-                    </a>
-                  )}
-                  {u.whatsapp && (
-                    <a
-                      className="botao botao-linha"
-                      href={`https://wa.me/${u.whatsapp}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      WhatsApp de {u.nome}
-                      <span className="sr-only"> (abre em outra aba)</span>
                     </a>
                   )}
                   <BotaoOuvir texto={fraseDaUnidade(u)} rotulo={`Ouvir ${u.nome}`} />
@@ -99,6 +94,13 @@ function Unidades() {
           )
         })}
       </ul>
+      <section aria-labelledby="titulo-canais">
+        <h2 id="titulo-canais">Peça de casa</h2>
+        <ListaDeCanais canais={gerais} />
+        <div className="acoes">
+          <BotaoOuvir texto={fraseDosCanais(gerais)} rotulo="Ouvir os canais" />
+        </div>
+      </section>
     </div>
   )
 }

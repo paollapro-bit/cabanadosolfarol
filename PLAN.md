@@ -15,6 +15,10 @@ Also built: salão reservations (`/reservas`), with staff screens to register
 salões with photos (`/equipe/saloes`) and to confirm requests
 (`/equipe/reservas`).
 
+Also built: delivery line (`/delivery`) and the Canva-embedded visual menu
+(`/cardapio`, configured at `/equipe/cardapio`). The embed is images only, so
+Milestone 1's spoken text menu is still needed for blind guests.
+
 Open items: register the real salões and photos through the staff panel; move
 salões and reservations from Blobs to Netlify DB in Milestone 3; fill in the real unit contacts in `app/data/atendimento.ts`;
 replace the shared staff code with the Netlify Identity login of Milestone 4.
