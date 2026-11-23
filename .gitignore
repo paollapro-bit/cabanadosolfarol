@@ -5,3 +5,6 @@ dist
 .env
 .env.*
 *.local
+.wrangler
+.dev.vars
+worker-configuration.d.ts

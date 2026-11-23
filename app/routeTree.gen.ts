@@ -15,10 +15,18 @@ import { Route as DeliveryRouteImport } from './routes/delivery'
 import { Route as DuvidasRouteImport } from './routes/duvidas'
 import { Route as ReservasRouteImport } from './routes/reservas'
 import { Route as UnidadesRouteImport } from './routes/unidades'
+import { Route as ApiCardapioRouteImport } from './routes/api/cardapio'
+import { Route as ApiChamadosRouteImport } from './routes/api/chamados'
+import { Route as ApiReservasRouteImport } from './routes/api/reservas'
+import { Route as ApiSaloesRouteImport } from './routes/api/saloes'
 import { Route as EquipeIndexRouteImport } from './routes/equipe.index'
 import { Route as EquipeCardapioRouteImport } from './routes/equipe.cardapio'
 import { Route as EquipeReservasRouteImport } from './routes/equipe.reservas'
 import { Route as EquipeSaloesRouteImport } from './routes/equipe.saloes'
+import { Route as ApiEquipeChamadosRouteImport } from './routes/api/equipe.chamados'
+import { Route as ApiEquipeReservasRouteImport } from './routes/api/equipe.reservas'
+import { Route as ApiEquipeSaloesRouteImport } from './routes/api/equipe.saloes'
+import { Route as ApiFotosIdRouteImport } from './routes/api/fotos.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -50,6 +58,26 @@ const UnidadesRoute = UnidadesRouteImport.update({
   path: '/unidades',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCardapioRoute = ApiCardapioRouteImport.update({
+  id: '/api/cardapio',
+  path: '/api/cardapio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiChamadosRoute = ApiChamadosRouteImport.update({
+  id: '/api/chamados',
+  path: '/api/chamados',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiReservasRoute = ApiReservasRouteImport.update({
+  id: '/api/reservas',
+  path: '/api/reservas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSaloesRoute = ApiSaloesRouteImport.update({
+  id: '/api/saloes',
+  path: '/api/saloes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EquipeIndexRoute = EquipeIndexRouteImport.update({
   id: '/equipe/',
   path: '/equipe/',
@@ -70,6 +98,26 @@ const EquipeSaloesRoute = EquipeSaloesRouteImport.update({
   path: '/equipe/saloes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiEquipeChamadosRoute = ApiEquipeChamadosRouteImport.update({
+  id: '/api/equipe/chamados',
+  path: '/api/equipe/chamados',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiEquipeReservasRoute = ApiEquipeReservasRouteImport.update({
+  id: '/api/equipe/reservas',
+  path: '/api/equipe/reservas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiEquipeSaloesRoute = ApiEquipeSaloesRouteImport.update({
+  id: '/api/equipe/saloes',
+  path: '/api/equipe/saloes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiFotosIdRoute = ApiFotosIdRouteImport.update({
+  id: '/api/fotos/$id',
+  path: '/api/fotos/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -78,10 +126,18 @@ export interface FileRoutesByFullPath {
   '/duvidas': typeof DuvidasRoute
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
+  '/api/cardapio': typeof ApiCardapioRoute
+  '/api/chamados': typeof ApiChamadosRoute
+  '/api/reservas': typeof ApiReservasRoute
+  '/api/saloes': typeof ApiSaloesRoute
   '/equipe/cardapio': typeof EquipeCardapioRoute
   '/equipe/reservas': typeof EquipeReservasRoute
   '/equipe/saloes': typeof EquipeSaloesRoute
   '/equipe/': typeof EquipeIndexRoute
+  '/api/equipe/chamados': typeof ApiEquipeChamadosRoute
+  '/api/equipe/reservas': typeof ApiEquipeReservasRoute
+  '/api/equipe/saloes': typeof ApiEquipeSaloesRoute
+  '/api/fotos/$id': typeof ApiFotosIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -90,10 +146,18 @@ export interface FileRoutesByTo {
   '/duvidas': typeof DuvidasRoute
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
+  '/api/cardapio': typeof ApiCardapioRoute
+  '/api/chamados': typeof ApiChamadosRoute
+  '/api/reservas': typeof ApiReservasRoute
+  '/api/saloes': typeof ApiSaloesRoute
   '/equipe/cardapio': typeof EquipeCardapioRoute
   '/equipe/reservas': typeof EquipeReservasRoute
   '/equipe/saloes': typeof EquipeSaloesRoute
   '/equipe': typeof EquipeIndexRoute
+  '/api/equipe/chamados': typeof ApiEquipeChamadosRoute
+  '/api/equipe/reservas': typeof ApiEquipeReservasRoute
+  '/api/equipe/saloes': typeof ApiEquipeSaloesRoute
+  '/api/fotos/$id': typeof ApiFotosIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -103,10 +167,18 @@ export interface FileRoutesById {
   '/duvidas': typeof DuvidasRoute
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
+  '/api/cardapio': typeof ApiCardapioRoute
+  '/api/chamados': typeof ApiChamadosRoute
+  '/api/reservas': typeof ApiReservasRoute
+  '/api/saloes': typeof ApiSaloesRoute
   '/equipe/cardapio': typeof EquipeCardapioRoute
   '/equipe/reservas': typeof EquipeReservasRoute
   '/equipe/saloes': typeof EquipeSaloesRoute
   '/equipe/': typeof EquipeIndexRoute
+  '/api/equipe/chamados': typeof ApiEquipeChamadosRoute
+  '/api/equipe/reservas': typeof ApiEquipeReservasRoute
+  '/api/equipe/saloes': typeof ApiEquipeSaloesRoute
+  '/api/fotos/$id': typeof ApiFotosIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -117,10 +189,18 @@ export interface FileRouteTypes {
     | '/duvidas'
     | '/reservas'
     | '/unidades'
+    | '/api/cardapio'
+    | '/api/chamados'
+    | '/api/reservas'
+    | '/api/saloes'
     | '/equipe/cardapio'
     | '/equipe/reservas'
     | '/equipe/saloes'
     | '/equipe/'
+    | '/api/equipe/chamados'
+    | '/api/equipe/reservas'
+    | '/api/equipe/saloes'
+    | '/api/fotos/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -129,10 +209,18 @@ export interface FileRouteTypes {
     | '/duvidas'
     | '/reservas'
     | '/unidades'
+    | '/api/cardapio'
+    | '/api/chamados'
+    | '/api/reservas'
+    | '/api/saloes'
     | '/equipe/cardapio'
     | '/equipe/reservas'
     | '/equipe/saloes'
     | '/equipe'
+    | '/api/equipe/chamados'
+    | '/api/equipe/reservas'
+    | '/api/equipe/saloes'
+    | '/api/fotos/$id'
   id:
     | '__root__'
     | '/'
@@ -141,10 +229,18 @@ export interface FileRouteTypes {
     | '/duvidas'
     | '/reservas'
     | '/unidades'
+    | '/api/cardapio'
+    | '/api/chamados'
+    | '/api/reservas'
+    | '/api/saloes'
     | '/equipe/cardapio'
     | '/equipe/reservas'
     | '/equipe/saloes'
     | '/equipe/'
+    | '/api/equipe/chamados'
+    | '/api/equipe/reservas'
+    | '/api/equipe/saloes'
+    | '/api/fotos/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -154,10 +250,18 @@ export interface RootRouteChildren {
   DuvidasRoute: typeof DuvidasRoute
   ReservasRoute: typeof ReservasRoute
   UnidadesRoute: typeof UnidadesRoute
+  ApiCardapioRoute: typeof ApiCardapioRoute
+  ApiChamadosRoute: typeof ApiChamadosRoute
+  ApiReservasRoute: typeof ApiReservasRoute
+  ApiSaloesRoute: typeof ApiSaloesRoute
   EquipeCardapioRoute: typeof EquipeCardapioRoute
   EquipeReservasRoute: typeof EquipeReservasRoute
   EquipeSaloesRoute: typeof EquipeSaloesRoute
   EquipeIndexRoute: typeof EquipeIndexRoute
+  ApiEquipeChamadosRoute: typeof ApiEquipeChamadosRoute
+  ApiEquipeReservasRoute: typeof ApiEquipeReservasRoute
+  ApiEquipeSaloesRoute: typeof ApiEquipeSaloesRoute
+  ApiFotosIdRoute: typeof ApiFotosIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -204,6 +308,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UnidadesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/cardapio': {
+      id: '/api/cardapio'
+      path: '/api/cardapio'
+      fullPath: '/api/cardapio'
+      preLoaderRoute: typeof ApiCardapioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/chamados': {
+      id: '/api/chamados'
+      path: '/api/chamados'
+      fullPath: '/api/chamados'
+      preLoaderRoute: typeof ApiChamadosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/reservas': {
+      id: '/api/reservas'
+      path: '/api/reservas'
+      fullPath: '/api/reservas'
+      preLoaderRoute: typeof ApiReservasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/saloes': {
+      id: '/api/saloes'
+      path: '/api/saloes'
+      fullPath: '/api/saloes'
+      preLoaderRoute: typeof ApiSaloesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/equipe/': {
       id: '/equipe/'
       path: '/equipe'
@@ -232,6 +364,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EquipeSaloesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/equipe/chamados': {
+      id: '/api/equipe/chamados'
+      path: '/api/equipe/chamados'
+      fullPath: '/api/equipe/chamados'
+      preLoaderRoute: typeof ApiEquipeChamadosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/equipe/reservas': {
+      id: '/api/equipe/reservas'
+      path: '/api/equipe/reservas'
+      fullPath: '/api/equipe/reservas'
+      preLoaderRoute: typeof ApiEquipeReservasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/equipe/saloes': {
+      id: '/api/equipe/saloes'
+      path: '/api/equipe/saloes'
+      fullPath: '/api/equipe/saloes'
+      preLoaderRoute: typeof ApiEquipeSaloesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/fotos/$id': {
+      id: '/api/fotos/$id'
+      path: '/api/fotos/$id'
+      fullPath: '/api/fotos/$id'
+      preLoaderRoute: typeof ApiFotosIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -242,10 +402,18 @@ const rootRouteChildren: RootRouteChildren = {
   DuvidasRoute: DuvidasRoute,
   ReservasRoute: ReservasRoute,
   UnidadesRoute: UnidadesRoute,
+  ApiCardapioRoute: ApiCardapioRoute,
+  ApiChamadosRoute: ApiChamadosRoute,
+  ApiReservasRoute: ApiReservasRoute,
+  ApiSaloesRoute: ApiSaloesRoute,
   EquipeCardapioRoute: EquipeCardapioRoute,
   EquipeReservasRoute: EquipeReservasRoute,
   EquipeSaloesRoute: EquipeSaloesRoute,
   EquipeIndexRoute: EquipeIndexRoute,
+  ApiEquipeChamadosRoute: ApiEquipeChamadosRoute,
+  ApiEquipeReservasRoute: ApiEquipeReservasRoute,
+  ApiEquipeSaloesRoute: ApiEquipeSaloesRoute,
+  ApiFotosIdRoute: ApiFotosIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

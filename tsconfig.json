@@ -3,16 +3,33 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "jsx": "react-jsx",
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
-    "types": ["vite/client", "node"],
+    "types": [
+      "vite/client",
+      "node"
+    ],
     "baseUrl": ".",
-    "paths": { "~/*": ["./app/*"] }
+    "paths": {
+      "~/*": [
+        "./app/*"
+      ]
+    }
   },
-  "include": ["app", "netlify", "tests", "vite.config.ts"]
+  "include": [
+    "app",
+    "tests",
+    "vite.config.ts",
+    "worker-configuration.d.ts",
+    "vitest.config.ts"
+  ]
 }

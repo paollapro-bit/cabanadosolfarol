@@ -20,8 +20,8 @@ Also built: delivery line (`/delivery`) and the Canva-embedded visual menu
 Milestone 1's spoken text menu is still needed for blind guests.
 
 Open items: register the real salões and photos through the staff panel; move
-salões and reservations from Blobs to Netlify DB in Milestone 3; fill in the real unit contacts in `app/data/atendimento.ts`;
-replace the shared staff code with the Netlify Identity login of Milestone 4.
+salões and reservations to proper D1 tables in Milestone 3; fill in the real unit contacts in `app/data/atendimento.ts`;
+replace the shared staff code with the real login of Milestone 4.
 
 ## Milestone 1 — The spoken menu surface
 
@@ -56,16 +56,16 @@ finished before any database exists.
 
 ## Milestone 3 — The managed catalog
 
-- Netlify DB schema in `db/schema.ts`: `categories` (name, note, sort order) and
+- D1 schema (the app now runs on Cloudflare Workers): `categories` (name, note, sort order) and
   `items` (category, code, name, description, price in cents, service type, unit
   count, options text, optional pre-written spoken text, active flag).
-- Seed from the Milestone 1 fixture, then read the catalog through a Netlify
+- Seed from the Milestone 1 fixture, then read the catalog through a server
   function so menu changes no longer require a deploy.
 - Keep prices as integer cents end to end — the spoken formatter depends on it.
 
 ## Milestone 4 — Staff admin area
 
-- Netlify Identity login gating `/admin`, restricted to the admin role.
+- A real staff login (e.g. Cloudflare Access) gating `/equipe`, replacing the shared code.
 - Create and edit categories and dishes, reorder them, and toggle a dish
   inactive when it is off the menu for the day.
 - Per-dish override of the spoken text, so staff can fix a pronunciation

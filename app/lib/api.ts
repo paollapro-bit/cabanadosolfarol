@@ -22,7 +22,7 @@ async function pedir<T>(url: string, init?: RequestInit): Promise<T> {
   } catch {
     throw new ErroDeApi(SEM_CONEXAO, 0)
   }
-  const corpo = await resposta.json().catch(() => null)
+  const corpo = (await resposta.json().catch(() => null)) as { erro?: string; campo?: string } | null
   if (!resposta.ok) {
     throw new ErroDeApi(corpo?.erro ?? SEM_CONEXAO, resposta.status, corpo?.campo)
   }

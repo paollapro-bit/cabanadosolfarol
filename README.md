@@ -47,8 +47,8 @@ The first thing built in this repository is the guest service hub, not the menu:
   `null` in `app/data/atendimento.ts` until the restaurant confirms them**; the
   page says so instead of showing unverified data.
 - `/equipe` — staff panel listing open calls per unit, protected by a shared
-  code. Set the `EQUIPE_PIN` environment variable on the Netlify site (Functions
-  scope) and redeploy; without it the panel answers "not configured".
+  code. Set it with `npx wrangler secret put EQUIPE_PIN`; without it the panel
+  answers "not configured".
 
 - `/reservas` — the guest picks unit, date and period (almoço / jantar), sees
   each salão with its capacity, description and photos, and sends a reservation
@@ -60,29 +60,45 @@ The first thing built in this repository is the guest service hub, not the menu:
   upload up to 8 photos. Every photo needs a description; it is the `alt` text
   and what blind guests hear. No salão ships in the code — the list starts empty.
 
-Calls, salões, reservations and photos are stored in Netlify Blobs (one store per deploy context) through
-the functions in `netlify/functions/`. Reservations hold a name and phone, so
+Calls, salões, reservations and the menu link are JSON documents in Cloudflare
+**D1**; salão photos are in Cloudflare **KV**. The API is TanStack Start server
+routes under `app/routes/api/`, backed by `app/server/`. Reservations hold a name and phone, so
 they are readable only with the per-reservation secret or the staff code, and
 are deleted 30 days after their date.
 
-## Planned technologies
+## Technologies
 
-- **TanStack Start** on Netlify (scaffolded from the Netlify `marketing` template)
+- **TanStack Start** on **Cloudflare Workers** (`@cloudflare/vite-plugin`), with
+  D1 and KV bindings declared in `wrangler.jsonc`
 - **Tailwind CSS**, Atkinson Hyperlegible typeface, dark / high-contrast / large-text modes
 - **Web Speech API** — `SpeechSynthesis` for reading, `SpeechRecognition` for voice search
-- **Netlify DB (Postgres) + Drizzle ORM** for the editable catalog
-- **Netlify Identity** for the restaurant's admin area
+- Planned: a relational catalog in D1 and a real staff login (Milestones 3–4)
 
 ## Running locally
 
 ```bash
 npm install
-EQUIPE_PIN=1234 npm run dev   # http://localhost:8889, Netlify emulation included
-npm test                      # unit tests for the call rules
+echo EQUIPE_PIN=1234 > .dev.vars
+npm run dev    # http://localhost:8889, runs inside workerd with local D1 and KV
+npm test       # unit tests for the pure rules in app/lib
 ```
+
+## Deploying to Cloudflare
+
+Once, create the resources and put their ids in `wrangler.jsonc` (the committed
+ids are local placeholders):
+
+```bash
+npx wrangler d1 create cabana-do-sol
+npx wrangler kv namespace create FOTOS
+npx wrangler secret put EQUIPE_PIN
+```
+
+Then `npm run deploy`. The `documentos` table is created on first use, so there
+is no migration step.
 
 ## Roadmap
 
 `PLAN.md` breaks the product into five milestones: the spoken menu surface,
-voice search, the managed catalog in Netlify DB, the staff admin area, and the
+voice search, the managed catalog in a database, the staff admin area, and the
 in-venue rollout (QR codes, offline support, accessibility audit).

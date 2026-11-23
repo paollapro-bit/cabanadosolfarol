@@ -1,5 +1,5 @@
 // Regras dos chamados de atendimento, compartilhadas entre o navegador e as
-// funções Netlify. Tudo aqui é puro (sem rede, sem DOM) para ser testado direto.
+// rotas de API do servidor. Tudo aqui é puro (sem rede, sem DOM) para ser testado direto.
 
 export const UNIDADES = [
   { id: 'sao-luis', nome: 'São Luís' },

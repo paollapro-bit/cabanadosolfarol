@@ -10,8 +10,9 @@ currently renders the central.
 
 ## Intended architecture
 
-- TanStack Start app on Netlify, scaffolded from the Netlify `marketing`
-  template. The index route must render the menu itself, never template copy.
+- TanStack Start app on **Cloudflare Workers** (moved from Netlify at the
+  owner's request; it is the platform their other apps use). `wrangler.jsonc`
+  declares the D1 (`DB`) and KV (`FOTOS`) bindings and `EQUIPE_PIN` secret.
 - `app/data/catalog.ts` — the menu fixture: `categories` and `items`, typed, in
   one module so Milestone 3 can swap it for a database read behind the same
   shape. Do not scatter menu content through components.
@@ -26,13 +27,16 @@ currently renders the central.
   not add other live regions.
 - `app/lib/reservas.ts` — pure rules for salões and reservations (validation,
   dates in the Maranhão time zone, status transitions, spoken phrases), covered
-  by `tests/reservas.test.ts`. Storage helpers are in `netlify/lib/reservas.ts`.
+  by `tests/reservas.test.ts`. Storage helpers are in `app/server/reservas.ts`.
 - `app/components/Equipe.tsx` — frame for every `/equipe/*` screen (staff code,
   unit, section tabs). Report API errors through its `falha`.
-- `netlify/functions/chamados.ts`, `equipe-chamados.ts` — the calls API, stored
-  in Netlify Blobs via `netlify/lib/armazenamento.ts`.
-- `db/schema.ts` — Drizzle schema, from Milestone 3 onward.
-- `netlify/functions/` — catalog read and admin mutations, from Milestone 3.
+- `app/routes/api/*` — the API, as TanStack Start server routes
+  (`server.handlers`). Server-only code lives in `app/server/` and reads
+  bindings via `import { env } from 'cloudflare:workers'`; never import it from
+  a component.
+- `app/server/armazenamento.ts` — `colecao(nome)`: JSON documents in one D1
+  table (`documentos`, created on first use), with an atomic `soSeNovo` write.
+  Photos go to KV.
 
 ## Conventions and non-obvious decisions
 
@@ -59,13 +63,13 @@ currently renders the central.
   are not spoken to twice; "Ouvir" buttons always speak.
 - **Load-then-save effects use a `carregado` state, not a ref.** Dev StrictMode
   re-runs effects, and a ref lets the defaults overwrite `localStorage`.
-- **Photos are uploaded as base64 inside JSON**, not multipart or raw bodies:
-  the local Netlify emulation truncates binary request bodies.
+- **Photos are uploaded as base64 inside JSON**, not multipart or raw bodies
+  (the old Netlify emulation truncated binary bodies; kept for simplicity).
 - **Every salão photo requires a description** (server-enforced); it is the
   `alt` text and part of the spoken description.
-- **A confirmed reservation takes an `ocupacao/<salão>/<data>/<período>` key
-  written with `onlyIfNew`** — that atomic write is what prevents double
-  booking. Keep it if the storage changes.
+- **A confirmed reservation takes an `ocupacao` key `<salão>/<data>/<período>`
+  written with `soSeNovo`** (`INSERT … ON CONFLICT DO NOTHING`) — that atomic
+  write is what prevents double booking. Keep it if the storage changes.
 - **Staff requests can answer late.** `falha` ignores errors from a previous
   staff code so a stale 401 cannot log out a valid session.
 - **The Canva menu is an embed, not data.** `app/lib/cardapio.ts` only parses
@@ -74,3 +78,5 @@ currently renders the central.
 - **Bottom nav has five tabs** and its labels are capped with
   `min(0.75rem, 3.3vw)` so they fit at 320 px with large text. Check that width
   before adding or renaming a tab.
+- **Tests use `vitest.config.ts`, not `vite.config.ts`:** the Cloudflare plugin
+  cannot start under vitest, and the tests only cover pure `app/lib` code.

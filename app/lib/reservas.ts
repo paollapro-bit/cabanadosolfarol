@@ -1,5 +1,5 @@
 // Regras dos salões e das reservas, compartilhadas entre o navegador e as
-// funções Netlify. Tudo puro (sem rede, sem DOM) para ser testado direto.
+// rotas de API do servidor. Tudo puro (sem rede, sem DOM) para ser testado direto.
 import { ehUnidade, nomeUnidade, type UnidadeId } from './chamados'
 
 export const PERIODOS = [

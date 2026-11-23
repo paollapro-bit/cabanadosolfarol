@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cabana-do-sol",
+  "main": "@tanstack/react-start/server-entry",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  // Chamados, reservas, salões e o link do cardápio (documentos JSON).
+  "d1_databases": [
+    { "binding": "DB", "database_name": "cabana-do-sol", "database_id": "local-cabana-do-sol" }
+  ],
+  // Fotos dos salões.
+  "kv_namespaces": [{ "binding": "FOTOS", "id": "local-cabana-do-sol-fotos" }]
+  // EQUIPE_PIN é um segredo: `npx wrangler secret put EQUIPE_PIN` (local: arquivo .dev.vars).
+}
