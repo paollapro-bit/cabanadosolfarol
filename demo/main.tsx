@@ -12,6 +12,9 @@ import { Route as ApiEquipeSaloes } from '~/routes/api/equipe.saloes'
 import { Route as ApiCardapio } from '~/routes/api/cardapio'
 import { Route as ApiReclamacoes } from '~/routes/api/reclamacoes'
 import { Route as ApiEquipeReclamacoes } from '~/routes/api/equipe.reclamacoes'
+import { SEM_MESA } from '~/edicao'
+import { lerArquivoDoCardapio } from '~/lib/cardapioTexto'
+import cardapioDoSite from './cardapio-snapshot.js?raw'
 import '~/styles.css'
 import './demo.css'
 
@@ -36,6 +39,9 @@ window.fetch = async (entrada, init) => {
   const texto = typeof entrada === 'string' ? entrada : entrada instanceof URL ? entrada.href : entrada.url
   if (!texto.startsWith('/api/')) return fetchOriginal(entrada, init)
   const url = new URL(texto, 'https://demo.cabanadosol')
+  // A página de demonstração não pode buscar outros sites: o cardápio vem da
+  // cópia baixada do site do cardápio na hora em que a demonstração foi gerada.
+  if (url.pathname === '/api/cardapio-texto') return Response.json(lerArquivoDoCardapio(cardapioDoSite))
   const request = new Request(url, init)
   const manipulador = rotas[url.pathname]?.options.server?.handlers?.[request.method]
   if (!manipulador) return Response.json({ erro: 'Não disponível na demonstração.' }, { status: 404 })
@@ -55,6 +61,7 @@ createRoot(document.getElementById('app')!).render(
   <>
     <div className="faixa-demo" role="note">
       <strong>Demonstração.</strong> Os dados ficam só neste aparelho. Código da equipe: <strong>1234</strong>
+      {SEM_MESA && '. O cardápio é uma cópia do dia em que a demonstração foi gerada; no app publicado ele vem ao vivo do site do cardápio.'}
     </div>
     <RouterProvider router={router} />
   </>,

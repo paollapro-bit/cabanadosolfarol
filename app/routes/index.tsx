@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { BotaoOuvir, useAcessibilidade } from '~/components/Acessibilidade'
 import { ListaDeCanais } from '~/components/Canais'
+import { Inicio } from '~/components/Inicio'
+import { SEM_MESA } from '~/edicao'
 import { canaisDoGrupo } from '~/data/atendimento'
 import {
   abrirChamado,
@@ -33,7 +35,7 @@ export const Route = createFileRoute('/')({
     unidade: ehUnidade(busca.unidade) ? busca.unidade : undefined,
     mesa: lerMesa(busca.mesa) ?? undefined,
   }),
-  component: Atendimento,
+  component: SEM_MESA ? Inicio : Atendimento,
 })
 
 const CHAVE_LOCAL = 'cds-local'

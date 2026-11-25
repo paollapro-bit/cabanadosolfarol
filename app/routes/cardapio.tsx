@@ -1,14 +1,75 @@
 import { useEffect, useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { ListaDeCanais } from '~/components/Canais'
-import { cardapios, unidades } from '~/data/atendimento'
+import { CardapioTexto } from '~/components/CardapioTexto'
+import { cardapios, SITE_DO_CARDAPIO, unidades } from '~/data/atendimento'
+import { SEM_MESA } from '~/edicao'
+import { ehUnidade, type UnidadeId } from '~/lib/chamados'
+import { guardar, lerGuardado } from '~/lib/guardado'
 import { lerCardapio } from '~/lib/api'
 import { urlDeIncorporacao, urlDeVisualizacao, type CardapioCanva } from '~/lib/cardapio'
 
 export const Route = createFileRoute('/cardapio')({
   head: () => ({ meta: [{ title: 'Cardápio · Cabana do Sol' }] }),
-  component: Cardapio,
+  validateSearch: (busca: Record<string, unknown>): { unidade?: UnidadeId } => ({
+    unidade: ehUnidade(busca.unidade) ? busca.unidade : undefined,
+  }),
+  component: SEM_MESA ? CardapioSemMesa : Cardapio,
 })
+
+const CHAVE_LOCAL = 'cds-local'
+
+// Edição sem mesa: o cardápio em texto, lido do site do cardápio, e os
+// cardápios em imagem do Canva como complemento.
+function CardapioSemMesa() {
+  const busca = Route.useSearch()
+  const [unidade, setUnidade] = useState<UnidadeId>(busca.unidade ?? 'litoranea')
+
+  useEffect(() => {
+    if (busca.unidade) return
+    const local = lerGuardado<{ unidade?: string }>(CHAVE_LOCAL, {})
+    if (ehUnidade(local.unidade)) setUnidade(local.unidade)
+  }, [busca.unidade])
+
+  function escolher(u: UnidadeId) {
+    setUnidade(u)
+    guardar(CHAVE_LOCAL, { ...lerGuardado<object>(CHAVE_LOCAL, {}), unidade: u })
+  }
+
+  return (
+    <div className="tela">
+      <section aria-labelledby="titulo-pagina">
+        <p className="sobrancelha">Cabana do Sol</p>
+        <h1 id="titulo-pagina">Cardápio</h1>
+        <p className="intro">
+          Pratos e bebidas de cada unidade, com preços. Toque no alto-falante ao lado de um prato para ouvir.
+        </p>
+      </section>
+
+      <CardapioTexto unidade={unidade} aoEscolherUnidade={escolher} />
+
+      <section aria-labelledby="titulo-imagens">
+        <h2 id="titulo-imagens">Outros cardápios</h2>
+        <p className="dica">
+          Estes abrem no Canva, em imagem, e não podem ser lidos por leitor de tela. O cardápio acima tem os mesmos
+          pratos do salão em texto.
+        </p>
+        <ListaDeCanais
+          canais={[
+            ...cardapios.filter((c) => c.idioma === 'en' || !c.unidade),
+            {
+              id: 'site-do-cardapio',
+              titulo: 'Site do cardápio',
+              descricao: 'O mesmo cardápio do salão, no site próprio.',
+              url: SITE_DO_CARDAPIO,
+              grupo: 'site',
+            },
+          ]}
+        />
+      </section>
+    </div>
+  )
+}
 
 function Cardapio() {
   const [estado, setEstado] = useState<

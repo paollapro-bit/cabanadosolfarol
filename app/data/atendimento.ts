@@ -1,4 +1,5 @@
 import type { UnidadeId } from '~/lib/chamados'
+import { SEM_MESA } from '~/edicao'
 
 // Conteúdo da central de atendimento. Todo o texto fica neste módulo para que,
 // no Marco 3, possa vir do banco de dados com o mesmo formato.
@@ -277,21 +278,34 @@ export const delivery = {
   ],
 }
 
+/**
+ * Arquivo de dados do site do cardápio (cardapio-cabana, no Cloudflare Pages).
+ * A central lê este arquivo a cada poucos minutos: quando o cardápio é
+ * atualizado lá, a central mostra a mudança sem precisar de deploy.
+ * Ao publicar o site do cardápio no endereço definitivo, troque aqui.
+ */
+export const FONTE_DO_CARDAPIO = 'https://dev.cardapio-cabana.pages.dev/dados/cardapio.js'
+export const SITE_DO_CARDAPIO = 'https://dev.cardapio-cabana.pages.dev/'
+
 export interface Duvida {
   id: string
   pergunta: string
   resposta: string
+  /** Resposta na edição sem mesa; null tira a pergunta dessa edição. */
+  semMesa?: string | null
 }
 
-export const duvidas: Duvida[] = [
+const todasAsDuvidas: Duvida[] = [
   {
     id: 'garcom',
+    semMesa: null,
     pergunta: 'Como chamo um garçom?',
     resposta:
       'Na tela Atendimento, escolha a unidade, informe o número da sua mesa e toque em Chamar garçom. A equipe recebe o aviso na hora e você acompanha a situação na mesma tela.',
   },
   {
     id: 'conta',
+    semMesa: null,
     pergunta: 'Como peço a conta?',
     resposta:
       'Na tela Atendimento, toque em Pedir a conta. O pedido aparece no painel da equipe com o número da sua mesa.',
@@ -304,30 +318,37 @@ export const duvidas: Duvida[] = [
   },
   {
     id: 'reclamacao',
+    semMesa:
+      'Na tela Início, em Sua opinião, toque em Fazer uma reclamação, ou use o link Reclamações no rodapé. Escolha a unidade e o assunto e conte o que aconteceu. O nome é opcional. Você recebe um protocolo e acompanha a resposta pela mesma tela.',
     pergunta: 'Como faço uma reclamação?',
     resposta:
       'Na tela Mesa, em Sua opinião, toque em Fazer uma reclamação, ou use o link Reclamações no rodapé. Escolha a unidade e o assunto e conte o que aconteceu. O nome é opcional. Você recebe um protocolo e acompanha a resposta pela mesma tela.',
   },
   {
     id: 'mesa',
+    semMesa: null,
     pergunta: 'Não sei o número da minha mesa. O que faço?',
     resposta:
       'Se você abriu esta página pelo código QR da mesa, o número já vem preenchido. Se não, pergunte a quem está com você ou a alguém da equipe.',
   },
   {
     id: 'acompanhar',
+    semMesa: null,
     pergunta: 'Como sei se o meu chamado foi visto?',
     resposta:
       'Depois de enviar, a tela mostra a situação do chamado: aguardando a equipe, equipe a caminho e atendido. Cada mudança também é anunciada para o leitor de tela.',
   },
   {
     id: 'engano',
+    semMesa: null,
     pergunta: 'Enviei um chamado por engano. Posso cancelar?',
     resposta:
       'Sim. Na tela Atendimento, o chamado aberto tem o botão Cancelar chamado. A equipe deixa de ver o pedido.',
   },
   {
     id: 'ouvir',
+    semMesa:
+      'Sim. Os botões Ouvir leem o conteúdo em português. No cardápio, cada prato tem um botão com alto-falante, que lê o nome, a descrição e o preço por extenso.',
     pergunta: 'Posso ouvir esta página em voz alta?',
     resposta:
       'Sim. Os botões Ouvir leem o conteúdo em português. Se quiser que todos os avisos sejam falados automaticamente, ative Respostas faladas nas opções de acessibilidade, no topo da página.',
@@ -345,3 +366,8 @@ export const duvidas: Duvida[] = [
       'Não. A central funciona direto no navegador do seu celular, sem cadastro e sem instalar nada.',
   },
 ]
+
+/** As dúvidas da edição em uso, com o texto certo para cada edição. */
+export const duvidas: Duvida[] = todasAsDuvidas.flatMap((d) =>
+  !SEM_MESA || d.semMesa === undefined ? [d] : d.semMesa === null ? [] : [{ ...d, resposta: d.semMesa }],
+)

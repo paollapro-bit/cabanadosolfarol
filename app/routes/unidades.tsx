@@ -3,6 +3,7 @@ import { BotaoOuvir } from '~/components/Acessibilidade'
 import { ListaDeCanais } from '~/components/Canais'
 import { canaisDoGrupo, fraseDosCanais, unidades, type Unidade } from '~/data/atendimento'
 import { formatarTelefone } from '~/lib/reservas'
+import { SEM_MESA } from '~/edicao'
 
 export const Route = createFileRoute('/unidades')({
   head: () => ({ meta: [{ title: 'Unidades e contatos · Cabana do Sol' }] }),
@@ -91,9 +92,15 @@ function Unidades() {
                   </a>
                 )}
                 <BotaoOuvir texto={fraseDaUnidade(u)} rotulo={`Ouvir ${u.nome}`} />
-                <Link to="/" search={{ unidade: u.id }} className="botao botao-linha">
-                  Estou na {u.nome}
-                </Link>
+                {SEM_MESA ? (
+                  <Link to="/cardapio" search={{ unidade: u.id }} className="botao botao-linha">
+                    Cardápio da {u.nome}
+                  </Link>
+                ) : (
+                  <Link to="/" search={{ unidade: u.id }} className="botao botao-linha">
+                    Estou na {u.nome}
+                  </Link>
+                )}
               </div>
             </article>
           </li>

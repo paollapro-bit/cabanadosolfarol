@@ -1,5 +1,6 @@
 import type { Chamado, NovoChamado, UnidadeId } from './chamados'
 import type { CardapioCanva } from './cardapio'
+import type { CardapioEmTexto } from './cardapioTexto'
 import type { Reclamacao, StatusReclamacao } from './reclamacoes'
 import type { DadosDoSalao, NovaReserva, Ocupacao, Reserva, Salao, StatusReserva } from './reservas'
 
@@ -210,4 +211,8 @@ export function atualizarReclamacao(
     headers: { ...JSON_HEADERS, 'x-equipe-pin': pin },
     body: JSON.stringify({ id, ...mudancas }),
   })
+}
+
+export function lerCardapioEmTexto() {
+  return pedir<CardapioEmTexto>('/api/cardapio-texto')
 }

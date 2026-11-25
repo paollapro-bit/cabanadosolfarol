@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { Navigate, createFileRoute } from '@tanstack/react-router'
+import { SEM_MESA } from '~/edicao'
 import { useAcessibilidade } from '~/components/Acessibilidade'
 import { PainelDaEquipe, useEquipe } from '~/components/Equipe'
 import { atualizarChamado, listarChamadosDaEquipe } from '~/lib/api'
@@ -16,7 +17,11 @@ export const Route = createFileRoute('/equipe/')({
   head: () => ({
     meta: [{ title: 'Chamados · Painel da equipe' }, { name: 'robots', content: 'noindex' }],
   }),
-  component: () => (
+  // Na edição sem mesa não há chamados: o painel abre nas reservas.
+  component: () =>
+    SEM_MESA ? (
+      <Navigate to="/equipe/reservas" replace />
+    ) : (
     <PainelDaEquipe titulo="Chamados das mesas">
       <Chamados />
     </PainelDaEquipe>

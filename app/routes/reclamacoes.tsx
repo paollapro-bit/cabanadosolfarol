@@ -4,6 +4,7 @@ import { BotaoOuvir, useAcessibilidade } from '~/components/Acessibilidade'
 import { consultarReclamacao, enviarReclamacao, ErroDeApi } from '~/lib/api'
 import { ehUnidade, nomeUnidade, UNIDADES, type UnidadeId } from '~/lib/chamados'
 import { guardar, lerGuardado } from '~/lib/guardado'
+import { SEM_MESA } from '~/edicao'
 import {
   ASSUNTOS,
   fraseDaReclamacao,
@@ -113,9 +114,11 @@ function Reclamacoes() {
         </p>
         <div className="acoes">
           <BotaoOuvir texto={INTRO} rotulo="Ouvir como funciona" />
-          <Link to="/" className="botao botao-linha">
-            Está no restaurante? Chame a equipe agora
-          </Link>
+          {!SEM_MESA && (
+            <Link to="/" className="botao botao-linha">
+              Está no restaurante? Chame a equipe agora
+            </Link>
+          )}
         </div>
       </section>
 

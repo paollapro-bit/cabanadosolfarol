@@ -17,7 +17,7 @@ function Duvidas() {
         <p className="sobrancelha">Ajuda</p>
         <h1 id="titulo-pagina">Dúvidas frequentes</h1>
         <p className="intro">
-          {duvidas.length} perguntas sobre como usar a central. Para qualquer outro assunto, chame a equipe.
+          {duvidas.length} perguntas sobre como usar a central. Para qualquer outro assunto, fale com a equipe.
         </p>
         <div className="acoes">
           <BotaoOuvir texto={tudo} rotulo="Ouvir todas" />

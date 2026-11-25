@@ -10,7 +10,9 @@
     "cf-typegen": "wrangler types",
     "test": "vitest run",
     "typecheck": "wrangler types && tsc --noEmit",
-    "build:demo": "vite build -c vite.demo.config.ts"
+    "build:demo": "curl -sSfL https://dev.cardapio-cabana.pages.dev/dados/cardapio.js -o demo/cardapio-snapshot.js && vite build -c vite.demo.config.ts",
+    "build:demo:sem-mesa": "curl -sSfL https://dev.cardapio-cabana.pages.dev/dados/cardapio.js -o demo/cardapio-snapshot.js && VITE_EDICAO=sem-mesa vite build -c vite.demo.config.ts",
+    "deploy:sem-mesa": "VITE_EDICAO=sem-mesa vite build && wrangler deploy --name cabana-do-sol-central"
   },
   "dependencies": {
     "@fontsource/atkinson-hyperlegible": "^5.3.0",

@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { AVISO_SEM_VOZ, falar, pararFala, VELOCIDADES } from '~/lib/speech'
 import { guardar, lerGuardado } from '~/lib/guardado'
+import { SEM_MESA } from '~/edicao'
 
 export const CHAVE_PREFERENCIAS = 'cds-preferencias'
 
@@ -85,7 +86,7 @@ export function AcessibilidadeProvider({ children }: { children: ReactNode }) {
   const anunciar = useCallback(
     (texto: string) => {
       escrever(texto)
-      if (prefs.current.respostasFaladas && !falar(texto, prefs.current.velocidade)) {
+      if (!SEM_MESA && prefs.current.respostasFaladas && !falar(texto, prefs.current.velocidade)) {
         setSemVoz(true)
       }
     },
@@ -161,7 +162,7 @@ export function BarraDeAcessibilidade() {
     ['letraGrande', 'Letra grande'],
     ['altoContraste', 'Alto contraste'],
     ['modoEscuro', 'Modo escuro'],
-    ['respostasFaladas', 'Respostas faladas'],
+    ...(SEM_MESA ? [] : ([['respostasFaladas', 'Respostas faladas']] as const)),
   ] as const
   return (
     <section className="barra-acess" aria-label="Opções de acessibilidade">

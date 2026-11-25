@@ -90,6 +90,22 @@ npm run dev    # http://localhost:8889, runs inside workerd with local D1 and KV
 npm test       # unit tests for the pure rules in app/lib
 ```
 
+## Two editions
+
+The same code builds two apps, chosen with `VITE_EDICAO` at build time
+(`app/edicao.ts`):
+
+- **completa** (default) — everything above, including the table service.
+- **sem-mesa** — a copy without the table service (no Mesa tab, no call
+  screens, no Chamados tab for staff) and without "Respostas faladas". Its home
+  is a hub, and `/cardapio` shows the **text menu read live from the menu site**
+  (`FONTE_DO_CARDAPIO` in `app/data/atendimento.ts`, currently
+  `https://dev.cardapio-cabana.pages.dev/dados/cardapio.js`), through
+  `/api/cardapio-texto`, cached about 5 minutes. Every dish can be searched and
+  heard, with its price spoken in words. Deploy it with `npm run deploy:sem-mesa`
+  (a second Worker sharing the same D1 and KV, so reservations, salões and
+  complaints are the same in both).
+
 ## Demo without a server
 
 `npm run build:demo` builds the whole app into one JS file (`dist-demo/`) that runs

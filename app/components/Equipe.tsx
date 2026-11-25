@@ -14,6 +14,7 @@ import { useAcessibilidade } from './Acessibilidade'
 import { ErroDeApi } from '~/lib/api'
 import { ehUnidade, UNIDADES, type UnidadeId } from '~/lib/chamados'
 import { guardar, lerGuardado } from '~/lib/guardado'
+import { SEM_MESA } from '~/edicao'
 
 const CHAVE_PIN = 'cds-equipe-pin'
 const CHAVE_UNIDADE = 'cds-equipe-unidade'
@@ -149,7 +150,8 @@ export function PainelDaEquipe({ titulo, children }: { titulo: string; children:
           <p className="sobrancelha">Uso interno</p>
           <h1 id="titulo-pagina">{titulo}</h1>
           <nav className="abas" aria-label="Seções do painel da equipe">
-            {SECOES.map((s) => (
+            {/* Sem mesa não há chamados, e o cardápio vem do site do cardápio, não do Canva. */}
+            {SECOES.filter((s) => !(SEM_MESA && (s.to === '/equipe' || s.to === '/equipe/cardapio'))).map((s) => (
               <Link
                 key={s.to}
                 to={s.to}

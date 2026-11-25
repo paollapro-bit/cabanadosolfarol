@@ -25,7 +25,7 @@ export default defineConfig({
     viteReact(),
   ],
   build: {
-    outDir: fileURLToPath(new URL('./dist-demo', import.meta.url)),
+    outDir: fileURLToPath(new URL(process.env.VITE_EDICAO === 'sem-mesa' ? './dist-demo-sem-mesa' : './dist-demo', import.meta.url)),
     emptyOutDir: true,
     assetsInlineLimit: 1024 * 1024,
     cssCodeSplit: false,

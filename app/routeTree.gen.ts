@@ -17,6 +17,7 @@ import { Route as ReclamacoesRouteImport } from './routes/reclamacoes'
 import { Route as ReservasRouteImport } from './routes/reservas'
 import { Route as UnidadesRouteImport } from './routes/unidades'
 import { Route as ApiCardapioRouteImport } from './routes/api/cardapio'
+import { Route as ApiCardapioTextoRouteImport } from './routes/api/cardapio-texto'
 import { Route as ApiChamadosRouteImport } from './routes/api/chamados'
 import { Route as ApiReclamacoesRouteImport } from './routes/api/reclamacoes'
 import { Route as ApiReservasRouteImport } from './routes/api/reservas'
@@ -70,6 +71,11 @@ const UnidadesRoute = UnidadesRouteImport.update({
 const ApiCardapioRoute = ApiCardapioRouteImport.update({
   id: '/api/cardapio',
   path: '/api/cardapio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCardapioTextoRoute = ApiCardapioTextoRouteImport.update({
+  id: '/api/cardapio-texto',
+  path: '/api/cardapio-texto',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiChamadosRoute = ApiChamadosRouteImport.update({
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
   '/api/cardapio': typeof ApiCardapioRoute
+  '/api/cardapio-texto': typeof ApiCardapioTextoRoute
   '/api/chamados': typeof ApiChamadosRoute
   '/api/reclamacoes': typeof ApiReclamacoesRoute
   '/api/reservas': typeof ApiReservasRoute
@@ -176,6 +183,7 @@ export interface FileRoutesByTo {
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
   '/api/cardapio': typeof ApiCardapioRoute
+  '/api/cardapio-texto': typeof ApiCardapioTextoRoute
   '/api/chamados': typeof ApiChamadosRoute
   '/api/reclamacoes': typeof ApiReclamacoesRoute
   '/api/reservas': typeof ApiReservasRoute
@@ -201,6 +209,7 @@ export interface FileRoutesById {
   '/reservas': typeof ReservasRoute
   '/unidades': typeof UnidadesRoute
   '/api/cardapio': typeof ApiCardapioRoute
+  '/api/cardapio-texto': typeof ApiCardapioTextoRoute
   '/api/chamados': typeof ApiChamadosRoute
   '/api/reclamacoes': typeof ApiReclamacoesRoute
   '/api/reservas': typeof ApiReservasRoute
@@ -227,6 +236,7 @@ export interface FileRouteTypes {
     | '/reservas'
     | '/unidades'
     | '/api/cardapio'
+    | '/api/cardapio-texto'
     | '/api/chamados'
     | '/api/reclamacoes'
     | '/api/reservas'
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/reservas'
     | '/unidades'
     | '/api/cardapio'
+    | '/api/cardapio-texto'
     | '/api/chamados'
     | '/api/reclamacoes'
     | '/api/reservas'
@@ -275,6 +286,7 @@ export interface FileRouteTypes {
     | '/reservas'
     | '/unidades'
     | '/api/cardapio'
+    | '/api/cardapio-texto'
     | '/api/chamados'
     | '/api/reclamacoes'
     | '/api/reservas'
@@ -300,6 +312,7 @@ export interface RootRouteChildren {
   ReservasRoute: typeof ReservasRoute
   UnidadesRoute: typeof UnidadesRoute
   ApiCardapioRoute: typeof ApiCardapioRoute
+  ApiCardapioTextoRoute: typeof ApiCardapioTextoRoute
   ApiChamadosRoute: typeof ApiChamadosRoute
   ApiReclamacoesRoute: typeof ApiReclamacoesRoute
   ApiReservasRoute: typeof ApiReservasRoute
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       path: '/api/cardapio'
       fullPath: '/api/cardapio'
       preLoaderRoute: typeof ApiCardapioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/cardapio-texto': {
+      id: '/api/cardapio-texto'
+      path: '/api/cardapio-texto'
+      fullPath: '/api/cardapio-texto'
+      preLoaderRoute: typeof ApiCardapioTextoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/chamados': {
@@ -484,6 +504,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReservasRoute: ReservasRoute,
   UnidadesRoute: UnidadesRoute,
   ApiCardapioRoute: ApiCardapioRoute,
+  ApiCardapioTextoRoute: ApiCardapioTextoRoute,
   ApiChamadosRoute: ApiChamadosRoute,
   ApiReclamacoesRoute: ApiReclamacoesRoute,
   ApiReservasRoute: ApiReservasRoute,

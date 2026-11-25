@@ -14,6 +14,7 @@ import {
   useAcessibilidade,
 } from '~/components/Acessibilidade'
 import appCss from '~/styles.css?url'
+import { SEM_MESA } from '~/edicao'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -51,12 +52,12 @@ function Documento({ children }: { children: ReactNode }) {
 }
 
 const NAVEGACAO = [
-  { to: '/', rotulo: 'Mesa', icone: '🛎️' },
+  SEM_MESA ? { to: '/', rotulo: 'Início', icone: '🏠' } : { to: '/', rotulo: 'Mesa', icone: '🛎️' },
   { to: '/cardapio', rotulo: 'Cardápio', icone: '📖' },
   { to: '/delivery', rotulo: 'Delivery', icone: '🛵' },
   { to: '/reservas', rotulo: 'Reservas', icone: '📅' },
   { to: '/unidades', rotulo: 'Unidades', icone: '📍' },
-] as const
+] as const satisfies readonly { to: string; rotulo: string; icone: string }[]
 
 function Estrutura() {
   return (

@@ -97,3 +97,12 @@ currently renders the central.
 - **Complaints (`app/lib/reclamacoes.ts`) keep contact data only when the guest
   asks for a reply**, never return the staff note to the guest
   (`reclamacaoParaCliente`), and are deleted 90 days after being resolved.
+- **Two editions from one codebase** (`app/edicao.ts`, `VITE_EDICAO`):
+  `completa` and `sem-mesa`. Gate edition-specific UI on `SEM_MESA`; FAQ entries
+  use `semMesa` (null hides them). The sem-mesa menu is text parsed from the
+  menu site's `dados/cardapio.js` (`app/lib/cardapioTexto.ts`); if that file's
+  format changes, the parser throws and the page shows an error rather than an
+  empty menu. Its Canva-embed staff tab is hidden.
+- **Prices from the menu site are strings like "1.234,50"**; they are parsed to
+  cents (`lerPrecoEmCentavos`) and spoken with `precoPorExtenso` in
+  `app/lib/speech.ts`, per the integer-cents rule.
