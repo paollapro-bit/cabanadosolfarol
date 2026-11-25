@@ -1,6 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { EscalaDB } from '../src/db/db';
 import { initDatabase } from '../src/db/seed';
+import { bundledMonthFiles } from '../src/data/published';
+
+// Estes testes usam só novembro (os meses seguintes têm testes próprios).
+const SO_NOVEMBRO = bundledMonthFiles().filter((f) => f.mes === '2026-11');
+const init = (d: EscalaDB) => initDatabase(d, Date.now(), SO_NOVEMBRO);
 import { confirmDays, setDayNote, setDaysCode } from '../src/db/repo';
 import { createBackup, parseBackup, restoreBackup, BackupError } from '../src/lib/backup';
 import { summarizeMonth, findNext } from '../src/lib/summary';
@@ -12,7 +17,7 @@ let n = 0;
 let db: EscalaDB;
 beforeEach(async () => {
   db = new EscalaDB(`teste-${n++}`);
-  await initDatabase(db);
+  await init(db);
 });
 
 async function state(database = db) {
@@ -29,7 +34,7 @@ describe('base de dados local', () => {
     expect((await db.days.get('2026-11-19'))?.code).toBe('B1');
     expect((await db.days.get('2026-11-30'))?.code).toBe('A3');
     expect((await db.days.get('2026-11-06'))?.source).toBe('importado');
-    expect(await db.shifts.count()).toBe(8);
+    expect(await db.shifts.count()).toBe(10);
   });
 
   it('não sobrescreve alterações da utilizadora quando a app volta a arrancar', async () => {
@@ -40,8 +45,8 @@ describe('base de dados local', () => {
     db.close();
 
     const reopened = new EscalaDB(db.name);
-    await initDatabase(reopened);
-    await initDatabase(reopened);
+    await init(reopened);
+    await init(reopened);
     expect((await reopened.days.get('2026-11-06'))?.code).toBe('B1');
     expect(await reopened.days.get('2026-11-10')).toBeUndefined();
     expect((await reopened.days.get('2026-11-03'))?.code).toBe('C');
@@ -52,7 +57,7 @@ describe('base de dados local', () => {
   it('não importa por cima de dias que já existiam antes da primeira instalação', async () => {
     const fresh = new EscalaDB(`fresh-${n++}`);
     await fresh.days.put({ date: '2026-11-07', code: 'A1', source: 'utilizadora', updatedAt: 1 });
-    await initDatabase(fresh);
+    await init(fresh);
     expect((await fresh.days.get('2026-11-07'))?.code).toBe('A1');
     expect(await fresh.days.count()).toBe(25);
   });
@@ -127,7 +132,7 @@ describe('cópia de segurança', () => {
     const json = JSON.stringify(await createBackup(db));
 
     const other = new EscalaDB(`restauro-${n++}`);
-    await initDatabase(other);
+    await init(other);
     await setDaysCode(['2026-11-06'], 'D', other);
     await restoreBackup(other, parseBackup(json));
     expect((await other.days.get('2026-12-01'))).toMatchObject({ code: 'C', note: 'Natal' });
@@ -135,7 +140,7 @@ describe('cópia de segurança', () => {
     expect(await other.days.count()).toBe(26);
 
     // Reabrir depois de restaurar não volta a importar novembro por cima.
-    await initDatabase(other);
+    await init(other);
     expect(await other.days.count()).toBe(26);
   });
 

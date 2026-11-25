@@ -99,3 +99,26 @@ describe('cartão deslizante', () => {
     expect(carouselDates('2026-11-03', ['2026-11-06'])).toEqual(['2026-11-03', '2026-11-04', '2026-11-05', '2026-11-06']);
   });
 });
+
+describe('dezembro de 2026', () => {
+  it('tem os 31 dias da Lorena com 9 folgas, como na folha', () => {
+    const dec = bundledMonthFiles().find((f) => f.mes === '2026-12')!;
+    const pub = parsePublishedMonth(dec, SHIFT_CODES);
+    expect(pub.days.size).toBe(31);
+    expect([...pub.days.values()].filter((c) => c === 'D')).toHaveLength(9);
+    expect(pub.days.get('2026-12-26')).toBe('C');
+  });
+
+  it('instalações antigas recebem os códigos novos A e B sem perder edições', async () => {
+    const db = fresh();
+    await db.settings.bulkPut([
+      { key: SEED_FLAG_SHIFTS, value: 1 },
+      { key: SEED_FLAG_NOV_2026, value: 1 },
+    ]);
+    await db.shifts.put({ code: 'C', start: '09:00', end: '18:00', type: 'intermedio', role: 'Suporte' });
+    await initDatabase(db, 2, [nov, bundledMonthFiles().find((f) => f.mes === '2026-12')!]);
+    expect((await db.shifts.get('A'))?.role).toBe('A definir');
+    expect((await db.shifts.get('C'))?.start).toBe('09:00');
+    expect((await db.days.get('2026-12-01'))?.code).toBe('A');
+  });
+});

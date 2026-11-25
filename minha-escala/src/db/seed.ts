@@ -76,12 +76,12 @@ export async function initDatabase(
 ): Promise<MonthImportReport[]> {
   const months = files.map((f) => parsePublishedMonth(f, SHIFT_CODES));
   return database.transaction('rw', database.days, database.shifts, database.settings, async () => {
-    if (!(await database.settings.get(SEED_FLAG_SHIFTS))) {
-      for (const shift of DEFAULT_SHIFTS) {
-        if (!(await database.shifts.get(shift.code))) await database.shifts.add(shift);
-      }
-      await database.settings.put({ key: SEED_FLAG_SHIFTS, value: now });
+    // Acrescenta turnos predefinidos que ainda não existam (p. ex. códigos novos
+    // numa atualização). Nunca altera turnos já existentes, que podem ter sido editados.
+    for (const shift of DEFAULT_SHIFTS) {
+      if (!(await database.shifts.get(shift.code))) await database.shifts.add(shift);
     }
+    if (!(await database.settings.get(SEED_FLAG_SHIFTS))) await database.settings.put({ key: SEED_FLAG_SHIFTS, value: now });
 
     // Instalações da primeira versão: novembro v1 já foi importado.
     if ((await database.settings.get(SEED_FLAG_NOV_2026)) && !(await database.settings.get(MONTH_FLAG_PREFIX + '2026-11'))) {

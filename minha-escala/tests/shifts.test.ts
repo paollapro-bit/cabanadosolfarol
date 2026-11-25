@@ -6,7 +6,7 @@ const get = (c: string) => DEFAULT_SHIFTS.find((s) => s.code === c)!;
 
 describe('turnos e horas', () => {
   it('tem os 8 códigos com os horários pedidos', () => {
-    expect(DEFAULT_SHIFTS.map((s) => s.code)).toEqual(['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C', 'D']);
+    expect(DEFAULT_SHIFTS.map((s) => s.code)).toEqual(['A1', 'A2', 'A3', 'A', 'B1', 'B2', 'B3', 'B', 'C', 'D']);
     expect(get('A3')).toMatchObject({ start: '07:30', end: '16:15', type: 'abertura', role: 'Copa' });
     expect(get('B3')).toMatchObject({ start: '11:45', end: '20:30', type: 'fecho', role: 'Copa' });
     expect(get('C')).toMatchObject({ start: '10:00', end: '18:45', type: 'intermedio', role: 'Suporte' });

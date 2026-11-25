@@ -13,9 +13,12 @@ export const DEFAULT_SHIFTS: ShiftDef[] = [
   { code: 'A1', start: '07:30', end: '16:15', type: 'abertura', role: 'Caixa' },
   { code: 'A2', start: '07:30', end: '16:15', type: 'abertura', role: 'Máquina' },
   { code: 'A3', start: '07:30', end: '16:15', type: 'abertura', role: 'Copa' },
+  // Folhas que só indicam A/B, sem a função (ex.: dezembro de 2026).
+  { code: 'A', start: '07:30', end: '16:15', type: 'abertura', role: 'A definir' },
   { code: 'B1', start: '11:45', end: '20:30', type: 'fecho', role: 'Caixa' },
   { code: 'B2', start: '11:45', end: '20:30', type: 'fecho', role: 'Máquina' },
   { code: 'B3', start: '11:45', end: '20:30', type: 'fecho', role: 'Copa' },
+  { code: 'B', start: '11:45', end: '20:30', type: 'fecho', role: 'A definir' },
   { code: 'C', start: '10:00', end: '18:45', type: 'intermedio', role: 'Suporte' },
   { code: 'D', start: null, end: null, type: 'folga', role: 'Descanso' },
 ];

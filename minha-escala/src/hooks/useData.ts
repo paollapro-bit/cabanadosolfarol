@@ -9,7 +9,7 @@ export function useShifts(): { list: ShiftDef[]; map: Map<string, ShiftDef> } | 
   const list = useLiveQuery(() => db.shifts.toArray(), []);
   return useMemo(() => {
     if (!list) return undefined;
-    const order = ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C', 'D'];
+    const order = ['A1', 'A2', 'A3', 'A', 'B1', 'B2', 'B3', 'B', 'C', 'D'];
     const sorted = [...list].sort((a, b) => {
       const ia = order.indexOf(a.code);
       const ib = order.indexOf(b.code);
