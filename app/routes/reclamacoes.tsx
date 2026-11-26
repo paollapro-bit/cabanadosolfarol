@@ -4,6 +4,7 @@ import { BotaoOuvir, useAcessibilidade } from '~/components/Acessibilidade'
 import { consultarReclamacao, enviarReclamacao, ErroDeApi } from '~/lib/api'
 import { ehUnidade, nomeUnidade, UNIDADES, type UnidadeId } from '~/lib/chamados'
 import { guardar, lerGuardado } from '~/lib/guardado'
+import { registrar } from '~/lib/registrar'
 import { SEM_MESA } from '~/edicao'
 import {
   ASSUNTOS,
@@ -86,6 +87,7 @@ function Reclamacoes() {
     setEnviando(true)
     try {
       const { reclamacao, segredo } = await enviarReclamacao(dados)
+      registrar('opiniao.reclamacao-enviada')
       setMinhas((atuais) => [{ id: reclamacao.id, segredo, reclamacao }, ...atuais])
       setAssunto('')
       setMensagem('')

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useAcessibilidade } from './Acessibilidade'
+import { CARDAPIOS_EM_TEXTO } from '~/data/atendimento'
 import { lerCardapioEmTexto } from '~/lib/api'
+import { registrar } from '~/lib/registrar'
 import { nomeUnidade, UNIDADES, type UnidadeId } from '~/lib/chamados'
 import {
   agrupar,
@@ -27,18 +29,20 @@ export function CardapioTexto({
   const [cardapio, setCardapio] = useState<CardapioEmTexto | null>(null)
   const [erro, setErro] = useState('')
   const [busca, setBusca] = useState('')
+  const [fonte, setFonte] = useState(CARDAPIOS_EM_TEXTO[0].id)
   const espera = useRef<number | undefined>(undefined)
 
   const carregar = useCallback(async () => {
     setErro('')
+    setCardapio(null)
     try {
-      setCardapio(await lerCardapioEmTexto())
+      setCardapio(await lerCardapioEmTexto(fonte))
     } catch (e) {
       const texto = e instanceof Error ? e.message : 'Não foi possível carregar o cardápio.'
       setErro(texto)
       anunciar(texto)
     }
-  }, [anunciar])
+  }, [anunciar, fonte])
 
   useEffect(() => {
     carregar()
@@ -52,6 +56,7 @@ export function CardapioTexto({
     if (!cardapio || !busca.trim()) return
     window.clearTimeout(espera.current)
     espera.current = window.setTimeout(() => {
+      registrar('cardapio.busca')
       anunciar(
         itens.length === 0
           ? 'Nenhum item encontrado. Tente outra palavra.'
@@ -73,6 +78,27 @@ export function CardapioTexto({
     <section aria-labelledby="titulo-cardapio-texto" className="tela">
       <div className="cartao">
         <h2 id="titulo-cardapio-texto">Cardápio para comer no restaurante</h2>
+        {CARDAPIOS_EM_TEXTO.length > 1 && (
+          <fieldset className="campo">
+            <legend className="legenda">Cardápio</legend>
+            <div className="opcoes">
+              {CARDAPIOS_EM_TEXTO.map((c) => (
+                <label key={c.id} className="opcao">
+                  <input
+                    type="radio"
+                    name="cardapio-fonte"
+                    checked={fonte === c.id}
+                    onChange={() => {
+                      setFonte(c.id)
+                      anunciar(`Cardápio ${c.nome}.`)
+                    }}
+                  />
+                  <span>{c.nome}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        )}
         <fieldset className="campo">
           <legend className="legenda">Unidade</legend>
           <div className="opcoes">
@@ -153,7 +179,10 @@ export function CardapioTexto({
               <section key={s.nome} aria-labelledby={idSecao} className="secao-do-cardapio">
                 <div className="linha-topo">
                   <h3 id={idSecao}>{s.nome}</h3>
-                  <button type="button" className="botao botao-linha botao-pequeno" onClick={() => ouvir(fraseDaSecao(s))}>
+                  <button type="button" className="botao botao-linha botao-pequeno" onClick={() => {
+                      registrar('cardapio.ouvir-secao')
+                      ouvir(fraseDaSecao(s))
+                    }}>
                     <span aria-hidden="true">🔊 </span>Ouvir<span className="sr-only"> a seção {s.nome}</span>
                   </button>
                 </div>
@@ -172,7 +201,10 @@ export function CardapioTexto({
                           Serve {item.pessoas} {item.pessoas === 1 ? 'pessoa' : 'pessoas'}
                         </p>
                       )}
-                      <button type="button" className="botao-ouvir-item" onClick={() => ouvir(fraseDoItem(item))}>
+                      <button type="button" className="botao-ouvir-item" onClick={() => {
+                          registrar('cardapio.ouvir-item')
+                          ouvir(fraseDoItem(item))
+                        }}>
                         <span aria-hidden="true">🔊</span>
                         <span className="sr-only">Ouvir {item.nome}</span>
                       </button>

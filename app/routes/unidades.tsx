@@ -4,6 +4,7 @@ import { ListaDeCanais } from '~/components/Canais'
 import { canaisDoGrupo, fraseDosCanais, unidades, type Unidade } from '~/data/atendimento'
 import { formatarTelefone } from '~/lib/reservas'
 import { SEM_MESA } from '~/edicao'
+import { registrar } from '~/lib/registrar'
 
 export const Route = createFileRoute('/unidades')({
   head: () => ({ meta: [{ title: 'Unidades e contatos · Cabana do Sol' }] }),
@@ -73,7 +74,9 @@ function Unidades() {
                       {u.outrosTelefones.map((t, i) => (
                         <span key={t}>
                           {i > 0 && ' · '}
-                          <a href={`tel:+55${t}`}>{formatarTelefone(t)}</a>
+                          <a href={`tel:+55${t}`} onClick={() => registrar(`unidade.${u.id}.ligar.${t}`)}>
+                            {formatarTelefone(t)}
+                          </a>
                         </span>
                       ))}
                     </dd>
@@ -82,18 +85,33 @@ function Unidades() {
               </dl>
               <div className="acoes">
                 {u.telefone && (
-                  <a className="botao botao-principal" href={`tel:+55${u.telefone}`}>
+                  <a
+                    className="botao botao-principal"
+                    href={`tel:+55${u.telefone}`}
+                    onClick={() => registrar(`unidade.${u.id}.ligar`)}
+                  >
                     Ligar para a {u.nome}
                   </a>
                 )}
                 {u.mapa && (
-                  <a className="botao botao-linha" href={u.mapa} target="_blank" rel="noreferrer">
+                  <a
+                    className="botao botao-linha"
+                    href={u.mapa}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => registrar(`unidade.${u.id}.mapa`)}
+                  >
                     Ver no mapa<span className="sr-only">: {u.nome} (abre fora da central)</span>
                   </a>
                 )}
                 <BotaoOuvir texto={fraseDaUnidade(u)} rotulo={`Ouvir ${u.nome}`} />
                 {SEM_MESA ? (
-                  <Link to="/cardapio" search={{ unidade: u.id }} className="botao botao-linha">
+                  <Link
+                    to="/cardapio"
+                    search={{ unidade: u.id }}
+                    className="botao botao-linha"
+                    onClick={() => registrar(`unidade.${u.id}.cardapio`)}
+                  >
                     Cardápio da {u.nome}
                   </Link>
                 ) : (

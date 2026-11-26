@@ -28,9 +28,30 @@ const salvarDocs = () => gravar(CHAVE_DOCS, docs)
 
 type Parametros = unknown[]
 
-// Entende exatamente as instruções SQL de app/server/armazenamento.ts.
+// Contagens do relatório: dia -> evento -> total.
+const CHAVE_CONTAGENS = 'cds-demo-contagens-v1'
+const contagens: Record<string, Record<string, number>> = ler(CHAVE_CONTAGENS, {})
+
+// Entende exatamente as instruções SQL de app/server/armazenamento.ts e
+// app/server/metricas.ts.
 function executar(sql: string, p: Parametros) {
   if (sql.startsWith('CREATE TABLE')) return { linhas: [], mudou: 0 }
+  if (sql.startsWith('INSERT INTO contagens')) {
+    const [dia, evento] = p as string[]
+    const doDia = (contagens[dia] ??= {})
+    doDia[evento] = (doDia[evento] ?? 0) + 1
+    gravar(CHAVE_CONTAGENS, contagens)
+    return { linhas: [], mudou: 1 }
+  }
+  if (sql.startsWith('SELECT evento, SUM(total)')) {
+    const [de, ate] = p as string[]
+    const soma: Record<string, number> = {}
+    for (const [dia, eventos] of Object.entries(contagens)) {
+      if (dia < de || dia > ate) continue
+      for (const [evento, total] of Object.entries(eventos)) soma[evento] = (soma[evento] ?? 0) + total
+    }
+    return { linhas: Object.entries(soma).map(([evento, total]) => ({ evento, total })), mudou: 0 }
+  }
   const [colecao, chave, valor] = p as string[]
   const tabela = (docs[colecao] ??= {})
   if (sql.startsWith('SELECT valor FROM documentos WHERE colecao = ? AND chave = ?')) {

@@ -106,3 +106,10 @@ currently renders the central.
 - **Prices from the menu site are strings like "1.234,50"**; they are parsed to
   cents (`lerPrecoEmCentavos`) and spoken with `precoPorExtenso` in
   `app/lib/speech.ts`, per the integer-cents rule.
+- **Clicks are counted, never people.** Every new guest-facing button should
+  call `registrar(id)` with an id from `app/lib/metricas.ts`; ids not in that
+  catalogue are rejected by `/api/eventos`. Channels and phones from
+  `atendimento.ts` get ids automatically. The demo's fake D1 also implements the
+  `contagens` SQL in `app/server/metricas.ts`; change both together.
+- **Sem-mesa order is by the owner's priority**: Reservas, Delivery, Cardápio,
+  Unidades (home tiles and bottom nav), one button per destination.

@@ -1,4 +1,5 @@
 import type { Canal } from '~/data/atendimento'
+import { registrar } from '~/lib/registrar'
 
 /** Links para os canais externos do restaurante (WhatsApp, delivery, cardápios, formulários). */
 export function ListaDeCanais({ canais }: { canais: Canal[] }) {
@@ -12,6 +13,7 @@ export function ListaDeCanais({ canais }: { canais: Canal[] }) {
             target="_blank"
             rel="noreferrer"
             hrefLang={canal.idioma}
+            onClick={() => registrar(`canal.${canal.id}`)}
           >
             <span className="acao-titulo" lang={canal.idioma}>
               {canal.titulo}

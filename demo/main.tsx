@@ -10,6 +10,8 @@ import { Route as ApiReservas } from '~/routes/api/reservas'
 import { Route as ApiEquipeReservas } from '~/routes/api/equipe.reservas'
 import { Route as ApiEquipeSaloes } from '~/routes/api/equipe.saloes'
 import { Route as ApiCardapio } from '~/routes/api/cardapio'
+import { Route as ApiEventos } from '~/routes/api/eventos'
+import { Route as ApiEquipeRelatorio } from '~/routes/api/equipe.relatorio'
 import { Route as ApiReclamacoes } from '~/routes/api/reclamacoes'
 import { Route as ApiEquipeReclamacoes } from '~/routes/api/equipe.reclamacoes'
 import { SEM_MESA } from '~/edicao'
@@ -29,6 +31,8 @@ const rotas: Record<string, ComServidor> = {
   '/api/equipe/reservas': ApiEquipeReservas as unknown as ComServidor,
   '/api/equipe/saloes': ApiEquipeSaloes as unknown as ComServidor,
   '/api/cardapio': ApiCardapio as unknown as ComServidor,
+  '/api/eventos': ApiEventos as unknown as ComServidor,
+  '/api/equipe/relatorio': ApiEquipeRelatorio as unknown as ComServidor,
   '/api/reclamacoes': ApiReclamacoes as unknown as ComServidor,
   '/api/equipe/reclamacoes': ApiEquipeReclamacoes as unknown as ComServidor,
 }
@@ -45,7 +49,7 @@ window.fetch = async (entrada, init) => {
   const request = new Request(url, init)
   const manipulador = rotas[url.pathname]?.options.server?.handlers?.[request.method]
   if (!manipulador) return Response.json({ erro: 'Não disponível na demonstração.' }, { status: 404 })
-  await new Promise((r) => setTimeout(r, 120)) // um pouco de espera, como na rede
+  if (url.pathname !== '/api/eventos') await new Promise((r) => setTimeout(r, 120)) // espera, como na rede
   return manipulador({ request, params: {} })
 }
 

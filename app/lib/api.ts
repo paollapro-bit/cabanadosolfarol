@@ -213,6 +213,13 @@ export function atualizarReclamacao(
   })
 }
 
-export function lerCardapioEmTexto() {
-  return pedir<CardapioEmTexto>('/api/cardapio-texto')
+export function lerCardapioEmTexto(fonte: string) {
+  return pedir<CardapioEmTexto>(`/api/cardapio-texto?fonte=${encodeURIComponent(fonte)}`)
+}
+
+export function lerRelatorio(de: string, ate: string, pin: string) {
+  return pedir<{ de: string; ate: string; contagens: { evento: string; total: number }[] }>(
+    `/api/equipe/relatorio?de=${de}&ate=${ate}`,
+    { headers: { 'x-equipe-pin': pin } },
+  )
 }

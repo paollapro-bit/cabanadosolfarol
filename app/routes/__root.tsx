@@ -15,6 +15,7 @@ import {
 } from '~/components/Acessibilidade'
 import appCss from '~/styles.css?url'
 import { SEM_MESA } from '~/edicao'
+import { registrar } from '~/lib/registrar'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -51,13 +52,23 @@ function Documento({ children }: { children: ReactNode }) {
   )
 }
 
-const NAVEGACAO = [
-  SEM_MESA ? { to: '/', rotulo: 'Início', icone: '🏠' } : { to: '/', rotulo: 'Mesa', icone: '🛎️' },
-  { to: '/cardapio', rotulo: 'Cardápio', icone: '📖' },
-  { to: '/delivery', rotulo: 'Delivery', icone: '🛵' },
-  { to: '/reservas', rotulo: 'Reservas', icone: '📅' },
-  { to: '/unidades', rotulo: 'Unidades', icone: '📍' },
-] as const satisfies readonly { to: string; rotulo: string; icone: string }[]
+const NAVEGACAO = (
+  SEM_MESA
+    ? [
+        { to: '/', rotulo: 'Início', icone: '🏠' },
+        { to: '/reservas', rotulo: 'Reservas', icone: '📅' },
+        { to: '/delivery', rotulo: 'Delivery', icone: '🛵' },
+        { to: '/cardapio', rotulo: 'Cardápio', icone: '📖' },
+        { to: '/unidades', rotulo: 'Unidades', icone: '📍' },
+      ]
+    : [
+        { to: '/', rotulo: 'Mesa', icone: '🛎️' },
+        { to: '/cardapio', rotulo: 'Cardápio', icone: '📖' },
+        { to: '/delivery', rotulo: 'Delivery', icone: '🛵' },
+        { to: '/reservas', rotulo: 'Reservas', icone: '📅' },
+        { to: '/unidades', rotulo: 'Unidades', icone: '📍' },
+      ]
+) satisfies { to: '/' | '/cardapio' | '/delivery' | '/reservas' | '/unidades'; rotulo: string; icone: string }[]
 
 function Estrutura() {
   return (
@@ -96,6 +107,16 @@ function Estrutura() {
 
 // Ao trocar de tela, o foco vai para o conteúdo e o título é anunciado —
 // sem isso o leitor de tela continua parado na navegação.
+const TELAS_CONTADAS: Record<string, string> = {
+  '/': 'inicio',
+  '/reservas': 'reservas',
+  '/delivery': 'delivery',
+  '/cardapio': 'cardapio',
+  '/unidades': 'unidades',
+  '/reclamacoes': 'reclamacoes',
+  '/duvidas': 'duvidas',
+}
+
 function Conteudo() {
   // resolvedLocation só muda depois que a nova tela foi renderizada.
   const pathname = useRouterState({ select: (s) => s.resolvedLocation?.pathname })
@@ -114,6 +135,12 @@ function Conteudo() {
     if (titulo) anunciar(titulo)
   }, [pathname, anunciar, parar])
 
+  // Conta cada visita a uma tela do cliente (a área da equipe não entra).
+  useEffect(() => {
+    const tela = TELAS_CONTADAS[pathname ?? '']
+    if (tela) registrar(`visita.${tela}`)
+  }, [pathname])
+
   return (
     <main id="conteudo" ref={principal} tabIndex={-1} className="conteudo">
       <Outlet />
@@ -121,7 +148,12 @@ function Conteudo() {
         <p>Cabana do Sol · Desde 1994 · Litorânea e Ponta do Farol, São Luís</p>
         <Link to="/duvidas">Dúvidas frequentes</Link>
         <Link to="/reclamacoes">Reclamações</Link>
-        <a href="https://www.instagram.com/cabanadosol/" target="_blank" rel="noreferrer">
+        <a
+          href="https://www.instagram.com/cabanadosol/"
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => registrar('rodape.instagram')}
+        >
           Instagram @cabanadosol<span className="sr-only"> (abre fora da central)</span>
         </a>
         <Link to="/equipe">Área da equipe</Link>

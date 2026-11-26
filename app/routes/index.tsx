@@ -4,6 +4,7 @@ import { BotaoOuvir, useAcessibilidade } from '~/components/Acessibilidade'
 import { ListaDeCanais } from '~/components/Canais'
 import { Inicio } from '~/components/Inicio'
 import { SEM_MESA } from '~/edicao'
+import { registrar } from '~/lib/registrar'
 import { canaisDoGrupo } from '~/data/atendimento'
 import {
   abrirChamado,
@@ -331,7 +332,7 @@ function Atendimento() {
 
       <section aria-labelledby="titulo-opiniao">
         <h2 id="titulo-opiniao">Sua opinião</h2>
-        <Link to="/reclamacoes" className="acao">
+        <Link to="/reclamacoes" className="acao" onClick={() => registrar('opiniao.abrir-reclamacao')}>
           <span className="acao-titulo">Fazer uma reclamação</span>
           <span className="acao-descricao">
             Algo não saiu como deveria? Conte para a gerência e acompanhe a resposta por aqui.

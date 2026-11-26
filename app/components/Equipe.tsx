@@ -40,11 +40,21 @@ const SECOES = [
   { to: '/equipe/reservas', rotulo: 'Reservas' },
   { to: '/equipe/saloes', rotulo: 'Salões' },
   { to: '/equipe/reclamacoes', rotulo: 'Reclamações' },
+  { to: '/equipe/relatorio', rotulo: 'Relatório' },
   { to: '/equipe/cardapio', rotulo: 'Cardápio' },
 ] as const
 
 /** Moldura das telas da equipe: pede o código, escolhe a unidade e navega entre as seções. */
-export function PainelDaEquipe({ titulo, children }: { titulo: string; children: ReactNode }) {
+export function PainelDaEquipe({
+  titulo,
+  children,
+  semUnidade = false,
+}: {
+  titulo: string
+  children: ReactNode
+  /** Telas que não dependem da unidade (o relatório) não mostram a escolha. */
+  semUnidade?: boolean
+}) {
   const { anunciar } = useAcessibilidade()
   const [pin, setPin] = useState('')
   const [digitado, setDigitado] = useState('')
@@ -166,7 +176,7 @@ export function PainelDaEquipe({ titulo, children }: { titulo: string; children:
               Sair
             </button>
           </nav>
-          <fieldset className="campo">
+          <fieldset className="campo" hidden={semUnidade}>
             <legend className="legenda">Unidade</legend>
             <div className="opcoes">
               {UNIDADES.map((u) => (

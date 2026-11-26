@@ -106,6 +106,16 @@ The same code builds two apps, chosen with `VITE_EDICAO` at build time
   (a second Worker sharing the same D1 and KV, so reservations, salões and
   complaints are the same in both).
 
+## Click report
+
+Every guest-facing button and screen visit is counted per day (no personal
+data): `app/lib/registrar.ts` posts to `/api/eventos`, which only accepts ids
+from the catalogue in `app/lib/metricas.ts` (built from `app/data/atendimento.ts`,
+so new channels are counted automatically) and increments a `contagens` row in
+D1 atomically. Staff see totals per area (Reservas, Delivery, Cardápio,
+Unidades, Sua opinião, Redes, Visitas) for this/last week, this/last month,
+the last 7/30 days or any dates at `/equipe/relatorio`, and can download a CSV.
+
 ## Demo without a server
 
 `npm run build:demo` builds the whole app into one JS file (`dist-demo/`) that runs

@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { FONTE_DO_CARDAPIO } from '~/data/atendimento'
+import { CARDAPIOS_EM_TEXTO } from '~/data/atendimento'
 import { lerArquivoDoCardapio } from '~/lib/cardapioTexto'
 import { erro } from '~/server/armazenamento'
 
@@ -9,10 +9,12 @@ import { erro } from '~/server/armazenamento'
 export const Route = createFileRoute('/api/cardapio-texto')({
   server: {
     handlers: {
-      GET: async () => {
+      GET: async ({ request }) => {
+        const id = new URL(request.url).searchParams.get('fonte')
+        const escolhido = CARDAPIOS_EM_TEXTO.find((c) => c.id === id) ?? CARDAPIOS_EM_TEXTO[0]
         let resposta: Response
         try {
-          resposta = await fetch(FONTE_DO_CARDAPIO, {
+          resposta = await fetch(escolhido.fonte, {
             cf: { cacheTtl: 300, cacheEverything: true },
           } as RequestInit)
         } catch {

@@ -14,6 +14,7 @@ import {
 } from '~/lib/api'
 import { ehUnidade, nomeUnidade, UNIDADES, type UnidadeId } from '~/lib/chamados'
 import { guardar, lerGuardado } from '~/lib/guardado'
+import { registrar } from '~/lib/registrar'
 import {
   ANTECEDENCIA_MAXIMA_DIAS,
   capacidadePorExtenso,
@@ -156,6 +157,7 @@ function Reservas() {
   }
 
   function aoReservar(reserva: Reserva, segredo: string) {
+    registrar('reservas.pedido-enviado')
     setMinhas((atuais) => [{ id: reserva.id, segredo, reserva }, ...atuais])
     setEscolhido('')
     anunciar(fraseDaReserva(reserva))
@@ -335,7 +337,10 @@ function Reservas() {
                         type="button"
                         className="botao botao-principal"
                         aria-expanded={aberto}
-                        onClick={() => setEscolhido(aberto ? '' : salao.id)}
+                        onClick={() => {
+                          if (!aberto) registrar('reservas.abrir-formulario')
+                          setEscolhido(aberto ? '' : salao.id)
+                        }}
                       >
                         Reservar {salao.nome}
                       </button>

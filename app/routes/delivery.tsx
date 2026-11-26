@@ -2,6 +2,7 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { BotaoOuvir } from '~/components/Acessibilidade'
 import { ListaDeCanais } from '~/components/Canais'
 import { canaisDoGrupo, cardapios, delivery } from '~/data/atendimento'
+import { registrar } from '~/lib/registrar'
 
 export const Route = createFileRoute('/delivery')({
   head: () => ({ meta: [{ title: 'Central de delivery · Cabana do Sol' }] }),
@@ -41,7 +42,11 @@ function ListaDeTelefones({ titulo, numeros }: { titulo: string; numeros: string
       <ul className="grade-telefones">
         {numeros.map((numero) => (
           <li key={numero}>
-            <a className="botao botao-principal telefone" href={`tel:+55${delivery.ddd}${numero}`}>
+            <a
+              className="botao botao-principal telefone"
+              href={`tel:+55${delivery.ddd}${numero}`}
+              onClick={() => registrar(`delivery.ligar.${numero}`)}
+            >
               <span aria-hidden="true">📞 </span>
               <span className="sr-only">Ligar para </span>({delivery.ddd}) {formatar(numero)}
             </a>

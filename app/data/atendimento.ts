@@ -287,6 +287,15 @@ export const delivery = {
 export const FONTE_DO_CARDAPIO = 'https://dev.cardapio-cabana.pages.dev/dados/cardapio.js'
 export const SITE_DO_CARDAPIO = 'https://dev.cardapio-cabana.pages.dev/'
 
+/**
+ * Cardápios em texto que a central lê ao vivo. Para incluir outro (por
+ * exemplo, o do Happy Café), acrescente uma linha com o endereço do arquivo
+ * dados/cardapio.js do site dele: a tela passa a oferecer a escolha sozinha.
+ */
+export const CARDAPIOS_EM_TEXTO: { id: string; nome: string; fonte: string }[] = [
+  { id: 'restaurante', nome: 'Restaurante', fonte: FONTE_DO_CARDAPIO },
+]
+
 export interface Duvida {
   id: string
   pergunta: string
